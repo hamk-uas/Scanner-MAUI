@@ -1,0 +1,73 @@
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Scanner_MAUI.Pages.RealTimeData"
+             Title=""
+             BackgroundColor="#f3f3f3">
+    
+    <!--Using Grid for layout-->
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="20*" />
+            <ColumnDefinition Width="80*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="60*" />
+            <RowDefinition Height="30*" />
+        </Grid.RowDefinitions>
+
+        <!-- Menu list on the left (taking full length) -->
+        <Frame Grid.Column="0" Grid.RowSpan="2" BackgroundColor="#fff" Margin="4" BorderColor="#fff" >
+            <ListView x:Name="NetworkListView">
+                <ListView.ItemsSource>
+                    <x:Array Type="{x:Type x:String}">
+                        <x:String>Network 1</x:String>
+                        <x:String>Network 2</x:String>
+                        <x:String>Network 3</x:String>
+                        <x:String>Network 4</x:String>
+                    </x:Array>
+                </ListView.ItemsSource>
+            </ListView>
+        </Frame>
+
+        <Frame Grid.Column="1" Grid.Row="0" BackgroundColor="#fff" Margin="4" BorderColor="#fff">
+            <!-- Dummy location content -->
+            <Label Text="Location: 00000 Hämeenlinna" />
+        </Frame>
+
+        <StackLayout Grid.Column="1" Grid.Row="1" >
+            <ScrollView></ScrollView>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="20*" />
+                    <ColumnDefinition Width="40*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <!--<RowDefinition Height="*" />-->
+                    <!--<RowDefinition Height="*" />-->
+                </Grid.RowDefinitions>
+            
+                <Frame Grid.Column="0" Grid.RowSpan="2"  BackgroundColor="#fff" Margin="4" BorderColor="#fff">
+                    <Label  Text="Signal Strength:"/>
+                    <!--<Label  Text="97%"/>-->
+                </Frame>
+
+                <Frame Grid.Column="1" Grid.Row="0" BackgroundColor="White" Margin="4" BorderColor="#fff">
+                    <Label Text="Date and Time: 15.5.2023   19.52" />
+                </Frame>
+
+                <Frame Grid.Column="1" Grid.Row="1" BackgroundColor="White" Margin="4" BorderColor="#fff">
+                    <Label Text="Network Name: Network 3" />
+                </Frame>
+                <!--<Frame Grid.Column="1" Grid.Row="2" BackgroundColor="White" Margin="4" BorderColor="#fff">
+                    <Label Text="Location: 00000 Hämeenlinna" />
+                </Frame>-->
+                <!--<Frame Grid.Column="1" Grid.Row="3" BackgroundColor="White" Margin="4" BorderColor="#fff">
+                    <Label Text="Strength: 5" />
+                </Frame>-->
+            </Grid>
+        </StackLayout>
+    </Grid>
+    
+</ContentPage>
