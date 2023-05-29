@@ -1,6 +1,7 @@
-
+using System;
+using System.Globalization;
 using System.Diagnostics.CodeAnalysis;
-
+using Scanner_MAUI.Functions;
 namespace Scanner_MAUI.Pages
 {
     public partial class RealTimeData : ContentPage
@@ -9,9 +10,11 @@ namespace Scanner_MAUI.Pages
         {
             InitializeComponent();
             NetworkListView.ItemSelected += OnNetworkNameSelected;
+            TimeStamp.TimeStampViewr(DateTimeLabel);
+
         }
 
-        //Dynamically populating the network name
+        //Dynamically populating the network name based on the selected network fromthe list view
         private void OnNetworkNameSelected(object sender, SelectedItemChangedEventArgs e)
         {
             if (e.SelectedItem is string selectedNetwork)

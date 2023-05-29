@@ -1,5 +1,6 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:Functions="clr-namespace:Scanner_MAUI.Functions"
              x:Class="Scanner_MAUI.Pages.RealTimeData"
              Title=""
              BackgroundColor="#f3f3f3">
@@ -54,7 +55,7 @@
                 </Frame>
 
                 <Frame Grid.Column="1" Grid.Row="0" BackgroundColor="White" Margin="4" BorderColor="#fff">
-                    <Label Text="Date and Time: 15.5.2023   19.52" />
+                    <Label x:Name="DateTimeLabel" />
                 </Frame>
 
                 <Frame Grid.Column="1" Grid.Row="1" BackgroundColor="White" Margin="4" BorderColor="#fff">
