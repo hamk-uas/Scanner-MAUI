@@ -20,10 +20,10 @@
             <ListView x:Name="NetworkListView">
                 <ListView.ItemsSource>
                     <x:Array Type="{x:Type x:String}">
-                        <x:String>Network 1</x:String>
-                        <x:String>Network 2</x:String>
-                        <x:String>Network 3</x:String>
-                        <x:String>Network 4</x:String>
+                        <x:String>Network-1</x:String>
+                        <x:String>Network-2</x:String>
+                        <x:String>Network-3</x:String>
+                        <x:String>Network-4</x:String>
                     </x:Array>
                 </ListView.ItemsSource>
             </ListView>
@@ -58,7 +58,8 @@
                 </Frame>
 
                 <Frame Grid.Column="1" Grid.Row="1" BackgroundColor="White" Margin="4" BorderColor="#fff">
-                    <Label Text="Network Name: Network 3" />
+                   <!--Keeping the thext property field empty to dynamically populated -->
+                    <Label x:Name="NetworkNameLabel" />
                 </Frame>
                 <!--<Frame Grid.Column="1" Grid.Row="2" BackgroundColor="White" Margin="4" BorderColor="#fff">
                     <Label Text="Location: 00000 Hämeenlinna" />
