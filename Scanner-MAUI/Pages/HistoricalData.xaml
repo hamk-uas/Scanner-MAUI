@@ -5,10 +5,19 @@
              Title=""
              BackgroundColor="#f3f3f3"
              >
+    
+    <ContentPage.MenuBarItems >
+        <MenuBarItem Text="File">
+            <MenuFlyoutItem Text="Start"/>
+            <MenuFlyoutItem Text="Stop"/>
+        </MenuBarItem>
+    </ContentPage.MenuBarItems>
+    
     <VerticalStackLayout>
         <Label 
             Text="Welcome to Historical Data Page!"
             VerticalOptions="Center" 
             HorizontalOptions="Center" />
     </VerticalStackLayout>
+    
 </ContentPage>

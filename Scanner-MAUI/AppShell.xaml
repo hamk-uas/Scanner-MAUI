@@ -5,17 +5,19 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:pages="clr-namespace:Scanner_MAUI.Pages"
     xmlns:root="clr-namespace:Scanner_MAUI"
-    xmlns:local="clr-namespace:Scanner_MAUI.Pages"
+    FlyoutWidth="60"
+    Shell.FlyoutBehavior="Locked"
     >
-    <Shell.Resources>
+    <!--<Shell.Resources>
         <Style x:Key="TabBarStyle" TargetType="TabBar">
             <Setter Property="Shell.TabBarBackgroundColor"  Value="#f3f3f3" />
             <Setter Property="Shell.TabBarTitleColor"  Value="Black" />
         </Style>
-    </Shell.Resources>
+    </Shell.Resources>-->
+    
     
     <!--Top Nav-->
-    <TabBar Style="{StaticResource TabBarStyle}">
+    <!--<TabBar Style="{StaticResource TabBarStyle}">
         <ShellContent
                 Title="Real-time Data"
                 ContentTemplate="{DataTemplate pages:RealTimeData}"
@@ -31,6 +33,16 @@
                 ContentTemplate="{DataTemplate local:HistoricalData}"
                 Route="HistoricalData"
                 />
-    </TabBar>
+    </TabBar>-->
+
+    <ShellContent
+                Icon="home.png"
+                ContentTemplate="{DataTemplate pages:RealTimeData}"
+                Route="RealTimeData" />
+    
+     <ShellContent
+                Icon="history.png"
+                ContentTemplate="{DataTemplate pages:HistoricalData}"
+                Route="HistoricalData" />
 
 </Shell>

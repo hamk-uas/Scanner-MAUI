@@ -3,8 +3,16 @@
              xmlns:Functions="clr-namespace:Scanner_MAUI.Functions"
              x:Class="Scanner_MAUI.Pages.RealTimeData"
              Title=""
-             BackgroundColor="#f3f3f3">
+             BackgroundColor="#f3f3f3"
+             >
     
+    <ContentPage.MenuBarItems>
+        <MenuBarItem Text="File">
+            <MenuFlyoutItem Text="Start"/>
+            <MenuFlyoutItem Text="Stop"/>
+        </MenuBarItem>
+    </ContentPage.MenuBarItems>
+
     <!--Using Grid for layout-->
     <Grid>
         <Grid.ColumnDefinitions>
