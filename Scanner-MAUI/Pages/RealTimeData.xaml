@@ -5,7 +5,10 @@
              Title=""
              BackgroundColor="#f3f3f3"
              >
-    
+    <ContentPage.Resources>
+        <Functions:GraphicsDrawable x:Key="MyDrawable" />
+    </ContentPage.Resources>
+
     <ContentPage.MenuBarItems>
         <MenuBarItem Text="File">
             <MenuFlyoutItem Text="Start"/>
@@ -47,20 +50,26 @@
             <ScrollView></ScrollView>
             <Grid>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="20*" />
+                    <ColumnDefinition Width="40*" />
                     <ColumnDefinition Width="40*" />
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*" />
                     <RowDefinition Height="*" />
-                    <!--<RowDefinition Height="*" />-->
-                    <!--<RowDefinition Height="*" />-->
                 </Grid.RowDefinitions>
-            
-                <Frame Grid.Column="0" Grid.RowSpan="2"  BackgroundColor="#fff" Margin="4" BorderColor="#fff">
-                    <Label  Text="Signal Strength:"/>
-                    <!--<Label  Text="97%"/>-->
+
+                <Frame Grid.Column="0" Grid.RowSpan="2" BackgroundColor="#fff" Margin="4" BorderColor="#fff">
+                    <StackLayout Orientation="Vertical">
+                        <Label Text="Signal Strength" />
+                        <GraphicsView
+                            x:Name="Canvas"
+                            HorizontalOptions="Fill"
+                            Drawable="{StaticResource MyDrawable}"
+                            HeightRequest="100"
+                            Grid.Row="1" />
+                    </StackLayout>
                 </Frame>
+
 
                 <Frame Grid.Column="1" Grid.Row="0" BackgroundColor="White" Margin="4" BorderColor="#fff">
                     <Label x:Name="DateTimeLabel" />
@@ -70,12 +79,7 @@
                    <!--Keeping the thext property field empty to dynamically populated -->
                     <Label x:Name="NetworkNameLabel" />
                 </Frame>
-                <!--<Frame Grid.Column="1" Grid.Row="2" BackgroundColor="White" Margin="4" BorderColor="#fff">
-                    <Label Text="Location: 00000 Hämeenlinna" />
-                </Frame>-->
-                <!--<Frame Grid.Column="1" Grid.Row="3" BackgroundColor="White" Margin="4" BorderColor="#fff">
-                    <Label Text="Strength: 5" />
-                </Frame>-->
+               
             </Grid>
         </StackLayout>
     </Grid>
