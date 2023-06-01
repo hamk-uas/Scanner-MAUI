@@ -1,4 +1,5 @@
-﻿
+﻿using Scanner_MAUI.Pages;
+
 namespace Scanner_MAUI.Functions
 {
     public class GraphicsDrawable : IDrawable
@@ -6,13 +7,15 @@ namespace Scanner_MAUI.Functions
         private const int MaxSignalStrength = 10;
         private const int MinSignalStrength = 1;
 
+        //store the signal strength in its own property
+        public int SignalStrength { get; set; }
+
         public void Draw(ICanvas canvas, RectF dirtyRect)
         {
             LinearGradientPaint linearGradientPaint = new LinearGradientPaint
             {
                 StartColor = Colors.Red,
                 EndColor = Colors.Green,
-                // StartPoint is already (0,0)
                 EndPoint = new Point(1, 0)
             };
 
@@ -22,8 +25,9 @@ namespace Scanner_MAUI.Functions
             canvas.FillRoundedRectangle(linearRectangle, 12);
 
             // Calculate the position and dimensions of the vertical line based on signal strength
-            int signalStrength = GetSignalStrength();
-            float lineX = linearRectangle.Left + (linearRectangle.Width / MaxSignalStrength) * signalStrength;
+            int signalStrength = SignalStrength;
+            //int signalStrength = 3;
+            float lineX = linearRectangle.Left + (linearRectangle.Width / MaxSignalStrength-1) * signalStrength;
             float lineY1 = linearRectangle.Top;
             float lineY2 = linearRectangle.Bottom;
 
@@ -32,32 +36,5 @@ namespace Scanner_MAUI.Functions
             canvas.StrokeSize = 2;
             canvas.DrawLine(lineX, lineY1, lineX, lineY2);
         }
-
-        private int GetSignalStrength()
-        {
-            // Determine the signal strength based on specific conditions
-
-            int connectionStrength = 2; 
-            if (connectionStrength >= 7 && connectionStrength <= 10)
-            {
-                return MaxSignalStrength-1;
-            }
-            else if (connectionStrength >= 4 && connectionStrength <= 6)
-            {
-                return (MaxSignalStrength + MinSignalStrength) / 2;
-            }
-            else
-            {
-                return MinSignalStrength;
-            }
-        }
-
-        //private int GetConnectionStrength()
-        //{
-        //    // Replace this with your logic to retrieve the actual connection strength
-        //    // Here, I'm just returning a random value between the minimum and maximum connection strength
-        //    Random random = new Random();
-        //    return random.Next(MinSignalStrength, MaxSignalStrength + 1);
-        //}
     }
 }
