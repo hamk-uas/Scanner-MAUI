@@ -35,8 +35,6 @@ namespace Scanner_MAUI.Pages
 
         private int GetSignalStrength(string networkName)
         {
-            // Replace this with your logic to retrieve the signal strength based on the network name
-            // Here, I'm using a simple example with hardcoded values
             if (networkName == "Network-1")
                 return 10; // Maximum signal strength
             else if (networkName == "Network-2")
