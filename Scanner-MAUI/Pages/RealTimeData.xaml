@@ -1,10 +1,12 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:esri="http://schemas.esri.com/arcgis/runtime/2013"
+             xmlns:esritk="clr-namespace:Esri.ArcGISRuntime.Toolkit.Maui;assembly=Esri.ArcGISRuntime.Toolkit.Maui"
+             xmlns:esriUI="clr-namespace:Esri.ArcGISRuntime.Maui;assembly=Esri.ArcGISRuntime.Maui"
              xmlns:Functions="clr-namespace:Scanner_MAUI.Functions"
              x:Class="Scanner_MAUI.Pages.RealTimeData"
              Title=""
-             BackgroundColor="#f3f3f3"
-             >
+             BackgroundColor="#f3f3f3">
     <ContentPage.Resources>
         <Functions:GraphicsDrawable x:Key="MyDrawable" />
     </ContentPage.Resources>
@@ -43,7 +45,25 @@
 
         <Frame Grid.Column="1" Grid.Row="0" BackgroundColor="#fff" Margin="4" BorderColor="#fff">
             <!-- Dummy location content -->
-            <Label Text="Location: 00000 Hämeenlinna" />
+            <!--<Label Text="Location:" />-->
+            <Grid Style="{DynamicResource EsriSampleContainer}">
+                <esriUI:MapView x:Name="MyMapView" Style="{DynamicResource EsriSampleGeoView}" />
+                <!--<Border Style="{DynamicResource EsriSampleControlPanel}">
+                        <Grid Padding="5"
+                      RowDefinitions="auto,auto"
+                      RowSpacing="5">
+                            <Button x:Name="UriButton"
+                            Grid.Row="0"
+                            Clicked="UriButton_Click"
+                            IsEnabled="false"
+                            Text="WMTSLayer via Uri" />
+                            <Button x:Name="InfoButton"
+                            Grid.Row="1"
+                            Clicked="InfoButton_Click"
+                            Text="WMTSLayer via WmtsLayerInfo" />
+                        </Grid>
+                    </Border>-->
+            </Grid>
         </Frame>
 
         <StackLayout Grid.Column="1" Grid.Row="1" >
