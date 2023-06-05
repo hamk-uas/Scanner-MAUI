@@ -8,9 +8,9 @@ namespace Scanner_MAUI.Pages;
 public partial class RealTimeData : ContentPage
 {
 
-	public RealTimeData()
-	{
-		InitializeComponent();
+    public RealTimeData()
+    {
+        InitializeComponent();
         _ = LoadWMTSLayer(true);
         //_ = LoadWMTSLayer(true);
     }
@@ -60,8 +60,8 @@ public partial class RealTimeData : ContentPage
 
             if (uriMode)
             {
-               //Create a WMTS layer using a Uri and provide an Id value.
-               myWmtsLayer = new WmtsLayer(wmtsUri, "SRTM_Color_Index");
+                //Create a WMTS layer using a Uri and provide an Id value.
+                myWmtsLayer = new WmtsLayer(wmtsUri, "SRTM_Color_Index");
             }
             else
             {

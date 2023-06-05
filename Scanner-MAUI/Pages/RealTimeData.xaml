@@ -34,7 +34,7 @@
 
         <Frame Grid.Column="1" Grid.Row="0" BackgroundColor="#fff" Margin="4" BorderColor="#fff">
             <!-- Dummy location content -->
-             <!--<Label Text="Location:" />-->
+            <!--<Label Text="Location:" />-->
             <Grid Style="{DynamicResource EsriSampleContainer}">
                 <esriUI:MapView x:Name="MyMapView" Style="{DynamicResource EsriSampleGeoView}" />
                 <!--<Border Style="{DynamicResource EsriSampleControlPanel}">
@@ -68,7 +68,6 @@
                     <!--<RowDefinition Height="*" />-->
                     <!--<RowDefinition Height="*" />-->
                 </Grid.RowDefinitions>
-            
                 <Frame Grid.Column="0" Grid.RowSpan="2"  BackgroundColor="#fff" Margin="4" BorderColor="#fff">
                     <Label  Text="Signal Strength:"/>
                     <!--<Label  Text="97%"/>-->
@@ -90,5 +89,4 @@
             </Grid>
         </StackLayout>
     </Grid>
-    
 </ContentPage>
