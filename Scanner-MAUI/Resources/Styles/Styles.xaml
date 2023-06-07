@@ -373,7 +373,7 @@
 
     <Style TargetType="Page" ApplyToDerivedTypes="True">
         <Setter Property="Padding" Value="0"/>
-        <Setter Property="BackgroundColor" Value="#f3f3f3" />
+        <Setter Property="BackgroundColor" Value="#f3f3f3" /> <!--Changed the app page background color-->
     </Style>
 
     <Style TargetType="Shell" ApplyToDerivedTypes="True">
