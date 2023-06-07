@@ -1,7 +1,7 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:Functions="clr-namespace:Scanner_MAUI.Functions"
-             xmlns:local="clr-namespace:Scanner_MAUI.Styles"
+             xmlns:styles="clr-namespace:Scanner_MAUI.Styles"
              x:Class="Scanner_MAUI.Pages.RealTimeData"
              Title=""
              >
@@ -9,7 +9,7 @@
         <Functions:GraphicsDrawable x:Key="MyDrawable" />
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <local:RealTimeDataStyles />
+                <styles:RealTimeDataStyles />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </ContentPage.Resources>
