@@ -1,12 +1,17 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:Functions="clr-namespace:Scanner_MAUI.Functions"
+             xmlns:local="clr-namespace:Scanner_MAUI.Styles"
              x:Class="Scanner_MAUI.Pages.RealTimeData"
              Title=""
-             BackgroundColor="#f3f3f3"
              >
     <ContentPage.Resources>
         <Functions:GraphicsDrawable x:Key="MyDrawable" />
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <local:RealTimeDataStyles />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </ContentPage.Resources>
 
     <ContentPage.MenuBarItems>
@@ -18,70 +23,55 @@
 
     <!--Using Grid for layout-->
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="20*" />
-            <ColumnDefinition Width="80*" />
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="60*" />
-            <RowDefinition Height="30*" />
-        </Grid.RowDefinitions>
+        <Grid Style="{StaticResource MainGridStyle}">
 
-        <!-- Menu list on the left (taking full length) -->
-        <Frame Grid.Column="0" Grid.RowSpan="2" BackgroundColor="#fff" Margin="4" BorderColor="#fff" >
-            <ListView x:Name="NetworkListView">
-                <ListView.ItemsSource>
-                    <x:Array Type="{x:Type x:String}">
-                        <x:String>Network-1</x:String>
-                        <x:String>Network-2</x:String>
-                        <x:String>Network-3</x:String>
-                        <x:String>Network-4</x:String>
-                    </x:Array>
-                </ListView.ItemsSource>
-            </ListView>
-        </Frame>
+            <!-- Menu list on the left (taking full length) -->
+            <Frame Style="{StaticResource LeftNetworkNamesFrameStyle}" >
+                <ListView x:Name="NetworkListView">
+                    <ListView.ItemsSource>
+                        <x:Array Type="{x:Type x:String}">
+                            <x:String>Network-1</x:String>
+                            <x:String>Network-2</x:String>
+                            <x:String>Network-3</x:String>
+                            <x:String>Network-4</x:String>
+                        </x:Array>
+                    </ListView.ItemsSource>
+                </ListView>
+            </Frame>
 
-        <Frame Grid.Column="1" Grid.Row="0" BackgroundColor="#fff" Margin="4" BorderColor="#fff">
-            <!-- Dummy location content -->
-            <Label Text="Location: 00000 Hämeenlinna" />
-        </Frame>
+            <Frame Style="{StaticResource LocationStyle}">
+                <!-- Dummy location content -->
+                <Label Text="Location: 00000 Hämeenlinna" />
+            </Frame>
 
-        <StackLayout Grid.Column="1" Grid.Row="1" >
-            <ScrollView></ScrollView>
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="40*" />
-                    <ColumnDefinition Width="40*" />
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="*" />
-                </Grid.RowDefinitions>
-
-                <Frame Grid.Column="0" Grid.RowSpan="2" BackgroundColor="#fff" Margin="4" BorderColor="#fff">
-                    <StackLayout Orientation="Vertical">
-                        <Label Text="Signal Strength" />
-                        <GraphicsView
-                            x:Name="Canvas"
-                            HorizontalOptions="Fill"
-                            Drawable="{StaticResource MyDrawable}"
-                            HeightRequest="100"
-                            Grid.Row="1" />
-                    </StackLayout>
-                </Frame>
+            <StackLayout Style="{StaticResource StackLayoutStyles}" >
+                <ScrollView></ScrollView>
+                <Grid Style="{StaticResource SecondaryGridStyle}">
+                    
+                    <Frame Style="{StaticResource SignalStrengthStyle}">
+                        <StackLayout Orientation="Vertical">
+                            <Label Text="Signal Strength" />
+                            <GraphicsView
+                                x:Name="Canvas"
+                                HorizontalOptions="Fill"
+                                Drawable="{StaticResource MyDrawable}"
+                                HeightRequest="100"
+                                Grid.Row="1" />
+                        </StackLayout>
+                    </Frame>
 
 
-                <Frame Grid.Column="1" Grid.Row="0" BackgroundColor="White" Margin="4" BorderColor="#fff">
-                    <Label x:Name="DateTimeLabel" />
-                </Frame>
+                    <Frame  Style="{StaticResource DateTimeLabelStyle}">
+                        <Label x:Name="DateTimeLabel" />
+                    </Frame>
 
-                <Frame Grid.Column="1" Grid.Row="1" BackgroundColor="White" Margin="4" BorderColor="#fff">
-                   <!--Keeping the thext property field empty to dynamically populated -->
-                    <Label x:Name="NetworkNameLabel" />
-                </Frame>
+                    <Frame  Style="{StaticResource nameLabelStyle}">
+                       <!--Keeping the thext property field empty to dynamically populated -->
+                        <Label x:Name="NetworkNameLabel" />
+                    </Frame>
                
-            </Grid>
-        </StackLayout>
+                </Grid>
+            </StackLayout>
+        </Grid>
     </Grid>
-    
 </ContentPage>
