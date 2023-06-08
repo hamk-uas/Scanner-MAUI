@@ -13,7 +13,6 @@ namespace Scanner_MAUI.Helpers
             try
             {
                 //get value by key
-                //var apiKey = Keys.GetApiKey();
                 var apiKey = Keys.Instance["Settings:API-key"];
 
                 // Create a new map.
