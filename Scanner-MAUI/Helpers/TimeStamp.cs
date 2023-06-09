@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Scanner_MAUI.Functions
+namespace Scanner_MAUI.Helpers
 {
     class TimeStamp
     {

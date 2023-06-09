@@ -3,12 +3,18 @@
              xmlns:esri="http://schemas.esri.com/arcgis/runtime/2013"
              xmlns:esritk="clr-namespace:Esri.ArcGISRuntime.Toolkit.Maui;assembly=Esri.ArcGISRuntime.Toolkit.Maui"
              xmlns:esriUI="clr-namespace:Esri.ArcGISRuntime.Maui;assembly=Esri.ArcGISRuntime.Maui"
-             xmlns:Functions="clr-namespace:Scanner_MAUI.Functions"
+              xmlns:styles="clr-namespace:Scanner_MAUI.Styles"
+             xmlns:Helpers="clr-namespace:Scanner_MAUI.Helpers"
              x:Class="Scanner_MAUI.Pages.RealTimeData"
              Title=""
              BackgroundColor="#f3f3f3">
     <ContentPage.Resources>
-        <Functions:GraphicsDrawable x:Key="MyDrawable" />
+        <Helpers:GraphicsDrawable x:Key="MyDrawable" />
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <styles:RealTimeDataStyles />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </ContentPage.Resources>
 
     <ContentPage.MenuBarItems>
@@ -20,88 +26,58 @@
 
     <!--Using Grid for layout-->
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="20*" />
-            <ColumnDefinition Width="80*" />
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="60*" />
-            <RowDefinition Height="30*" />
-        </Grid.RowDefinitions>
+        <Grid Style="{StaticResource MainGridStyle}">
 
-        <!-- Menu list on the left (taking full length) -->
-        <Frame Grid.Column="0" Grid.RowSpan="2" BackgroundColor="#fff" Margin="4" BorderColor="#fff" >
-            <ListView x:Name="NetworkListView">
-                <ListView.ItemsSource>
-                    <x:Array Type="{x:Type x:String}">
-                        <x:String>Network-1</x:String>
-                        <x:String>Network-2</x:String>
-                        <x:String>Network-3</x:String>
-                        <x:String>Network-4</x:String>
-                    </x:Array>
-                </ListView.ItemsSource>
-            </ListView>
-        </Frame>
+            <!-- Menu list on the left (taking full length) -->
+            <Frame Style="{StaticResource LeftNetworkNamesFrameStyle}" >
+                <ListView x:Name="NetworkListView">
+                    <ListView.ItemsSource>
+                        <x:Array Type="{x:Type x:String}">
+                            <x:String>Network-1</x:String>
+                            <x:String>Network-2</x:String>
+                            <x:String>Network-3</x:String>
+                            <x:String>Network-4</x:String>
+                        </x:Array>
+                    </ListView.ItemsSource>
+                </ListView>
+            </Frame>
 
-        <Frame Grid.Column="1" Grid.Row="0" BackgroundColor="#fff" Margin="4" BorderColor="#fff">
-            <!-- Dummy location content -->
-            <!--<Label Text="Location:" />-->
-            <Grid Style="{DynamicResource EsriSampleContainer}">
-                <esriUI:MapView x:Name="MyMapView" Style="{DynamicResource EsriSampleGeoView}" />
-                <!--<Border Style="{DynamicResource EsriSampleControlPanel}">
-                        <Grid Padding="5"
-                      RowDefinitions="auto,auto"
-                      RowSpacing="5">
-                            <Button x:Name="UriButton"
-                            Grid.Row="0"
-                            Clicked="UriButton_Click"
-                            IsEnabled="false"
-                            Text="WMTSLayer via Uri" />
-                            <Button x:Name="InfoButton"
-                            Grid.Row="1"
-                            Clicked="InfoButton_Click"
-                            Text="WMTSLayer via WmtsLayerInfo" />
-                        </Grid>
-                    </Border>-->
-            </Grid>
-        </Frame>
+            <Frame Style="{StaticResource LocationStyle}">
+                <!-- Dummy location content -->
+                <!--<Label Text="Location: 00000 Hämeenlinna" />-->
+                <Grid>
+                    <esriUI:MapView x:Name="MyMapView" />
+                </Grid>
+            </Frame>
 
-        <StackLayout Grid.Column="1" Grid.Row="1" >
-            <ScrollView></ScrollView>
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="40*" />
-                    <ColumnDefinition Width="40*" />
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="*" />
-                </Grid.RowDefinitions>
+            <StackLayout Style="{StaticResource StackLayoutStyles}" >
+                <ScrollView></ScrollView>
+                <Grid Style="{StaticResource SecondaryGridStyle}">
 
-                <Frame Grid.Column="0" Grid.RowSpan="2" BackgroundColor="#fff" Margin="4" BorderColor="#fff">
-                    <StackLayout Orientation="Vertical">
-                        <Label Text="Signal Strength" />
-                        <GraphicsView
-                            x:Name="Canvas"
-                            HorizontalOptions="Fill"
-                            Drawable="{StaticResource MyDrawable}"
-                            HeightRequest="100"
-                            Grid.Row="1" />
-                    </StackLayout>
-                </Frame>
+                    <Frame Style="{StaticResource SignalStrengthStyle}">
+                        <StackLayout Orientation="Vertical">
+                            <Label Text="Signal Strength" />
+                            <GraphicsView
+                                x:Name="Canvas"
+                                HorizontalOptions="Fill"
+                                Drawable="{StaticResource MyDrawable}"
+                                HeightRequest="100"
+                                Grid.Row="1" />
+                        </StackLayout>
+                    </Frame>
 
 
-                <Frame Grid.Column="1" Grid.Row="0" BackgroundColor="White" Margin="4" BorderColor="#fff">
-                    <Label x:Name="DateTimeLabel" />
-                </Frame>
+                    <Frame  Style="{StaticResource DateTimeLabelStyle}">
+                        <Label x:Name="DateTimeLabel" />
+                    </Frame>
 
-                <Frame Grid.Column="1" Grid.Row="1" BackgroundColor="White" Margin="4" BorderColor="#fff">
-                   <!--Keeping the thext property field empty to dynamically populated -->
-                    <Label x:Name="NetworkNameLabel" />
-                </Frame>
-               
-            </Grid>
-        </StackLayout>
+                    <Frame  Style="{StaticResource nameLabelStyle}">
+                        <!--Keeping the thext property field empty to dynamically populated -->
+                        <Label x:Name="NetworkNameLabel" />
+                    </Frame>
+
+                </Grid>
+            </StackLayout>
+        </Grid>
     </Grid>
-    
 </ContentPage>

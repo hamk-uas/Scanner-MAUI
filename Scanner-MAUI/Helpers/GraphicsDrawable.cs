@@ -1,6 +1,6 @@
 ﻿using Scanner_MAUI.Pages;
 
-namespace Scanner_MAUI.Functions
+namespace Scanner_MAUI.Helpers
 {
     public class GraphicsDrawable : IDrawable
     {

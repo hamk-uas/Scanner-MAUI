@@ -2,6 +2,8 @@
 using Esri.ArcGISRuntime.Maui;
 using Esri.ArcGISRuntime.Toolkit.Maui;
 using Esri.ArcGISRuntime;
+using Scanner_MAUI.Helpers;
+using Esri.ArcGISRuntime.Security;
 
 namespace Scanner_MAUI;
 
@@ -9,7 +11,9 @@ public static class MauiProgram
 {
 	public static MauiApp CreateMauiApp()
 	{
-		var builder = MauiApp.CreateBuilder();
+        var apiKey = Keys.Instance["Settings:API-key"];
+
+        var builder = MauiApp.CreateBuilder();
 		builder
 			.UseMauiApp<App>()
 			.ConfigureFonts(fonts =>
@@ -17,7 +21,13 @@ public static class MauiProgram
 				fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
 				fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
 			})
-			.UseArcGISRuntime(/*config => config.UseApiKey("")*/)
+            //.UseArcGISRuntime()
+            .UseArcGISRuntime(config => config.UseApiKey(apiKey))
+            //.UseArcGISRuntime(config => config
+            //    .ConfigureAuthentication(auth => auth
+            //        .UseDefaultChallengeHandler()
+            //    )
+            //)
             .UseArcGISToolkit();
 
 
