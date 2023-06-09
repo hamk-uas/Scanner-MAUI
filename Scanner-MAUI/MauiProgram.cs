@@ -22,11 +22,11 @@ public static class MauiProgram
 			})
             //.UseArcGISRuntime()
 			.UseArcGISRuntime(config => config.UseApiKey(apiKey))
-			//.UseArcGISRuntime(config => config
-			//	.ConfigureAuthentication(auth => auth
-			//		.UseDefaultChallengeHandler()
-			//	)
-			//)
+			.UseArcGISRuntime(config => config
+				.ConfigureAuthentication(auth => auth
+					.UseDefaultChallengeHandler()
+				)
+			)
 			.UseArcGISToolkit();
 
 #if DEBUG
