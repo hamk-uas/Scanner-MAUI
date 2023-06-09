@@ -11,9 +11,8 @@ public static class MauiProgram
 {
 	public static MauiApp CreateMauiApp()
 	{
-        var apiKey = Keys.Instance["Settings:API-key"];
-
-        var builder = MauiApp.CreateBuilder();
+		var builder = MauiApp.CreateBuilder();
+		var apiKey = Keys.Instance["Settings:API-key"];
 		builder
 			.UseMauiApp<App>()
 			.ConfigureFonts(fonts =>
@@ -22,14 +21,13 @@ public static class MauiProgram
 				fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
 			})
             //.UseArcGISRuntime()
-            .UseArcGISRuntime(config => config.UseApiKey(apiKey))
-            //.UseArcGISRuntime(config => config
-            //    .ConfigureAuthentication(auth => auth
-            //        .UseDefaultChallengeHandler()
-            //    )
-            //)
-            .UseArcGISToolkit();
-
+			.UseArcGISRuntime(config => config.UseApiKey(apiKey))
+			.UseArcGISRuntime(config => config
+				.ConfigureAuthentication(auth => auth
+					.UseDefaultChallengeHandler()
+				)
+			)
+			.UseArcGISToolkit();
 
 #if DEBUG
         builder.Logging.AddDebug();
