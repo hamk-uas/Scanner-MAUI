@@ -47,6 +47,7 @@ namespace Scanner_MAUI.Helpers
 
                 // Create a new HttpRequestMessage.
                 HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, wmtsUri);
+                //HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, wmtsUri);
 
                 // Send the request and get the response.
                 HttpResponseMessage response = await httpClient.SendAsync(request);
@@ -54,6 +55,12 @@ namespace Scanner_MAUI.Helpers
                 // Check if the request was successful.
                 if (response.IsSuccessStatusCode)
                 {
+                    // Get the response content.
+                    HttpContent content = response.Content;
+
+                    // Read the response as a string.
+                    string responseString = await content.ReadAsStringAsync();
+
                     // Define a new instance of the WMTS service.
                     WmtsService myWmtsService = new(wmtsUri);
 
