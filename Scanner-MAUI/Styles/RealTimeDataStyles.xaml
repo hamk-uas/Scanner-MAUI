@@ -4,7 +4,7 @@
              xmlns:Helpers="clr-namespace:Scanner_MAUI.Helpers"
              x:Class="Scanner_MAUI.Styles.RealTimeDataStyles">
 
-    <Style TargetType="Page"  x:Key="RealPageStyle">
+    <Style TargetType="ContentPage"  x:Key="RealPageStyle">
         <Setter Property="BackgroundColor" Value="#f3f3f3" />
     </Style>
 
