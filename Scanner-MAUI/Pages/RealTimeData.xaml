@@ -6,7 +6,7 @@
              xmlns:esriUI="clr-namespace:Esri.ArcGISRuntime.Maui;assembly=Esri.ArcGISRuntime.Maui"
              x:Class="Scanner_MAUI.Pages.RealTimeData"
              Title=""
-             >
+             BackgroundColor="#f3f3f3">
     
     <ContentPage.Resources>
         <Helpers:GraphicsDrawable x:Key="MyDrawable" />
