@@ -50,6 +50,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<PackageReference Include="Esri.ArcGISRuntime" Version="200.1.0" />
 		<PackageReference Include="Esri.ArcGISRuntime.Maui" Version="200.1.0" />
 		<PackageReference Include="Esri.ArcGISRuntime.Toolkit.Maui" Version="200.1.0" />
 		<PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="6.0.1" />
