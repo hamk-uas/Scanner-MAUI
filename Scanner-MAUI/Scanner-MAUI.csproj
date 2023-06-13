@@ -50,17 +50,31 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <None Remove="Resources\Images\my_location.png" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<PackageReference Include="Esri.ArcGISRuntime" Version="200.1.0" />
 		<PackageReference Include="Esri.ArcGISRuntime.Maui" Version="200.1.0" />
 		<PackageReference Include="Esri.ArcGISRuntime.Toolkit.Maui" Version="200.1.0" />
 		<PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="6.0.1" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="7.0.0" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+		<PackageReference Include="Syncfusion.Maui.DataGrid" Version="21.2.10" />
 		
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Compile Update="Pages\StartPage.xaml.cs">
+	    <DependentUpon>StartPage.xaml</DependentUpon>
+	  </Compile>
+	</ItemGroup>
+
+	<ItemGroup>
 	  <MauiXaml Update="Pages\HistoricalData.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Pages\StartPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Pages\RealTimeData.xaml">

@@ -5,6 +5,5 @@ public partial class HistoricalData : ContentPage
 	public HistoricalData()
 	{
 		InitializeComponent();
-
-	}
+    }
 }

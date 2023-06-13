@@ -90,5 +90,23 @@
         <Setter Property="Margin" Value="4" />
         <Setter Property="BorderColor" Value="#fff" />
     </Style>
+    
+    <Style TargetType="Grid" x:Key="LocationButtonGrid">
+        <Setter Property="Padding" Value="5" />
+        <Setter Property="MaximumWidthRequest" Value="200" />
+        <Setter Property="RowDefinitions" Value="auto,auto" />
+        <Setter Property="RowSpacing" Value="5" />
+        <Setter Property="HorizontalOptions" Value="End" />
+    </Style>
+
+    <Style TargetType="Button" x:Key="LocationButton">
+        <Setter Property="WidthRequest" Value="100" />
+    </Style>
+
+    <Style TargetType="ImageButton" x:Key="ImageButton">
+        <Setter Property="WidthRequest" Value="20" />
+        <Setter Property="HorizontalOptions" Value="End" />
+        <Setter Property="VerticalOptions" Value="End" />
+    </Style>
 
 </ResourceDictionary>

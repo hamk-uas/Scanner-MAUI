@@ -1,0 +1,31 @@
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Scanner_MAUI.Pages.StartPage"
+             Title="">
+    <VerticalStackLayout VerticalOptions="Start" HorizontalOptions="Center" Margin="60">
+        <Label FontSize="Large">Welcome to the HAMK Scanner Application! Please Select from the options below!</Label>
+        <VerticalStackLayout VerticalOptions="Center" HorizontalOptions="Center">
+            <Button
+                x:Name="StartButton"
+                Clicked="StartButton_Clicked"
+                Text="Start Scanning"
+                HorizontalOptions="Center" 
+                MinimumWidthRequest="200"
+                Margin="20"/>
+            <Button
+                x:Name="HistoricalData"
+                Clicked="HistoricalData_Clicked"
+                Text="Historical Data"
+                HorizontalOptions="Center"
+                MinimumWidthRequest="200"
+                Margin="20"/>
+            <Button
+                x:Name="Settings"
+                Clicked="Settings_Clicked"
+                Text="Settings"
+                HorizontalOptions="Center"
+                MinimumWidthRequest="200"
+                Margin="20"/>
+        </VerticalStackLayout>
+    </VerticalStackLayout>
+</ContentPage>

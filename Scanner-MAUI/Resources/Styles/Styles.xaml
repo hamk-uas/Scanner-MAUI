@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="UTF-8" ?>
 <?xaml-comp compile="true" ?>
+    <!--Changes has been made and commented on to this file, scroll to find-->
 <ResourceDictionary 
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
@@ -390,8 +391,8 @@
     </Style>
 
     <Style TargetType="NavigationPage">
-        <Setter Property="BarBackgroundColor" Value="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource Gray950}}" />
-        <Setter Property="BarTextColor" Value="{AppThemeBinding Light={StaticResource Gray200}, Dark={StaticResource White}}" />
+        <Setter Property="BarBackgroundColor" Value="#fff" /> <!--Title bar background-->
+        <Setter Property="BarTextColor" Value="#000" /> <!--Title bar text color-->
         <Setter Property="IconColor" Value="{AppThemeBinding Light={StaticResource Gray200}, Dark={StaticResource White}}" />
     </Style>
 
