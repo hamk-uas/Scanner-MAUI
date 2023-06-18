@@ -104,7 +104,7 @@
     </Style>
 
     <Style TargetType="ImageButton" x:Key="ImageButton">
-        <Setter Property="WidthRequest" Value="20" />
+        <Setter Property="WidthRequest" Value="10" />
         <Setter Property="HorizontalOptions" Value="End" />
         <Setter Property="VerticalOptions" Value="End" />
     </Style>

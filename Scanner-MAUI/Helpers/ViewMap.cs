@@ -9,6 +9,12 @@ using System.Collections.Generic;
 using System.Reflection.PortableExecutable;
 using System.Text;
 using Windows.Media.Protection.PlayReady;
+using Esri.ArcGISRuntime.Geometry;
+using Esri.ArcGISRuntime.UI;
+using Esri.ArcGISRuntime.Symbology;
+using System.Reflection;
+
+using Colors = System.Drawing.Color;
 
 namespace Scanner_MAUI.Helpers
 {
@@ -100,7 +106,7 @@ namespace Scanner_MAUI.Helpers
 
                     // Assign the map to the MapView.
                     MyMapView.Map = myMap;
-
+                 
                     var Test = "This is a test to check if the code is being executed untill this point";
                   
                 }
@@ -116,5 +122,6 @@ namespace Scanner_MAUI.Helpers
                 await Application.Current.MainPage.DisplayAlert("Error", ex.ToString(), "OK");
             }
         }
+
     }
 }

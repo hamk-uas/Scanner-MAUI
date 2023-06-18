@@ -49,7 +49,7 @@
                     <esriUI:MapView x:Name="MyMapView" />
                     <Grid Style="{StaticResource LocationButtonGrid}">
                         <ImageButton Style="{StaticResource ImageButton}" 
-                                        Source="my_location.png"
+                                        Source="my_location3.png"
                                          x:Name="CompassNavigationButton"
                                         Clicked="MyLocationButton_Clicked">
                         </ImageButton>
