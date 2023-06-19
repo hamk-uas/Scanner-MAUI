@@ -136,11 +136,6 @@ namespace Scanner_MAUI.Helpers
                 string errorMessage = $"Request failed with status code {response.StatusCode}: {response.ReasonPhrase}";
                 await Application.Current.MainPage.DisplayAlert("Error", errorMessage, "OK");
             }
-            //Create several map points using the WGS84 coordinates(latitude and longitude).
-            //MapPoint networkPoint1 = new MapPoint(24.477205, 60.977689, SpatialReferences.Wgs84);
-            //MapPoint networkPoint2 = new MapPoint(24.477339, 60.977603, SpatialReferences.Wgs84);
-            //MapPoint networkPoint3 = new MapPoint(24.477532, 60.977515, SpatialReferences.Wgs84);
-            //MapPoint networkPoint4 = new MapPoint(24.478310, 60.977208, SpatialReferences.Wgs84);
         }
     }
 }

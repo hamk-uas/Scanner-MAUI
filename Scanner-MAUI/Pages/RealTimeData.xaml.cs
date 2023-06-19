@@ -27,8 +27,6 @@ public partial class RealTimeData : ContentPage
         _ = ViewMap.LoadWMTSLayer(MyMapView);
         _ = Location.StartDeviceLocationTask(MyMapView); // Gets current location
         //_ = Markers.MapMarkers(MyMapView);
-        //mapMarkers = new Markers();
-        //_ = mapMarkers.MapMarkers(MyMapView);
     }
 
     // Dynamically populating the network name based on the selected network from the list view
@@ -44,11 +42,6 @@ public partial class RealTimeData : ContentPage
 
             // Refresh the Canvas
             Canvas.Invalidate();
-
-            // Show the marker location on the map based on the network name
-            //Markers.MapMarkers(MyMapView, selectedNetwork);
-
-            //MyMapView.GraphicsOverlays.Clear();
 
             // Create the mapMarkers object and set the longitude and latitude
             mapMarkers = new Markers
