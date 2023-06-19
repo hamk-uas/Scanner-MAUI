@@ -8,8 +8,8 @@ public partial class App : Application
 	{
 		InitializeComponent();
 
-		MainPage = new AppShell();
-        //MainPage = new NavigationPage(new RealTimeData());
+        //MainPage = new AppShell();
+        MainPage = new NavigationPage(new StartPage());
     }
 
     // adding A title for the app

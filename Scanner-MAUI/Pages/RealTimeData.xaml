@@ -6,7 +6,8 @@
              xmlns:esriUI="clr-namespace:Esri.ArcGISRuntime.Maui;assembly=Esri.ArcGISRuntime.Maui"
              x:Class="Scanner_MAUI.Pages.RealTimeData"
              Title=""
-             BackgroundColor="#f3f3f3">
+             BackgroundColor="#f3f3f3"
+             >
     
     <ContentPage.Resources>
         <Helpers:GraphicsDrawable x:Key="MyDrawable" />
@@ -44,9 +45,19 @@
 
             <Frame Style="{StaticResource LocationStyle}">
                 <!-- Dummy location content -->
-                <!--<Label Text="Location: 00000 Hämeenlinna" />-->
                 <Grid>
                     <esriUI:MapView x:Name="MyMapView" />
+                    <Grid Style="{StaticResource LocationButtonGrid}">
+                        <ImageButton Style="{StaticResource ImageButton}" 
+                                        Source="my_location3.png"
+                                         x:Name="CompassNavigationButton"
+                                        Clicked="MyLocationButton_Clicked">
+                        </ImageButton>
+                        <!--<Button Style="{StaticResource LocationButton}" 
+                                x:Name="CompassNavigationButton"
+                            Clicked="MyLocationButton_Clicked"
+                            Text="My Location" />-->
+                    </Grid>
                 </Grid>
             </Frame>
 
