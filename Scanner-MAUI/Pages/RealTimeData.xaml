@@ -20,8 +20,8 @@
 
     <ContentPage.MenuBarItems>
         <MenuBarItem Text="File">
-            <MenuFlyoutItem Text="Start"/>
-            <MenuFlyoutItem Text="Stop"/>
+            <MenuFlyoutItem Text="Start" Clicked="StartMenuItem_Clicked"/>
+            <MenuFlyoutItem Text="Stop" Clicked="StopMenuItem_Clicked"/>
         </MenuBarItem>
     </ContentPage.MenuBarItems>
 
