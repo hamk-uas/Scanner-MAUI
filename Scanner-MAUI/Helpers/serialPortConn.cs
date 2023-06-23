@@ -1,101 +1,155 @@
-﻿//using System;
-//using System.Collections.Generic;
-//using System.Linq;
-//using System.Text;
-//using System.IO.Ports;
-//using System.Threading.Tasks;
-//using System.Diagnostics;
+﻿using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.IO.Ports;
+using System.Diagnostics;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
-//namespace Scanner_MAUI.Helpers
-//{
-//    class SerialPortConn
-//    {
-//        private SerialPort _serialPort;
-//        private int _inputMode;
-//        private bool _continue;
+namespace Scanner_MAUI.Helpers
+{
+    // Create a class to hold the extracted information
+    public class ScannerData
+    {
+        public string Message { get; set; }
+        public string Name { get; set; }
+        public string Type { get; set; }
+        public double? Latitude { get; set; }
+        public double? Longitude { get; set; }
+        public int RSSI { get; set; }
+        public double SNR { get; set; }
+        public DateTime TimeStamp { get; set; }
+ 
+    }
 
-//        public void ScannerData()
-//        {
-//            _serialPort = new SerialPort("COM6", 115200, Parity.None, 8, StopBits.One);
-//            _serialPort.Handshake = Handshake.XOnXOff;
-//            if (!_serialPort.IsOpen)
-//            {
-//                _serialPort.Open();
-//                Debug.WriteLine("Serial port connected.");
-//                _serialPort.WriteTimeout = 1000;
-//                _serialPort.Write("1");
-//                _serialPort.WriteLine("");
-//                Debug.WriteLine("Serial port connected and input given.");
-//                //_serialPort.ReadTimeout = 8000;
-                
-//                while (true)
-//                {
-//                    try
-//                    {
-//                        string receivedData = _serialPort.ReadLine().Trim();
-//                        //string packetString = Convert.ToString(packet);
-//                        Debug.WriteLine("packet string: " + receivedData);
-//                        string decodedPacket = Encoding.UTF8.GetString(Encoding.Default.GetBytes(receivedData)).TrimEnd('\n');
+    class SerialPortConn
+    {
+        private SerialPort serialPort;
+        private List<ScannerData> scannerDataList = new List<ScannerData>();
+        // static list to store the network names
+        public static List<string> NetworkNames { get; } = new List<string>();
+        public void ConnectToScanner()
+        {
+            // Clear the NetworkNames list before connecting to the scanner
+            NetworkNames.Clear();
+            try
+            {
+                serialPort = new SerialPort("COM6", 115200);
 
-//                        Debug.WriteLine("Decodedpacket string: " + decodedPacket);
+                serialPort.Open();
+                Debug.WriteLine("Serial Port conn created");
+                Debug.WriteLine("Serial Port Is Open: " + serialPort.IsOpen);
 
-//                        //string message = _serialPort.ReadLine();
-//                        //string decodedMessage = Encoding.UTF8.GetString(Encoding.Default.GetBytes(message));
-//                        Debug.WriteLine("Received: " + decodedPacket);
-//                        Debug.WriteLine("Reading....");
+                var data = new byte[] { (byte)'1', 13 };
+                serialPort.Write(data, 0, data.Length);
 
-//                        string name = ExtractValue(decodedPacket, "name:");
-//                        string type = ExtractValue(decodedPacket, "type:");
-//                        string rssi = ExtractValue(decodedPacket, "rssi:");
-//                        string snr = ExtractValue(decodedPacket, "snr:");
-//                        string time = ExtractValue(decodedPacket, "time:");
+                // TODO: Handle the scanner's output and display the information in your app
+                serialPort.DataReceived += SerialPort_DataReceived;
+                //Debug.WriteLine("test");
+            }
+            catch (Exception ex)
+            {
+                // Handle the exception
+                Debug.WriteLine($"Failed to connect to the scanner: {ex.Message}");
+            }
+        }
 
-//                        // Perform any processing or display the extracted information
-//                        Debug.WriteLine("Name: " + name);
-//                        Debug.WriteLine("Type: " + type);
-//                        Debug.WriteLine("RSSI: " + rssi);
-//                        Debug.WriteLine("SNR: " + snr);
-//                        Debug.WriteLine("Time: " + time);
+        private void SerialPort_DataReceived(object sender, SerialDataReceivedEventArgs e)
+        {
+            try
+            {
+                while (serialPort.BytesToRead > 0)
+                {
+                    string DataIn = serialPort.ReadLine();
+                    //Debug.WriteLine("Data received from the scanner: " + DataIn);
 
-                           
-                    
-                        
-//                    }
-//                    catch (TimeoutException ex)
-//                    {
-//                        // Handle the timeout exception
-//                        Debug.WriteLine("Timeout occurred while reading from the serial port: " + ex.Message);
-//                    }
-//                }
-              
-//            }
+                    // Process the received data and extract the fields
+                    ScannerData scannerData = ProcessReceivedData(DataIn);
 
-//            // Close the serial port when done
-//            _serialPort.Close();
-//            Debug.WriteLine("Serial port connection closed!");
-//        }
+                    // Save the extracted data for later use
+                    scannerDataList.Add(scannerData);
 
-//        public void SendInput(int input)
-//        {
-//            // Make sure the serial port is open before sending the input
-//            if (_serialPort.IsOpen)
-//            {
-//                _serialPort.Write(input.ToString());
-//                if (input == 1)
-//                {
-//                    _inputMode = 1;
-//                }
-//            }
-//        }
+                    foreach(string name  in NetworkNames)
+                    {
+                        Debug.WriteLine($"Name: {name}");
+                    }
 
-//        private string ExtractValue(string message, string keyword)
-//        {
-//            int startIndex = message.IndexOf(keyword) + keyword.Length;
-//            int endIndex = message.IndexOf(",", startIndex);
-//            if (endIndex == -1)
-//                endIndex = message.Length;
+                    //Debug.WriteLine("Data list: " + scannerData);
+                    //foreach (ScannerData data in scannerDataList)
+                    //{
+                    //    Debug.WriteLine($"Message: {data.Message}");
+                    //    Debug.WriteLine($"Name: {data.Name}");
+                    //    Debug.WriteLine($"Type: {data.Type}");
+                    //    Debug.WriteLine($"Latitude: {data.Latitude}");
+                    //    Debug.WriteLine($"Longitude: {data.Longitude}");
+                    //    Debug.WriteLine($"RSSI: {data.RSSI}");
+                    //    Debug.WriteLine($"SNR: {data.SNR}");
+                    //    //Debug.WriteLine($"Time: {data.TimeStamp}");
+                    //    Debug.WriteLine(""); // Add an empty line between each scanner data
+                    //}
+                }
+            }
+            catch (OperationCanceledException)
+            {
+                // Handle the cancellation if needed
+                Debug.WriteLine("Reading data from the scanner was canceled.");
+            }
+            catch (Exception ex)
+            {
+                // Handle other exceptions
+                Debug.WriteLine($"Failed to read data from the scanner: {ex.Message}");
+            }
+        }
 
-//            return message.Substring(startIndex, endIndex - startIndex).Trim();
-//        }
-//    }
-//}
+        private ScannerData ProcessReceivedData(string data)
+        {
+            ScannerData scannerData = new ScannerData();
+
+            //Debug.WriteLine($"Data received from the scanner before spliting: {data}");
+
+            // Parse and extract relevant information from the data string
+            string[] fields = data.Split(new string[] { ", " }, StringSplitOptions.None);
+
+            Debug.WriteLine($"Received data fields count: {fields.Length}");
+            //Debug.WriteLine($"Received data fields: {string.Join(", ", fields)}");
+
+            if (fields.Length >= 8)
+            {
+                scannerData.Message = fields[0].Split(':')[1].Trim();
+                string input = fields[1];
+                string startMarker = "b'";
+                string endMarker = "'";
+
+                int startIndex = input.IndexOf(startMarker) + startMarker.Length;
+                int endIndex = input.IndexOf(endMarker, startIndex);
+
+                if (startIndex >= 0 && endIndex >= 0)
+                {
+                    string extractedString = input.Substring(startIndex, endIndex - startIndex);
+                    scannerData.Name = extractedString;
+                    NetworkNames.Add(extractedString); // Add network name to the list
+                }
+                scannerData.Type = fields[2].Split(':')[1].Trim();
+                scannerData.Latitude = ParseNullableDouble(fields[3].Split(':')[1].Trim());
+                scannerData.Longitude = ParseNullableDouble(fields[4].Split(':')[1].Trim());
+                scannerData.RSSI = int.Parse(fields[5].Split(':')[1].Trim());
+                scannerData.SNR = double.Parse(fields[6].Split(':')[1].Trim(), CultureInfo.InvariantCulture);
+                //scannerData.TimeStamp = ParseDateTime(fields[7].Split(':')[1].Trim());
+            }
+            else
+            {
+                Debug.WriteLine("Insufficient fields in the data string.");
+            }
+
+            return scannerData;
+        }
+
+        private double? ParseNullableDouble(string value)
+        {
+            if (double.TryParse(value, out double result))
+                return result;
+
+            return null;
+        }
+
+    }
+}
