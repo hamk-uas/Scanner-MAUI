@@ -1,35 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
+﻿using System.Globalization;
 using System.IO.Ports;
 using System.Diagnostics;
-using static System.Runtime.InteropServices.JavaScript.JSType;
+using System.Collections.Generic;
+using Scanner_MAUI.Pages;
+using System.Collections.ObjectModel;
+using Scanner_MAUI.Model;
 
 namespace Scanner_MAUI.Helpers
 {
-    // Create a class to hold the extracted information
-    public class ScannerData
-    {
-        public string Message { get; set; }
-        public string Name { get; set; }
-        public string Type { get; set; }
-        public double? Latitude { get; set; }
-        public double? Longitude { get; set; }
-        public int RSSI { get; set; }
-        public double SNR { get; set; }
-        public DateTime TimeStamp { get; set; }
- 
-    }
 
-    class SerialPortConn
-    {
+    public class SerialPortConn
+    { 
+        //public ObservableCollection<Network> NetworkNames { get; set; }
         private SerialPort serialPort;
-        private List<ScannerData> scannerDataList = new List<ScannerData>();
-        // static list to store the network names
-        public static List<string> NetworkNames { get; } = new List<string>();
+        Network networkNames = new Network();
+        public ObservableCollection<Network> NetworkNames { get; set; } = new ObservableCollection<Network>();
+
         public void ConnectToScanner()
         {
-            // Clear the NetworkNames list before connecting to the scanner
             NetworkNames.Clear();
             try
             {
@@ -42,9 +30,9 @@ namespace Scanner_MAUI.Helpers
                 var data = new byte[] { (byte)'1', 13 };
                 serialPort.Write(data, 0, data.Length);
 
-                // TODO: Handle the scanner's output and display the information in your app
+                // Handle the scanner's output and display the information
                 serialPort.DataReceived += SerialPort_DataReceived;
-                //Debug.WriteLine("test");
+
             }
             catch (Exception ex)
             {
@@ -53,8 +41,9 @@ namespace Scanner_MAUI.Helpers
             }
         }
 
-        private void SerialPort_DataReceived(object sender, SerialDataReceivedEventArgs e)
+        public void SerialPort_DataReceived(object sender, SerialDataReceivedEventArgs e)
         {
+
             try
             {
                 while (serialPort.BytesToRead > 0)
@@ -63,29 +52,26 @@ namespace Scanner_MAUI.Helpers
                     //Debug.WriteLine("Data received from the scanner: " + DataIn);
 
                     // Process the received data and extract the fields
-                    ScannerData scannerData = ProcessReceivedData(DataIn);
-
-                    // Save the extracted data for later use
-                    scannerDataList.Add(scannerData);
-
-                    foreach(string name  in NetworkNames)
+                    Network data = ProcessReceivedData(DataIn);
+                    
+                    MainThread.BeginInvokeOnMainThread(() =>
                     {
-                        Debug.WriteLine($"Name: {name}");
-                    }
+                        if (!string.IsNullOrEmpty(data.Name))
+                        {
+                            //bool isNameAlreadyInList = NetworkNames.Any(network => network.Name == data.Name);
+                            //if (!isNameAlreadyInList)
+                            //{
+                            //    NetworkNames.Add(new Network { Name = data.Name });
+                            //}
+                            NetworkNames.Add(new Network { Name = data.Name });
+                        }
+                    });
 
-                    //Debug.WriteLine("Data list: " + scannerData);
-                    //foreach (ScannerData data in scannerDataList)
-                    //{
-                    //    Debug.WriteLine($"Message: {data.Message}");
-                    //    Debug.WriteLine($"Name: {data.Name}");
-                    //    Debug.WriteLine($"Type: {data.Type}");
-                    //    Debug.WriteLine($"Latitude: {data.Latitude}");
-                    //    Debug.WriteLine($"Longitude: {data.Longitude}");
-                    //    Debug.WriteLine($"RSSI: {data.RSSI}");
-                    //    Debug.WriteLine($"SNR: {data.SNR}");
-                    //    //Debug.WriteLine($"Time: {data.TimeStamp}");
-                    //    Debug.WriteLine(""); // Add an empty line between each scanner data
-                    //}
+                    if (NetworkNames.Count >= 6 || NetworkNames.Count >= 7)
+                    {
+                        // Close the serial port
+                        Disconnect();
+                    }
                 }
             }
             catch (OperationCanceledException)
@@ -98,13 +84,12 @@ namespace Scanner_MAUI.Helpers
                 // Handle other exceptions
                 Debug.WriteLine($"Failed to read data from the scanner: {ex.Message}");
             }
+
         }
 
-        private ScannerData ProcessReceivedData(string data)
+        private Network ProcessReceivedData(string data)
         {
-            ScannerData scannerData = new ScannerData();
-
-            //Debug.WriteLine($"Data received from the scanner before spliting: {data}");
+            Network networkData = new Network();
 
             // Parse and extract relevant information from the data string
             string[] fields = data.Split(new string[] { ", " }, StringSplitOptions.None);
@@ -114,7 +99,7 @@ namespace Scanner_MAUI.Helpers
 
             if (fields.Length >= 8)
             {
-                scannerData.Message = fields[0].Split(':')[1].Trim();
+                networkData.Message = fields[0].Split(':')[1].Trim();
                 string input = fields[1];
                 string startMarker = "b'";
                 string endMarker = "'";
@@ -125,14 +110,14 @@ namespace Scanner_MAUI.Helpers
                 if (startIndex >= 0 && endIndex >= 0)
                 {
                     string extractedString = input.Substring(startIndex, endIndex - startIndex);
-                    scannerData.Name = extractedString;
-                    NetworkNames.Add(extractedString); // Add network name to the list
+                    networkData.Name = extractedString;
+
                 }
-                scannerData.Type = fields[2].Split(':')[1].Trim();
-                scannerData.Latitude = ParseNullableDouble(fields[3].Split(':')[1].Trim());
-                scannerData.Longitude = ParseNullableDouble(fields[4].Split(':')[1].Trim());
-                scannerData.RSSI = int.Parse(fields[5].Split(':')[1].Trim());
-                scannerData.SNR = double.Parse(fields[6].Split(':')[1].Trim(), CultureInfo.InvariantCulture);
+                networkData.Type = fields[2].Split(':')[1].Trim();
+                networkData.Latitude = ParseNullableDouble(fields[3].Split(':')[1].Trim());
+                networkData.Longitude = ParseNullableDouble(fields[4].Split(':')[1].Trim());
+                networkData.RSSI = int.Parse(fields[5].Split(':')[1].Trim());
+                networkData.SNR = double.Parse(fields[6].Split(':')[1].Trim(), CultureInfo.InvariantCulture);
                 //scannerData.TimeStamp = ParseDateTime(fields[7].Split(':')[1].Trim());
             }
             else
@@ -140,7 +125,7 @@ namespace Scanner_MAUI.Helpers
                 Debug.WriteLine("Insufficient fields in the data string.");
             }
 
-            return scannerData;
+            return networkData;
         }
 
         private double? ParseNullableDouble(string value)
@@ -151,5 +136,17 @@ namespace Scanner_MAUI.Helpers
             return null;
         }
 
+        public void Disconnect()
+        {
+            // Stop scanning and close the serial port
+            if (serialPort != null && serialPort.IsOpen)
+            {
+                var data = new byte[] { (byte)'0', 13 };
+                serialPort.Write(data, 0, data.Length);
+                //serialPort.WriteLine("0"); // Send the command to stop scanning
+                serialPort.Close();
+                Debug.WriteLine("Serial Port conn closed");
+            }
+        }
     }
 }

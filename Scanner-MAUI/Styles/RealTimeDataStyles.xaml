@@ -35,6 +35,13 @@
         <Setter Property="Grid.RowSpan" Value="2" />
     </Style>
 
+    <Style TargetType="ListView" x:Key="ListViewStyle">
+        <Setter Property="BackgroundColor" Value="#fff" />
+        <Setter Property="Margin" Value="4" />
+        <Setter Property="Grid.Column" Value="0" />
+        <Setter Property="Grid.RowSpan" Value="2" />
+    </Style>
+
     <Style TargetType="Frame" x:Key="LocationStyle">
         <Setter Property="Grid.Column" Value="1" />
         <Setter Property="Grid.Row" Value="0" />

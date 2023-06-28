@@ -18,6 +18,10 @@
         </ResourceDictionary>
     </ContentPage.Resources>
 
+    <!--<ContentPage.BindingContext>
+        <Helpers:RealTimeDataViewModel />
+    </ContentPage.BindingContext>-->
+
     <ContentPage.MenuBarItems>
         <MenuBarItem Text="File">
             <MenuFlyoutItem Text="Start" Clicked="StartMenuItem_Clicked"/>
@@ -30,18 +34,15 @@
         <Grid Style="{StaticResource MainGridStyle}">
 
             <!-- Menu list on the left (taking full length) -->
-            <Frame Style="{StaticResource LeftNetworkNamesFrameStyle}" >
-                <ListView x:Name="NetworkListView">
-                    <ListView.ItemsSource>
-                        <x:Array Type="{x:Type x:String}">
-                            <x:String>Network-1</x:String>
-                            <x:String>Network-2</x:String>
-                            <x:String>Network-3</x:String>
-                            <x:String>Network-4</x:String>
-                        </x:Array>
-                    </ListView.ItemsSource>
-                </ListView>
-            </Frame>
+            <!--<Frame Style="{StaticResource LeftNetworkNamesFrameStyle}" >-->
+            <ListView x:Name="NetworkListView" Style="{StaticResource ListViewStyle}">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <TextCell Text="{Binding Name}" />
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+            <!--</Frame>-->
 
             <Frame Style="{StaticResource LocationStyle}">
                 <!-- Dummy location content -->
