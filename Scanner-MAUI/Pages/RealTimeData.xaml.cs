@@ -1,14 +1,11 @@
 using Esri.ArcGISRuntime.UI;
-using Esri.ArcGISRuntime.Mapping;
-using Microsoft.UI.Xaml.Controls;
 using Scanner_MAUI.Helpers;
-using System.Diagnostics;
 using Location = Scanner_MAUI.Helpers.Location;
-using Esri.ArcGISRuntime.Maui;
-using Microsoft.UI.Input;
-using Microsoft.UI.Xaml;
-using System.Reflection;
-using PointerEventArgs = Microsoft.Maui.Controls.PointerEventArgs;
+using System.IO.Ports;
+using Scanner_MAUI.Model;
+using System.Collections.ObjectModel;
+using System.Windows.Input;
+using Windows.System;
 
 namespace Scanner_MAUI.Pages;
 
@@ -16,6 +13,7 @@ public partial class RealTimeData : ContentPage
 {
     private GraphicsDrawable graphicsDrawable;
     private Markers mapMarkers;
+    private SerialPortConn scannerConn;
 
     public RealTimeData()
     {
@@ -27,33 +25,37 @@ public partial class RealTimeData : ContentPage
         _ = ViewMap.LoadWMTSLayer(MyMapView);
         _ = Location.StartDeviceLocationTask(MyMapView); // Gets current location
         //_ = Markers.MapMarkers(MyMapView);
+        scannerConn = new SerialPortConn();
+        NetworkListView.ItemsSource = scannerConn.NetworkNames;
+        
+        //BindingContext = this;
     }
 
     // Dynamically populating the network name based on the selected network from the list view
     private void OnNetworkNameSelected(object sender, SelectedItemChangedEventArgs e)
     {
-        if (e.SelectedItem is string selectedNetwork)
+        if (e.SelectedItem is Network selectedNetwork)
         {
-            NetworkNameLabel.Text = $"Network Name: {selectedNetwork}";
+            NetworkNameLabel.Text = $"Network Name: {selectedNetwork.Name}";
 
             // Update the signal strength based on the selected network
-            int signalStrength = GetSignalStrength(selectedNetwork);
+            int signalStrength = GetSignalStrength(selectedNetwork.Name);
             graphicsDrawable.SignalStrength = signalStrength;
 
             // Refresh the Canvas
             Canvas.Invalidate();
-
+            
             // Create the mapMarkers object and set the longitude and latitude
             mapMarkers = new Markers
             {
-                Longitude = GetLongitude(selectedNetwork),
-                Latitude = GetLatitude(selectedNetwork)
+                Longitude = GetLongitude(selectedNetwork.Name),
+                Latitude = GetLatitude(selectedNetwork.Name)
             };
 
             //Show the marker location on the map based on the network name
             _ = mapMarkers.MapMarkers(MyMapView);
             MyMapView.GraphicsOverlays.Clear();
-        }
+        }       
     }
 
     private double GetLongitude(string selectedNetwork)
@@ -80,7 +82,6 @@ public partial class RealTimeData : ContentPage
             return 60.977515;
         else if (selectedNetwork == "Network-4")
             return 60.977208;
-
         return 0;
     }
 
@@ -105,6 +106,17 @@ public partial class RealTimeData : ContentPage
         MyMapView.LocationDisplay.AutoPanMode = LocationDisplayAutoPanMode.CompassNavigation;
 
         _ = Location.StartDeviceLocationTask(MyMapView);
+    }
+
+    private void StartMenuItem_Clicked(object sender, EventArgs e)
+    {
+        // TODO: Connect to the LoRa scanner and start scanning
+        scannerConn.ConnectToScanner();
+    }
+
+    private void StopMenuItem_Clicked(object sender, EventArgs e)
+    {
+        scannerConn.Disconnect();
     }
 }
 
