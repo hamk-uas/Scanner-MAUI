@@ -1,20 +1,20 @@
 using Esri.ArcGISRuntime.UI;
 using Scanner_MAUI.Helpers;
 using Location = Scanner_MAUI.Helpers.Location;
-using System.IO.Ports;
 using Scanner_MAUI.Model;
-using System.Collections.ObjectModel;
-using System.Windows.Input;
-using Windows.System;
+using System.Diagnostics;
+using Syncfusion.Maui.Gauges;
+
 
 namespace Scanner_MAUI.Pages;
 
 public partial class RealTimeData : ContentPage
 {
+
     private GraphicsDrawable graphicsDrawable;
     private Markers mapMarkers;
     private SerialPortConn scannerConn;
-
+    private Dictionary<string, string> RssiValues;
     public RealTimeData()
     {
         InitializeComponent();
@@ -27,8 +27,44 @@ public partial class RealTimeData : ContentPage
         //_ = Markers.MapMarkers(MyMapView);
         scannerConn = new SerialPortConn();
         NetworkListView.ItemsSource = scannerConn.NetworkNames;
-        
-        //BindingContext = this;
+        RssiValues = new Dictionary<string, string>();
+
+    }
+
+    private void ScannerConn_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+    {
+        if (e.PropertyName == nameof(scannerConn.Strength))
+        {
+            //RssiValues = new Dictionary<string, string>();
+            int rssi = scannerConn.Strength;
+            int signalStrength = ConvertRSSIToSignalStrength(rssi);
+
+            RssiValues[rssi.ToString()] = signalStrength.ToString();
+
+            graphicsDrawable.SignalStrength = signalStrength;
+            Canvas.Invalidate();
+
+            NetworkRSSILabel.Text = $"RSSI Value:  {rssi}db";
+            SignalStrengthPercentage.Text = $"Signal Strength %:  {signalStrength}%";
+
+            RssiLabel.Text = $"RSSI Values:  {string.Join("db,\n ", RssiValues.Keys)}db";
+            SignalStrengthPercentages.Text = $"Signal Strength %s:  {string.Join("%,\n ", RssiValues.Values)}%";
+
+            Type.Text = $"Type:  {scannerConn.Type}";
+
+            Latitude.Text = $"Latitude:  {scannerConn.Latitude}";
+            Longitude.Text = $"Longitude:  {scannerConn.Longitude}";
+
+            Debug.WriteLine("Signal strength % = " + signalStrength);
+
+            rangePointer.Value = signalStrength;
+            Number.Text = signalStrength.ToString() + "%";
+            //needlePointer.Value = signalStrength;
+
+            needlePointer2.Value = rssi;
+            rangePointer2.Value = rssi;
+            Number2.Text = "RSSI: " + rssi.ToString() + "db";
+        }
     }
 
     // Dynamically populating the network name based on the selected network from the list view
@@ -36,15 +72,11 @@ public partial class RealTimeData : ContentPage
     {
         if (e.SelectedItem is Network selectedNetwork)
         {
-            NetworkNameLabel.Text = $"Network Name: {selectedNetwork.Name}";
+            NetworkNameLabel.Text = $"Network Name:  {selectedNetwork.Name}";
 
-            // Update the signal strength based on the selected network
-            int signalStrength = GetSignalStrength(selectedNetwork.Name);
-            graphicsDrawable.SignalStrength = signalStrength;
+            scannerConn.PropertyChanged += ScannerConn_PropertyChanged;
+            //Canvas.Invalidate();
 
-            // Refresh the Canvas
-            Canvas.Invalidate();
-            
             // Create the mapMarkers object and set the longitude and latitude
             mapMarkers = new Markers
             {
@@ -55,13 +87,23 @@ public partial class RealTimeData : ContentPage
             //Show the marker location on the map based on the network name
             _ = mapMarkers.MapMarkers(MyMapView);
             MyMapView.GraphicsOverlays.Clear();
-        }       
+        }
+    }
+
+    private int ConvertRSSIToSignalStrength(int rssi)
+    {
+        // RSSI ranges from -110 to 5 and signal strength ranges from 0 to 100
+        int signalStrength = (rssi - (-110)) * 100 / (5 - (-110)); //or
+        //int signalStrength = (rssi + 110) * 100 / (115);
+        signalStrength = Math.Max(0, Math.Min(100, signalStrength)); // Ensure the signal strength is within the valid range
+
+        return signalStrength;
     }
 
     private double GetLongitude(string selectedNetwork)
     {
         if (selectedNetwork == "Network-1")
-            return 24.477205; 
+            return 24.477205;
         else if (selectedNetwork == "Network-2")
             return 24.477339;
         else if (selectedNetwork == "Network-3")
@@ -99,7 +141,7 @@ public partial class RealTimeData : ContentPage
         return 1; // Default signal strength
     }
 
-   
+
     private void MyLocationButton_Clicked(object sender, EventArgs e)
     {
         // Starts location display with auto pan mode set to Compass Navigation.
@@ -117,6 +159,7 @@ public partial class RealTimeData : ContentPage
     private void StopMenuItem_Clicked(object sender, EventArgs e)
     {
         scannerConn.Disconnect();
+        RssiValues.Clear();
     }
 }
 

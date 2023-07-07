@@ -18,7 +18,7 @@ namespace Scanner_MAUI.Helpers
             //{
             var culture = new CultureInfo(cultureNames[0]);
             string formattedDate = localDate.ToString(culture);
-            dateTimeLabel.Text = $"Date & Time: {formattedDate}";
+            dateTimeLabel.Text = $"Date and Time: {formattedDate}";
             //}
         }
     }

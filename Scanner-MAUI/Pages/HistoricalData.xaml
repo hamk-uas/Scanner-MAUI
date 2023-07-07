@@ -5,27 +5,16 @@
              Title=""
              BackgroundColor="#f3f3f3"
              >
-    
     <ContentPage.MenuBarItems >
         <MenuBarItem Text="File">
-            <MenuFlyoutItem Text="Start" Clicked="StartMenuItem_Clicked"/>
-            <MenuFlyoutItem Text="Stop" Clicked="StopMenuItem_Clicked"/>
+            <MenuFlyoutItem Text="Start" />
+            <MenuFlyoutItem Text="Stop" />
         </MenuBarItem>
     </ContentPage.MenuBarItems>
-    
-    <!--<VerticalStackLayout>
+    <VerticalStackLayout>
         <Label 
             Text="Welcome to Historical Data Page!"
             VerticalOptions="Center" 
             HorizontalOptions="Center" />
-    </VerticalStackLayout>-->
-
-    <ListView x:Name="NetworkListView" ItemsSource="{Binding NetworkNames}">
-        <ListView.ItemTemplate>
-            <DataTemplate>
-                <TextCell Text="{Binding Name}" />
-            </DataTemplate>
-        </ListView.ItemTemplate>
-    </ListView>
-
+    </VerticalStackLayout>
 </ContentPage>

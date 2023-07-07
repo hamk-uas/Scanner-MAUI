@@ -4,6 +4,7 @@ using Esri.ArcGISRuntime.Toolkit.Maui;
 using Esri.ArcGISRuntime;
 using Scanner_MAUI.Helpers;
 using Esri.ArcGISRuntime.Security;
+using Syncfusion.Maui.Core.Hosting;
 
 namespace Scanner_MAUI;
 
@@ -15,7 +16,8 @@ public static class MauiProgram
 		var apiKey = Keys.Instance["Settings:API-key"];
 		builder
 			.UseMauiApp<App>()
-			.ConfigureFonts(fonts =>
+            .ConfigureSyncfusionCore()
+            .ConfigureFonts(fonts =>
 			{
 				fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
 				fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");

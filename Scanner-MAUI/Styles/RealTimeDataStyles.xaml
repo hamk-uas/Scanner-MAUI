@@ -12,16 +12,17 @@
         <Setter Property="ColumnDefinitions">
             <Setter.Value>
                 <ColumnDefinitionCollection>
-                    <ColumnDefinition Width="20*" />
-                    <ColumnDefinition Width="80*" />
+                    <ColumnDefinition Width="10*" />
+                    <ColumnDefinition Width="60*" />
+                    <ColumnDefinition Width="30*" />
                 </ColumnDefinitionCollection>
             </Setter.Value>
         </Setter>
         <Setter Property="RowDefinitions">
             <Setter.Value>
                 <RowDefinitionCollection>
-                    <RowDefinition Height="60*" />
-                    <RowDefinition Height="30*" />
+                    <RowDefinition Height="50*" />
+                    <RowDefinition Height="50*" />
                 </RowDefinitionCollection>
             </Setter.Value>
         </Setter>
@@ -49,7 +50,20 @@
         <Setter Property="Margin" Value="4" />
         <Setter Property="BorderColor" Value="#fff" />
     </Style>
-
+    <Style TargetType="Frame" x:Key="SNRStyle">
+        <Setter Property="Grid.Column" Value="2" />
+        <Setter Property="Grid.Row" Value="0" />
+        <Setter Property="BackgroundColor" Value="#fff" />
+        <Setter Property="Margin" Value="4" />
+        <Setter Property="BorderColor" Value="#fff" />
+    </Style>
+    <Style TargetType="Frame" x:Key="GaugeStyle">
+        <Setter Property="Grid.Column" Value="2" />
+        <Setter Property="Grid.Row" Value="1" />
+        <Setter Property="BackgroundColor" Value="#fff" />
+        <Setter Property="Margin" Value="4" />
+        <Setter Property="BorderColor" Value="#fff" />
+    </Style>
     <Style TargetType="StackLayout" x:Key="StackLayoutStyles">
         <Setter Property="Grid.Column" Value="1" />
         <Setter Property="Grid.Row" Value="1" />
@@ -59,7 +73,7 @@
         <Setter Property="ColumnDefinitions">
             <Setter.Value>
                 <ColumnDefinitionCollection>
-                    <ColumnDefinition Width="40*" />
+                    <ColumnDefinition Width="60*" />
                     <ColumnDefinition Width="40*" />
                 </ColumnDefinitionCollection>
             </Setter.Value>
@@ -69,6 +83,9 @@
                 <RowDefinitionCollection>
                     <RowDefinition Height="*" />
                     <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
                 </RowDefinitionCollection>
             </Setter.Value>
         </Setter>
@@ -76,7 +93,7 @@
 
     <Style TargetType="Frame" x:Key="SignalStrengthStyle">
         <Setter Property="Grid.Column" Value="0" />
-        <Setter Property="Grid.RowSpan" Value="2" />
+        <Setter Property="Grid.RowSpan" Value="5" />
         <Setter Property="BackgroundColor" Value="#fff" />
         <Setter Property="Margin" Value="4" />
         <Setter Property="BorderColor" Value="#fff" />
@@ -97,6 +114,29 @@
         <Setter Property="Margin" Value="4" />
         <Setter Property="BorderColor" Value="#fff" />
     </Style>
+    <Style TargetType="Frame" x:Key="type">
+        <Setter Property="Grid.Column" Value="1" />
+        <Setter Property="Grid.Row" Value="2" />
+        <Setter Property="BackgroundColor" Value="White" />
+        <Setter Property="Margin" Value="4" />
+        <Setter Property="BorderColor" Value="#fff" />
+    </Style>
+    <Style TargetType="Frame" x:Key="latitudeStyle">
+        <Setter Property="Grid.Column" Value="1" />
+        <Setter Property="Grid.Row" Value="3" />
+        <Setter Property="BackgroundColor" Value="White" />
+        <Setter Property="Margin" Value="4" />
+        <Setter Property="BorderColor" Value="#fff" />
+    </Style>
+    <Style TargetType="Frame" x:Key="longitudelStyle">
+        <Setter Property="Grid.Column" Value="1" />
+        <Setter Property="Grid.Row" Value="4" />
+        <Setter Property="BackgroundColor" Value="White" />
+        <Setter Property="Margin" Value="4" />
+        <Setter Property="BorderColor" Value="#fff" />
+    </Style>
+
+    
     
     <Style TargetType="Grid" x:Key="LocationButtonGrid">
         <Setter Property="Padding" Value="5" />

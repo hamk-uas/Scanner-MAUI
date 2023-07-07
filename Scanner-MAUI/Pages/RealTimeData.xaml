@@ -3,12 +3,12 @@
              xmlns:esri="http://schemas.esri.com/arcgis/runtime/2013"
              xmlns:Helpers="clr-namespace:Scanner_MAUI.Helpers"
              xmlns:styles="clr-namespace:Scanner_MAUI.Styles"
+             xmlns:gauge="clr-namespace:Syncfusion.Maui.Gauges;assembly=Syncfusion.Maui.Gauges"
              xmlns:esriUI="clr-namespace:Esri.ArcGISRuntime.Maui;assembly=Esri.ArcGISRuntime.Maui"
              x:Class="Scanner_MAUI.Pages.RealTimeData"
              Title=""
              BackgroundColor="#f3f3f3"
              >
-    
     <ContentPage.Resources>
         <Helpers:GraphicsDrawable x:Key="MyDrawable" />
         <ResourceDictionary>
@@ -17,22 +17,15 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </ContentPage.Resources>
-
-    <!--<ContentPage.BindingContext>
-        <Helpers:RealTimeDataViewModel />
-    </ContentPage.BindingContext>-->
-
     <ContentPage.MenuBarItems>
         <MenuBarItem Text="File">
             <MenuFlyoutItem Text="Start" Clicked="StartMenuItem_Clicked"/>
             <MenuFlyoutItem Text="Stop" Clicked="StopMenuItem_Clicked"/>
         </MenuBarItem>
     </ContentPage.MenuBarItems>
-
     <!--Using Grid for layout-->
     <Grid>
         <Grid Style="{StaticResource MainGridStyle}">
-
             <!-- Menu list on the left (taking full length) -->
             <!--<Frame Style="{StaticResource LeftNetworkNamesFrameStyle}" >-->
             <ListView x:Name="NetworkListView" Style="{StaticResource ListViewStyle}">
@@ -43,7 +36,6 @@
                 </ListView.ItemTemplate>
             </ListView>
             <!--</Frame>-->
-
             <Frame Style="{StaticResource LocationStyle}">
                 <!-- Dummy location content -->
                 <Grid>
@@ -52,8 +44,7 @@
                         <ImageButton Style="{StaticResource ImageButton}" 
                                         Source="my_location3.png"
                                          x:Name="CompassNavigationButton"
-                                        Clicked="MyLocationButton_Clicked">
-                        </ImageButton>
+                                        Clicked="MyLocationButton_Clicked"></ImageButton>
                         <!--<Button Style="{StaticResource LocationButton}" 
                                 x:Name="CompassNavigationButton"
                             Clicked="MyLocationButton_Clicked"
@@ -61,33 +52,115 @@
                     </Grid>
                 </Grid>
             </Frame>
-
+            <Frame Style="{StaticResource SNRStyle}">
+                
+            </Frame>
+            <Frame Style="{StaticResource GaugeStyle}">
+                <gauge:SfRadialGauge>
+                    <gauge:SfRadialGauge.Axes>
+                        <gauge:RadialAxis EnableLoadingAnimation="True" Interval="10"
+                          Minimum="0"                
+                          Maximum="100"
+                          ShowAxisLine="False"
+                          CanRotateLabels="False"
+                          TickOffset="0.1"
+                          OffsetUnit="Factor"
+                          LabelOffset="0.05"
+                                          >
+                            <gauge:RadialAxis.Pointers>
+                                <gauge:RangePointer x:Name="rangePointer"
+                                    PointerWidth="0.1"
+                                    WidthUnit="Factor">
+                                    <gauge:RangePointer.GradientStops>
+                                        <gauge:GaugeGradientStop Value="0"
+                                                 Color="#FFCC2B5E" />
+                                        <gauge:GaugeGradientStop Value="45"
+                                                 Color="#FF753A88" />
+                                        <gauge:GaugeGradientStop Value="100"
+                                                 Color="#003779" />
+                                    </gauge:RangePointer.GradientStops>
+                                </gauge:RangePointer>
+                                <!--<gauge:NeedlePointer x:Name="needlePointer"  />-->
+                            </gauge:RadialAxis.Pointers>
+                            <gauge:RadialAxis.Annotations>
+                                <gauge:GaugeAnnotation x:Name="annotation" DirectionUnit="Angle" DirectionValue="90" PositionFactor="0.7">
+                                    <gauge:GaugeAnnotation.Content>
+                                        <Label x:Name="Number" FontSize="20" FontAttributes="Bold" TextColor="Black"/>
+                                    </gauge:GaugeAnnotation.Content>
+                                </gauge:GaugeAnnotation>
+                            </gauge:RadialAxis.Annotations>
+                        </gauge:RadialAxis>
+                        <gauge:RadialAxis RadiusFactor="0.5" EnableLoadingAnimation="True" Interval="10" Minimum="-110" Maximum="5">
+                            <gauge:RadialAxis.Pointers>
+                                <gauge:RangePointer x:Name="rangePointer2"
+                                        PointerWidth="0.1"
+                                        WidthUnit="Factor">
+                                    <gauge:RangePointer.GradientStops>
+                                        <gauge:GaugeGradientStop Value="-110"
+                                                     Color="#FF0000" />
+                                        <gauge:GaugeGradientStop Value="-70"
+                                                     Color="#FFA500" />
+                                        <gauge:GaugeGradientStop Value="5"
+                                                     Color="#00FF00" />
+                                    </gauge:RangePointer.GradientStops>
+                                </gauge:RangePointer>
+                                <gauge:NeedlePointer x:Name="needlePointer2"  />
+                            </gauge:RadialAxis.Pointers>
+                            <gauge:RadialAxis.Annotations>
+                                <gauge:GaugeAnnotation x:Name="annotation2" DirectionUnit="Angle" DirectionValue="90" PositionFactor="0.7">
+                                    <gauge:GaugeAnnotation.Content>
+                                        <Label x:Name="Number2" FontSize="10" FontAttributes="Bold" TextColor="Black"/>
+                                    </gauge:GaugeAnnotation.Content>
+                                </gauge:GaugeAnnotation>
+                            </gauge:RadialAxis.Annotations>
+                        </gauge:RadialAxis>
+                    </gauge:SfRadialGauge.Axes>
+                </gauge:SfRadialGauge>
+            </Frame>
             <StackLayout Style="{StaticResource StackLayoutStyles}" >
-                <ScrollView></ScrollView>
                 <Grid Style="{StaticResource SecondaryGridStyle}">
-
                     <Frame Style="{StaticResource SignalStrengthStyle}">
                         <StackLayout Orientation="Vertical">
                             <Label Text="Signal Strength" />
+                            <Label Text="" />
                             <GraphicsView
                                 x:Name="Canvas"
-                                HorizontalOptions="Fill"
+                                HorizontalOptions="FillAndExpand"
                                 Drawable="{StaticResource MyDrawable}"
                                 HeightRequest="100"
-                                Grid.Row="1" />
+                                Grid.Row="1"
+                                BindingContext="value"/>
+                            <HorizontalStackLayout>
+                                <Label x:Name="NetworkRSSILabel" Text="RSSI Value: " Margin="10, 0, 180, 0"/>
+                                <!--<Label Text=" "/>-->
+                                <Label x:Name="SignalStrengthPercentage" Text="Signal Strength %: " />
+                            </HorizontalStackLayout>
+                            <!--<Label Text=" " />-->
+                            <HorizontalStackLayout>
+                                <Label x:Name="RssiLabel" Text="RSSI Values: " Margin="10, 0, 170, 0"/>
+                                <Label x:Name="SignalStrengthPercentages" Text="Signal Strength %s:" />
+                            </HorizontalStackLayout>
                         </StackLayout>
                     </Frame>
-
-
                     <Frame  Style="{StaticResource DateTimeLabelStyle}">
-                        <Label x:Name="DateTimeLabel" />
+                        <Label x:Name="DateTimeLabel" Text="Date and Time: " />
                     </Frame>
-
                     <Frame  Style="{StaticResource nameLabelStyle}">
                         <!--Keeping the thext property field empty to dynamically populated -->
-                        <Label x:Name="NetworkNameLabel" />
+                        <Label x:Name="NetworkNameLabel" Text="Network Name: "/>
                     </Frame>
-
+                    <Frame  Style="{StaticResource type}">
+                        <!--Keeping the thext property field empty to dynamically populated -->
+                        <Label x:Name="Type" Text="Type: "/>
+                    </Frame>
+                    <Frame  Style="{StaticResource latitudeStyle}">
+                        <!--Keeping the thext property field empty to dynamically populated -->
+                        <Label x:Name="Latitude" Text="Latitude: " />
+                    </Frame>
+                    <Frame  Style="{StaticResource longitudelStyle}">
+                        <!--Keeping the thext property field empty to dynamically populated -->
+                        <Label x:Name="Longitude" Text="Longitude: " />
+                    </Frame>
                 </Grid>
             </StackLayout>
         </Grid>
