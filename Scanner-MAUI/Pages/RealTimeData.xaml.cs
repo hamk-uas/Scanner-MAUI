@@ -4,7 +4,7 @@ using Location = Scanner_MAUI.Helpers.Location;
 using Scanner_MAUI.Model;
 using System.Diagnostics;
 using Syncfusion.Maui.Gauges;
-
+using System.Globalization;
 
 namespace Scanner_MAUI.Pages;
 
@@ -15,6 +15,7 @@ public partial class RealTimeData : ContentPage
     private Markers mapMarkers;
     private SerialPortConn scannerConn;
     private Dictionary<string, string> RssiValues;
+
     public RealTimeData()
     {
         InitializeComponent();
@@ -25,10 +26,13 @@ public partial class RealTimeData : ContentPage
         _ = ViewMap.LoadWMTSLayer(MyMapView);
         _ = Location.StartDeviceLocationTask(MyMapView); // Gets current location
         //_ = Markers.MapMarkers(MyMapView);
+
+        mapMarkers = new Markers();
+
         scannerConn = new SerialPortConn();
         NetworkListView.ItemsSource = scannerConn.NetworkNames;
         RssiValues = new Dictionary<string, string>();
-
+        
     }
 
     private void ScannerConn_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -52,8 +56,17 @@ public partial class RealTimeData : ContentPage
 
             Type.Text = $"Type:  {scannerConn.Type}";
 
-            Latitude.Text = $"Latitude:  {scannerConn.Latitude}";
-            Longitude.Text = $"Longitude:  {scannerConn.Longitude}";
+            Latitude.Text = $"Latitude:  {scannerConn.Lat}";
+            Longitude.Text = $"Longitude:  {scannerConn.Lon}";
+
+
+            mapMarkers.Longitude = scannerConn.Lon;
+            mapMarkers.Latitude = scannerConn.Lat;
+
+            //Show the marker location on the map based on the network name
+            _ = mapMarkers.MapMarkers(MyMapView);
+            MyMapView.GraphicsOverlays.Clear();
+
 
             Debug.WriteLine("Signal strength % = " + signalStrength);
 
@@ -74,19 +87,20 @@ public partial class RealTimeData : ContentPage
         {
             NetworkNameLabel.Text = $"Network Name:  {selectedNetwork.Name}";
 
-            scannerConn.PropertyChanged += ScannerConn_PropertyChanged;
-            //Canvas.Invalidate();
-
-            // Create the mapMarkers object and set the longitude and latitude
+            //Show the marker location on the map based on the network name
             mapMarkers = new Markers
             {
-                Longitude = GetLongitude(selectedNetwork.Name),
-                Latitude = GetLatitude(selectedNetwork.Name)
+                Longitude = scannerConn.Lon,
+                Latitude = scannerConn.Lat
             };
 
-            //Show the marker location on the map based on the network name
             _ = mapMarkers.MapMarkers(MyMapView);
             MyMapView.GraphicsOverlays.Clear();
+
+            scannerConn.PropertyChanged += ScannerConn_PropertyChanged;
+
+            Canvas.Invalidate();
+
         }
     }
 
@@ -99,48 +113,6 @@ public partial class RealTimeData : ContentPage
 
         return signalStrength;
     }
-
-    private double GetLongitude(string selectedNetwork)
-    {
-        if (selectedNetwork == "Network-1")
-            return 24.477205;
-        else if (selectedNetwork == "Network-2")
-            return 24.477339;
-        else if (selectedNetwork == "Network-3")
-            return 24.477532;
-        else if (selectedNetwork == "Network-4")
-            return 24.478310;
-
-        return 0;
-    }
-
-    private double GetLatitude(string selectedNetwork)
-    {
-        if (selectedNetwork == "Network-1")
-            return 60.977689;
-        else if (selectedNetwork == "Network-2")
-            return 60.977603;
-        else if (selectedNetwork == "Network-3")
-            return 60.977515;
-        else if (selectedNetwork == "Network-4")
-            return 60.977208;
-        return 0;
-    }
-
-    private int GetSignalStrength(string networkName)
-    {
-        if (networkName == "Network-1")
-            return 10; // Maximum signal strength
-        else if (networkName == "Network-2")
-            return 7; // Medium signal strength
-        else if (networkName == "Network-3")
-            return 4; // Low signal strength
-        else if (networkName == "Network-4")
-            return 1; // Minimum signal strength
-
-        return 1; // Default signal strength
-    }
-
 
     private void MyLocationButton_Clicked(object sender, EventArgs e)
     {
@@ -160,6 +132,22 @@ public partial class RealTimeData : ContentPage
     {
         scannerConn.Disconnect();
         RssiValues.Clear();
+        NetworkNameLabel.Text = $"Network Name:  ";
+        NetworkRSSILabel.Text = $"RSSI Value:  ";
+        SignalStrengthPercentage.Text = $"Signal Strength %:  ";
+
+        RssiLabel.Text = $"RSSI Values:  ";
+        SignalStrengthPercentages.Text = $"Signal Strength %s:  ";
+
+        Type.Text = $"Type:  ";
+
+        Latitude.Text = $"Latitude:  ";
+        Longitude.Text = $"Longitude:  ";
+
+        MyMapView.GraphicsOverlays.Clear();
+
+        _ = mapMarkers.MapMarkers(MyMapView);
+
     }
 }
 

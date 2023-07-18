@@ -104,7 +104,8 @@
                                                      Color="#00FF00" />
                                     </gauge:RangePointer.GradientStops>
                                 </gauge:RangePointer>
-                                <gauge:NeedlePointer x:Name="needlePointer2"  />
+                                <gauge:NeedlePointer x:Name="needlePointer2" 
+                                                     AnimationDuration="8"/>
                             </gauge:RadialAxis.Pointers>
                             <gauge:RadialAxis.Annotations>
                                 <gauge:GaugeAnnotation x:Name="annotation2" DirectionUnit="Angle" DirectionValue="90" PositionFactor="0.7">

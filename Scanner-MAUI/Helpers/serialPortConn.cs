@@ -51,32 +51,32 @@ namespace Scanner_MAUI.Helpers
                 }
             }
         }
-        private double latitude;
+        private double lat;
 
-        public double Latitude
+        public double Lat
         {
-            get { return latitude; }
+            get { return lat; }
             set
             {
-                if (latitude != value)
+                if (lat != value)
                 {
-                    latitude = value;
-                    OnPropertyChanged(nameof(Latitude));
+                    lat = value;
+                    OnPropertyChanged(nameof(Lat));
                 }
             }
         }
 
-        private double longitude;
+        private double lon;
 
-        public double Longitude
+        public double Lon
         {
-            get { return longitude; }
+            get { return lon; }
             set
             {
-                if (longitude != value)
+                if (lon != value)
                 {
-                    longitude = value;
-                    OnPropertyChanged(nameof(Longitude));
+                    lon = value;
+                    OnPropertyChanged(nameof(Lon));
                 }
             }
         }
@@ -142,15 +142,18 @@ namespace Scanner_MAUI.Helpers
                                 {
                                     Strength = data.RSSI;
                                     Type = data.Type;
-                                    Latitude = (double)data.Latitude;
-                                    Longitude = (double)data.Longitude;
+                                    Lat = data.Lat;
+                                    Lon = data.Lon;
                                     ExistingNetwork.RSSI = data.RSSI;
                                     ExistingNetwork.Name = data.Name;
                             
                                     Debug.WriteLine("Strength: " + Strength);
                                     Debug.WriteLine("ExistingNetwork: " + ExistingNetwork.Name + " " + ExistingNetwork.RSSI);
+                                    Debug.WriteLine("coords: " + Lat + " " + Lon);
+                                    Debug.WriteLine("snr: " + data.SNR);
+
                                 }
-                                
+
                             }
                             else
                             {
@@ -214,18 +217,35 @@ namespace Scanner_MAUI.Helpers
 
                 }
                 networkData.Type = fields[2].Split(':')[1].Trim();
-                if(networkData.Latitude==null && networkData.Longitude == null)
+               
+                //Thread.CurrentThread.CurrentCulture = CultureInfo.CreateSpecificCulture("en-US");
+                string latString = fields[3].Split(':')[1].Trim();
+                Debug.WriteLine("latstring :" + latString);
+                if (double.TryParse(latString, NumberStyles.Float, CultureInfo.InvariantCulture, out double latValue))
                 {
-                    networkData.Latitude = ParseNullableDouble(fields[3].Split(':')[1].Trim());
-                    networkData.Longitude = ParseNullableDouble(fields[4].Split(':')[1].Trim());
+                    Debug.WriteLine("latvalue: " + latValue);
+                    networkData.Lat = latValue;
+                    Debug.WriteLine("netLat: " +  networkData.Lat);
                 }
                 else
                 {
-                    networkData.Latitude= double.Parse(fields[3].Split(':')[1].Trim());
-                    networkData.Longitude = double.Parse(fields[4].Split(':')[1].Trim());
+                    // Handle the error when parsing latitude fails
+                    networkData.Lat = 0; // Assign a default value or handle the error as needed
                 }
-                
+
+                string lonString = fields[4].Split(':')[1].Trim();
+                if (double.TryParse(lonString, NumberStyles.Any, CultureInfo.InvariantCulture, out double lonValue))
+                {
+                    networkData.Lon = lonValue;
+                }
+                else
+                {
+                    // Handle the error when parsing longitude fails
+                    networkData.Lon = 0; // Assign a default value or handle the error as needed
+                }
+
                 networkData.RSSI = int.Parse(fields[5].Split(':')[1].Trim());
+                //networkData.SNR = double.Parse(fields[6].Split(':')[1].Trim(), CultureInfo.DefaultThreadCurrentCulture);
                 networkData.SNR = double.Parse(fields[6].Split(':')[1].Trim(), CultureInfo.InvariantCulture);
                 //scannerData.TimeStamp = ParseDateTime(fields[7].Split(':')[1].Trim());
             }
