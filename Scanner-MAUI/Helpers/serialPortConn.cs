@@ -259,11 +259,6 @@ namespace Scanner_MAUI.Helpers
                     //networkData.Lon = 0; // Assign a default value or handle the error as needed
                     networkData.Lon = 24.464230;
                 }
-                //else if (networkData.Lat == 0 || networkData.Lon == 0 || (networkData.Lat == 0 && networkData.Lon == 0))
-                //{
-                //    networkData.Lat = 60.996010;
-                //    networkData.Lon = 24.464230;
-                //}
 
                 networkData.RSSI = int.Parse(fields[5].Split(':')[1].Trim());
                 //networkData.SNR = double.Parse(fields[6].Split(':')[1].Trim(), CultureInfo.DefaultThreadCurrentCulture);

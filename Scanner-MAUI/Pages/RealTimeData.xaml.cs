@@ -21,7 +21,6 @@ public partial class RealTimeData : ContentPage
     private SerialPortConn scannerConn;
     private Dictionary<string, string> RssiValues;
     private ObservableCollection<ObservableValue> _observableValues;
-    //public ISeries[] Series { get; set; }
     public ObservableCollection<ISeries> Series { get; set; }
 
     public RealTimeData()
@@ -77,7 +76,7 @@ public partial class RealTimeData : ContentPage
             //Show the marker location on the map based on the network name
             mapMarkers.Longitude = scannerConn.Lon;
             mapMarkers.Latitude = scannerConn.Lat;
-            //_ = mapMarkers.MapMarkers(MyMapView);
+            _ = mapMarkers.MapMarkers(MyMapView);
             //MyMapView.GraphicsOverlays.Clear();
 
             Debug.WriteLine("Signal strength % = " + signalStrength);
@@ -104,14 +103,15 @@ public partial class RealTimeData : ContentPage
             NetworkNameLabel.Text = $"Network Name:  {selectedNetwork.Name}";
 
             //Show the marker location on the map based on the network name
-            mapMarkers = new Markers
-            {
-                Longitude = scannerConn.Lon,
-                Latitude = scannerConn.Lat
-            };
+            //mapMarkers = new Markers
+            //{
+            //    Longitude = scannerConn.Lon,
+            //    Latitude = scannerConn.Lat
+            //};
 
-            _ = mapMarkers.MapMarkers(MyMapView);
-            MyMapView.GraphicsOverlays.Clear();
+            //_ = mapMarkers.MapMarkers(MyMapView);
+            //MyMapView.GraphicsOverlays.Clear();
+           
 
             scannerConn.PropertyChanged += ScannerConn_PropertyChanged;
 
@@ -172,7 +172,7 @@ public partial class RealTimeData : ContentPage
         Longitude.Text = $"Longitude:  ";
 
         MyMapView.GraphicsOverlays.Clear();
-
+        
         _observableValues.Clear();
 
     }

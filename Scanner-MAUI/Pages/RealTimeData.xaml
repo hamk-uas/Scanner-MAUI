@@ -103,7 +103,8 @@
                                         EnableAnimation="True"
                                         AnimationDuration="1000"
                                         PointerWidth="0.1"
-                                        WidthUnit="Factor">
+                                        WidthUnit="Factor"
+                                        Value="-110">
                                     <gauge:RangePointer.GradientStops>
                                         <gauge:GaugeGradientStop Value="-110"
                                                      Color="#FF0000" />
@@ -116,6 +117,7 @@
                                 <gauge:NeedlePointer x:Name="needlePointer2" 
                                                      EnableAnimation="True"
                                                      NeedleStartWidth="0"
+                                                     Value="-110"
                                                      AnimationDuration="1000"/>
                             </gauge:RadialAxis.Pointers>
                             <gauge:RadialAxis.Annotations>
