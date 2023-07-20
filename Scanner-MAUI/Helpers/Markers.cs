@@ -127,7 +127,7 @@ namespace Scanner_MAUI.Helpers
                 // Add the graphics overlay to the map view.
                 MyMapView.GraphicsOverlays.Add(myGraphicOverlay);
 
-                var Test = "This is a test to check if the code is being executed untill this point";
+                //var Test = "This is a test to check if the code is being executed untill this point";
 
             }
             else

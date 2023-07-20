@@ -5,6 +5,8 @@ using Esri.ArcGISRuntime;
 using Scanner_MAUI.Helpers;
 using Esri.ArcGISRuntime.Security;
 using Syncfusion.Maui.Core.Hosting;
+using SkiaSharp.Views.Maui.Controls.Hosting;
+using CommunityToolkit.Maui;
 
 namespace Scanner_MAUI;
 
@@ -17,6 +19,7 @@ public static class MauiProgram
 		builder
 			.UseMauiApp<App>()
             .ConfigureSyncfusionCore()
+            .UseMauiCommunityToolkit()
             .ConfigureFonts(fonts =>
 			{
 				fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
@@ -29,7 +32,8 @@ public static class MauiProgram
 					.UseDefaultChallengeHandler()
 				)
 			)
-			.UseArcGISToolkit();
+			.UseArcGISToolkit()
+            .UseSkiaSharp(true);
 
 #if DEBUG
         builder.Logging.AddDebug();

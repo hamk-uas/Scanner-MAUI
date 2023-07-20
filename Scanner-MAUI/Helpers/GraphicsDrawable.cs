@@ -3,6 +3,7 @@ using Microsoft.Maui.Graphics.Text;
 using Scanner_MAUI.Pages;
 using System.ComponentModel;
 using Font = Microsoft.Maui.Graphics.Font;
+using System.Timers;
 
 namespace Scanner_MAUI.Helpers
 {
@@ -57,6 +58,7 @@ namespace Scanner_MAUI.Helpers
             canvas.StrokeColor = Colors.Black;
             canvas.StrokeSize = 4;
             canvas.DrawLine(lineX, lineY1, lineX, lineY2);
+            
 
             // Draw the linear axis with number labels
             int numLabels = 11; // Number of labels to display
@@ -89,11 +91,7 @@ namespace Scanner_MAUI.Helpers
                   
                     canvas.DrawString(labelText, labelX, labelY, width, height, 0, 0);
                 }
-                
-               
-          
             }
-
         }
     }
 }

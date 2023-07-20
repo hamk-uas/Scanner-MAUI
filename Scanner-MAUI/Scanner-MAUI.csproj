@@ -68,17 +68,19 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.0" />
+		<PackageReference Include="CommunityToolkit.Maui" Version="5.2.0" />
+		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.1" />
 		<PackageReference Include="Esri.ArcGISRuntime" Version="200.1.0" />
 		<PackageReference Include="Esri.ArcGISRuntime.Maui" Version="200.1.0" />
 		<PackageReference Include="Esri.ArcGISRuntime.Toolkit.Maui" Version="200.1.0" />
+		<PackageReference Include="LiveChartsCore.SkiaSharpView.Maui" Version="2.0.0-beta.855" />
 		<PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="7.0.0" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="7.0.0" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-		<PackageReference Include="SkiaSharp" Version="2.88.3" />
-		<PackageReference Include="Syncfusion.Maui.DataGrid" Version="22.1.36" />
-		<PackageReference Include="Syncfusion.Maui.Gauges" Version="22.1.36" />
-		<PackageReference Include="System.IO.Ports" Version="7.0.0" />
+		<PackageReference Include="SkiaSharp" Version="2.88.4-preview.84" />
+		<PackageReference Include="Syncfusion.Maui.DataGrid" Version="22.1.39" />
+		<PackageReference Include="Syncfusion.Maui.Gauges" Version="22.1.39" />
+		<PackageReference Include="System.IO.Ports" Version="8.0.0-preview.6.23329.7" />
 		
 	</ItemGroup>
 

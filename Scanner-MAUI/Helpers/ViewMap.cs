@@ -107,7 +107,7 @@ namespace Scanner_MAUI.Helpers
                     // Assign the map to the MapView.
                     MyMapView.Map = myMap;
                  
-                    var Test = "This is a test to check if the code is being executed untill this point";
+                    //var Test = "This is a test to check if the code is being executed untill this point";
                   
                 }
                 else

@@ -1,13 +1,9 @@
 ﻿using System.Globalization;
 using System.IO.Ports;
 using System.Diagnostics;
-using System.Collections.Generic;
-using Scanner_MAUI.Pages;
 using System.Collections.ObjectModel;
 using Scanner_MAUI.Model;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 using System.ComponentModel;
-using System.Runtime.CompilerServices;
 
 namespace Scanner_MAUI.Helpers
 {
@@ -18,7 +14,7 @@ namespace Scanner_MAUI.Helpers
         private SerialPort serialPort;
         Network networkNames = new Network();
         public ObservableCollection<Network> NetworkNames { get; set; } = new ObservableCollection<Network>();
-        public ObservableCollection<Network> NetworkValues { get; set; } = new ObservableCollection<Network>();
+        //public ObservableCollection<Network> NetworkSnrValues { get; set; } = new ObservableCollection<Network>();
         private Network ExistingNetwork { get; set; }
         //public int strength {  get; set; }
         private int strength;
@@ -81,6 +77,21 @@ namespace Scanner_MAUI.Helpers
             }
         }
 
+        private double snr;
+
+        public double SNR
+        {
+            get { return snr; }
+            set
+            {
+                if (snr != value)
+                {
+                    snr = value;
+                    OnPropertyChanged(nameof(SNR));
+                }
+            }
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected virtual void OnPropertyChanged(string propertyName)
@@ -91,7 +102,7 @@ namespace Scanner_MAUI.Helpers
         public void ConnectToScanner()
         {
             NetworkNames.Clear();
-            NetworkValues.Clear();
+            //NetworkSnrValues.Clear();
             Strength = -110;
             try
             {
@@ -144,8 +155,11 @@ namespace Scanner_MAUI.Helpers
                                     Type = data.Type;
                                     Lat = data.Lat;
                                     Lon = data.Lon;
+                                    SNR = data.SNR;
                                     ExistingNetwork.RSSI = data.RSSI;
                                     ExistingNetwork.Name = data.Name;
+
+                                    //NetworkNames.Add(new Network { Name = data.Name });
                             
                                     Debug.WriteLine("Strength: " + Strength);
                                     Debug.WriteLine("ExistingNetwork: " + ExistingNetwork.Name + " " + ExistingNetwork.RSSI);
@@ -230,7 +244,8 @@ namespace Scanner_MAUI.Helpers
                 else
                 {
                     // Handle the error when parsing latitude fails
-                    networkData.Lat = 0; // Assign a default value or handle the error as needed
+                    //networkData.Lat = 0; // Assign a default value or handle the error as needed
+                    networkData.Lat = 60.996010;
                 }
 
                 string lonString = fields[4].Split(':')[1].Trim();
@@ -241,8 +256,14 @@ namespace Scanner_MAUI.Helpers
                 else
                 {
                     // Handle the error when parsing longitude fails
-                    networkData.Lon = 0; // Assign a default value or handle the error as needed
+                    //networkData.Lon = 0; // Assign a default value or handle the error as needed
+                    networkData.Lon = 24.464230;
                 }
+                //else if (networkData.Lat == 0 || networkData.Lon == 0 || (networkData.Lat == 0 && networkData.Lon == 0))
+                //{
+                //    networkData.Lat = 60.996010;
+                //    networkData.Lon = 24.464230;
+                //}
 
                 networkData.RSSI = int.Parse(fields[5].Split(':')[1].Trim());
                 //networkData.SNR = double.Parse(fields[6].Split(':')[1].Trim(), CultureInfo.DefaultThreadCurrentCulture);

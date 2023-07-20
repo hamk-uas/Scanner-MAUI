@@ -1,13 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
-using CommunityToolkit.Mvvm.ComponentModel;
-
+﻿
 namespace Scanner_MAUI.Model
 {
     public class Network
@@ -18,7 +9,7 @@ namespace Scanner_MAUI.Model
         private double _lat;
         private double _lon;
         private int _rssi;
-        private int _snr;
+        private double _snr;
 
         public Network() { }
 

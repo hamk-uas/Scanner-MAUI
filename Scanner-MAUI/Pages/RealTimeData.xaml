@@ -5,6 +5,8 @@
              xmlns:styles="clr-namespace:Scanner_MAUI.Styles"
              xmlns:gauge="clr-namespace:Syncfusion.Maui.Gauges;assembly=Syncfusion.Maui.Gauges"
              xmlns:esriUI="clr-namespace:Esri.ArcGISRuntime.Maui;assembly=Esri.ArcGISRuntime.Maui"
+             xmlns:lvc="clr-namespace:LiveChartsCore.SkiaSharpView.Maui;assembly=LiveChartsCore.SkiaSharpView.Maui"
+             xmlns:vms="clr-namespace:Scanner_MAUI.Helpers"
              x:Class="Scanner_MAUI.Pages.RealTimeData"
              Title=""
              BackgroundColor="#f3f3f3"
@@ -17,6 +19,9 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </ContentPage.Resources>
+    <!--<ContentPage.BindingContext>
+        <vms:lineChart/>
+    </ContentPage.BindingContext>-->
     <ContentPage.MenuBarItems>
         <MenuBarItem Text="File">
             <MenuFlyoutItem Text="Start" Clicked="StartMenuItem_Clicked"/>
@@ -53,10 +58,11 @@
                 </Grid>
             </Frame>
             <Frame Style="{StaticResource SNRStyle}">
-                
+                <!--<lvc:CartesianChart x:Name="CartesianChart" Series="{Binding Series}" Title="{Binding Title}" />-->
+                <lvc:CartesianChart x:Name="CartesianChart" Series="{Binding Series}" Title="{Binding Title}" />
             </Frame>
             <Frame Style="{StaticResource GaugeStyle}">
-                <gauge:SfRadialGauge>
+                <gauge:SfRadialGauge x:Name="guage">
                     <gauge:SfRadialGauge.Axes>
                         <gauge:RadialAxis EnableLoadingAnimation="True" Interval="10"
                           Minimum="0"                
@@ -65,12 +71,13 @@
                           CanRotateLabels="False"
                           TickOffset="0.1"
                           OffsetUnit="Factor"
-                          LabelOffset="0.05"
-                                          >
+                          LabelOffset="0.05">
                             <gauge:RadialAxis.Pointers>
                                 <gauge:RangePointer x:Name="rangePointer"
                                     PointerWidth="0.1"
-                                    WidthUnit="Factor">
+                                    WidthUnit="Factor"
+                                    EnableAnimation="True"
+                                    AnimationDuration="1000">
                                     <gauge:RangePointer.GradientStops>
                                         <gauge:GaugeGradientStop Value="0"
                                                  Color="#FFCC2B5E" />
@@ -93,6 +100,8 @@
                         <gauge:RadialAxis RadiusFactor="0.5" EnableLoadingAnimation="True" Interval="10" Minimum="-110" Maximum="5">
                             <gauge:RadialAxis.Pointers>
                                 <gauge:RangePointer x:Name="rangePointer2"
+                                        EnableAnimation="True"
+                                        AnimationDuration="1000"
                                         PointerWidth="0.1"
                                         WidthUnit="Factor">
                                     <gauge:RangePointer.GradientStops>
@@ -105,7 +114,9 @@
                                     </gauge:RangePointer.GradientStops>
                                 </gauge:RangePointer>
                                 <gauge:NeedlePointer x:Name="needlePointer2" 
-                                                     AnimationDuration="8"/>
+                                                     EnableAnimation="True"
+                                                     NeedleStartWidth="0"
+                                                     AnimationDuration="1000"/>
                             </gauge:RadialAxis.Pointers>
                             <gauge:RadialAxis.Annotations>
                                 <gauge:GaugeAnnotation x:Name="annotation2" DirectionUnit="Angle" DirectionValue="90" PositionFactor="0.7">

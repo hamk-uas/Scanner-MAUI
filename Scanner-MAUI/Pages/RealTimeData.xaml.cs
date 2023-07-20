@@ -3,8 +3,13 @@ using Scanner_MAUI.Helpers;
 using Location = Scanner_MAUI.Helpers.Location;
 using Scanner_MAUI.Model;
 using System.Diagnostics;
-using Syncfusion.Maui.Gauges;
-using System.Globalization;
+using LiveChartsCore;
+using LiveChartsCore.SkiaSharpView;
+using LiveChartsCore.SkiaSharpView.Painting;
+using LiveChartsCore.SkiaSharpView.VisualElements;
+using SkiaSharp;
+using LiveChartsCore.Defaults;
+using System.Collections.ObjectModel;
 
 namespace Scanner_MAUI.Pages;
 
@@ -15,6 +20,9 @@ public partial class RealTimeData : ContentPage
     private Markers mapMarkers;
     private SerialPortConn scannerConn;
     private Dictionary<string, string> RssiValues;
+    private ObservableCollection<ObservableValue> _observableValues;
+    //public ISeries[] Series { get; set; }
+    public ObservableCollection<ISeries> Series { get; set; }
 
     public RealTimeData()
     {
@@ -32,7 +40,14 @@ public partial class RealTimeData : ContentPage
         scannerConn = new SerialPortConn();
         NetworkListView.ItemsSource = scannerConn.NetworkNames;
         RssiValues = new Dictionary<string, string>();
-        
+        _observableValues = new ObservableCollection<ObservableValue>();
+        CartesianChart.Title = new LabelVisual
+        {
+            Text = "SNR Chart",
+            TextSize = 20,
+            Padding = new LiveChartsCore.Drawing.Padding(15),
+            Paint = new SolidColorPaint(SKColors.DarkSlateGray)
+        };
     }
 
     private void ScannerConn_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -48,10 +63,10 @@ public partial class RealTimeData : ContentPage
             graphicsDrawable.SignalStrength = signalStrength;
             Canvas.Invalidate();
 
-            NetworkRSSILabel.Text = $"RSSI Value:  {rssi}db";
+            NetworkRSSILabel.Text = $"RSSI Value:  {rssi}dB";
             SignalStrengthPercentage.Text = $"Signal Strength %:  {signalStrength}%";
 
-            RssiLabel.Text = $"RSSI Values:  {string.Join("db,\n ", RssiValues.Keys)}db";
+            RssiLabel.Text = $"RSSI Values:  {string.Join("dB,\n ", RssiValues.Keys)}dB";
             SignalStrengthPercentages.Text = $"Signal Strength %s:  {string.Join("%,\n ", RssiValues.Values)}%";
 
             Type.Text = $"Type:  {scannerConn.Type}";
@@ -59,14 +74,11 @@ public partial class RealTimeData : ContentPage
             Latitude.Text = $"Latitude:  {scannerConn.Lat}";
             Longitude.Text = $"Longitude:  {scannerConn.Lon}";
 
-
+            //Show the marker location on the map based on the network name
             mapMarkers.Longitude = scannerConn.Lon;
             mapMarkers.Latitude = scannerConn.Lat;
-
-            //Show the marker location on the map based on the network name
-            _ = mapMarkers.MapMarkers(MyMapView);
-            MyMapView.GraphicsOverlays.Clear();
-
+            //_ = mapMarkers.MapMarkers(MyMapView);
+            //MyMapView.GraphicsOverlays.Clear();
 
             Debug.WriteLine("Signal strength % = " + signalStrength);
 
@@ -76,7 +88,11 @@ public partial class RealTimeData : ContentPage
 
             needlePointer2.Value = rssi;
             rangePointer2.Value = rssi;
-            Number2.Text = "RSSI: " + rssi.ToString() + "db";
+            Number2.Text = "RSSI: " + rssi.ToString() + "dB";
+
+            double snr = scannerConn.SNR;
+            _observableValues.Add(new (snr));
+
         }
     }
 
@@ -100,6 +116,17 @@ public partial class RealTimeData : ContentPage
             scannerConn.PropertyChanged += ScannerConn_PropertyChanged;
 
             Canvas.Invalidate();
+            
+            CartesianChart.Series = new ObservableCollection<ISeries>
+            {
+                new LineSeries<ObservableValue>
+                {
+                    Values = _observableValues,
+                    Fill = null,
+                    Name = "SNR Value"
+                }
+            };
+           
 
         }
     }
@@ -146,7 +173,7 @@ public partial class RealTimeData : ContentPage
 
         MyMapView.GraphicsOverlays.Clear();
 
-        _ = mapMarkers.MapMarkers(MyMapView);
+        _observableValues.Clear();
 
     }
 }
