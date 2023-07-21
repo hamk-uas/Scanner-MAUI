@@ -1,24 +1,109 @@
 ﻿using System.Globalization;
 using System.IO.Ports;
 using System.Diagnostics;
-using System.Collections.Generic;
-using Scanner_MAUI.Pages;
 using System.Collections.ObjectModel;
 using Scanner_MAUI.Model;
+using System.ComponentModel;
 
 namespace Scanner_MAUI.Helpers
 {
 
-    public class SerialPortConn
+    public class SerialPortConn : INotifyPropertyChanged
     { 
         //public ObservableCollection<Network> NetworkNames { get; set; }
         private SerialPort serialPort;
         Network networkNames = new Network();
         public ObservableCollection<Network> NetworkNames { get; set; } = new ObservableCollection<Network>();
+        //public ObservableCollection<Network> NetworkSnrValues { get; set; } = new ObservableCollection<Network>();
+        private Network ExistingNetwork { get; set; }
+        //public int strength {  get; set; }
+        private int strength;
+
+        public int Strength
+        {
+            get { return strength; }
+            //get => strength;
+            set
+            {
+                if (strength != value)
+                {
+                    strength = value;
+                    OnPropertyChanged(nameof(Strength));
+                    //OnPropertyChanged();
+                }
+            }
+        }
+        private string type;
+
+        public string Type
+        {
+            get { return type; }
+            set
+            {
+                if (type != value)
+                {
+                    type = value;
+                    OnPropertyChanged(nameof(Type));
+                }
+            }
+        }
+        private double lat;
+
+        public double Lat
+        {
+            get { return lat; }
+            set
+            {
+                if (lat != value)
+                {
+                    lat = value;
+                    OnPropertyChanged(nameof(Lat));
+                }
+            }
+        }
+
+        private double lon;
+
+        public double Lon
+        {
+            get { return lon; }
+            set
+            {
+                if (lon != value)
+                {
+                    lon = value;
+                    OnPropertyChanged(nameof(Lon));
+                }
+            }
+        }
+
+        private double snr;
+
+        public double SNR
+        {
+            get { return snr; }
+            set
+            {
+                if (snr != value)
+                {
+                    snr = value;
+                    OnPropertyChanged(nameof(SNR));
+                }
+            }
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected virtual void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
 
         public void ConnectToScanner()
         {
             NetworkNames.Clear();
+            //NetworkSnrValues.Clear();
+            Strength = -110;
             try
             {
                 serialPort = new SerialPort("COM6", 115200);
@@ -49,25 +134,57 @@ namespace Scanner_MAUI.Helpers
                 while (serialPort.BytesToRead > 0)
                 {
                     string DataIn = serialPort.ReadLine();
-                    //Debug.WriteLine("Data received from the scanner: " + DataIn);
+                    Debug.WriteLine("Data received from the scanner: " + DataIn);
 
                     // Process the received data and extract the fields
                     Network data = ProcessReceivedData(DataIn);
-                    
+
                     MainThread.BeginInvokeOnMainThread(() =>
                     {
+                        // Check if the data name is not empty or null
                         if (!string.IsNullOrEmpty(data.Name))
                         {
-                            //bool isNameAlreadyInList = NetworkNames.Any(network => network.Name == data.Name);
-                            //if (!isNameAlreadyInList)
-                            //{
-                            //    NetworkNames.Add(new Network { Name = data.Name });
-                            //}
-                            NetworkNames.Add(new Network { Name = data.Name });
+                            // Find the existing network with the same name, if it exists
+                            ExistingNetwork = NetworkNames.FirstOrDefault(network => network.Name == data.Name);
+
+                            if (ExistingNetwork != null)
+                            {
+                                if(data.Name == ExistingNetwork.Name)
+                                {
+                                    Strength = data.RSSI;
+                                    Type = data.Type;
+                                    Lat = data.Lat;
+                                    Lon = data.Lon;
+                                    SNR = data.SNR;
+                                    ExistingNetwork.RSSI = data.RSSI;
+                                    ExistingNetwork.Name = data.Name;
+
+                                    //NetworkNames.Add(new Network { Name = data.Name });
+                            
+                                    Debug.WriteLine("Strength: " + Strength);
+                                    Debug.WriteLine("ExistingNetwork: " + ExistingNetwork.Name + " " + ExistingNetwork.RSSI);
+                                    Debug.WriteLine("coords: " + Lat + " " + Lon);
+                                    Debug.WriteLine("snr: " + data.SNR);
+
+                                }
+
+                            }
+                            else
+                            {
+                                // Create a new network with the name and initialize its RSSIList with the current RSSI value
+                                NetworkNames.Add(new Network { Name = data.Name });
+                            }
+
+                            foreach (Network network in NetworkNames)
+                            {
+                                Debug.WriteLine("NetworkName: " + network.Name + " " + network.RSSI);
+                            }
                         }
                     });
 
-                    if (NetworkNames.Count >= 6 || NetworkNames.Count >= 7)
+                    Debug.WriteLine(NetworkNames.Count);
+
+                    if (NetworkNames.Count >= 12 || NetworkNames.Count >= 14)
                     {
                         // Close the serial port
                         Disconnect();
@@ -114,9 +231,37 @@ namespace Scanner_MAUI.Helpers
 
                 }
                 networkData.Type = fields[2].Split(':')[1].Trim();
-                networkData.Latitude = ParseNullableDouble(fields[3].Split(':')[1].Trim());
-                networkData.Longitude = ParseNullableDouble(fields[4].Split(':')[1].Trim());
+               
+                //Thread.CurrentThread.CurrentCulture = CultureInfo.CreateSpecificCulture("en-US");
+                string latString = fields[3].Split(':')[1].Trim();
+                Debug.WriteLine("latstring :" + latString);
+                if (double.TryParse(latString, NumberStyles.Float, CultureInfo.InvariantCulture, out double latValue))
+                {
+                    Debug.WriteLine("latvalue: " + latValue);
+                    networkData.Lat = latValue;
+                    Debug.WriteLine("netLat: " +  networkData.Lat);
+                }
+                else
+                {
+                    // Handle the error when parsing latitude fails
+                    //networkData.Lat = 0; // Assign a default value or handle the error as needed
+                    networkData.Lat = 60.996010;
+                }
+
+                string lonString = fields[4].Split(':')[1].Trim();
+                if (double.TryParse(lonString, NumberStyles.Any, CultureInfo.InvariantCulture, out double lonValue))
+                {
+                    networkData.Lon = lonValue;
+                }
+                else
+                {
+                    // Handle the error when parsing longitude fails
+                    //networkData.Lon = 0; // Assign a default value or handle the error as needed
+                    networkData.Lon = 24.464230;
+                }
+
                 networkData.RSSI = int.Parse(fields[5].Split(':')[1].Trim());
+                //networkData.SNR = double.Parse(fields[6].Split(':')[1].Trim(), CultureInfo.DefaultThreadCurrentCulture);
                 networkData.SNR = double.Parse(fields[6].Split(':')[1].Trim(), CultureInfo.InvariantCulture);
                 //scannerData.TimeStamp = ParseDateTime(fields[7].Split(':')[1].Trim());
             }
@@ -133,7 +278,7 @@ namespace Scanner_MAUI.Helpers
             if (double.TryParse(value, out double result))
                 return result;
 
-            return null;
+            return 0;
         }
 
         public void Disconnect()
@@ -145,8 +290,12 @@ namespace Scanner_MAUI.Helpers
                 serialPort.Write(data, 0, data.Length);
                 //serialPort.WriteLine("0"); // Send the command to stop scanning
                 serialPort.Close();
+                NetworkNames.Clear();
+                Strength = -110;
                 Debug.WriteLine("Serial Port conn closed");
             }
         }
+
+       
     }
 }
