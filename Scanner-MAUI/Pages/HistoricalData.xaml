@@ -1,20 +1,101 @@
-<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:esri="http://schemas.esri.com/arcgis/runtime/2013"
+             xmlns:Helpers="clr-namespace:Scanner_MAUI.Helpers"
+             xmlns:styles="clr-namespace:Scanner_MAUI.Styles"
+             xmlns:gauge="clr-namespace:Syncfusion.Maui.Gauges;assembly=Syncfusion.Maui.Gauges"
+             xmlns:esriUI="clr-namespace:Esri.ArcGISRuntime.Maui;assembly=Esri.ArcGISRuntime.Maui"
+             xmlns:lvc="clr-namespace:LiveChartsCore.SkiaSharpView.Maui;assembly=LiveChartsCore.SkiaSharpView.Maui"
+             xmlns:vms="clr-namespace:Scanner_MAUI.Helpers"
              x:Class="Scanner_MAUI.Pages.HistoricalData"
              Title=""
              BackgroundColor="#f3f3f3"
              >
-    <ContentPage.MenuBarItems >
+    <ContentPage.Resources>
+        <Helpers:GraphicsDrawable x:Key="MyDrawable" />
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <styles:HistoricalDataStyles />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <!--<ContentPage.BindingContext>
+        <vms:lineChart/>
+    </ContentPage.BindingContext>-->
+    <ContentPage.MenuBarItems>
         <MenuBarItem Text="File">
-            <MenuFlyoutItem Text="Start" />
-            <MenuFlyoutItem Text="Stop" />
+            <MenuFlyoutItem Text="Read SD" Clicked="StartMenuItem_Clicked"/>
+            <MenuFlyoutItem Text="Stop" Clicked="StopMenuItem_Clicked"/>
         </MenuBarItem>
     </ContentPage.MenuBarItems>
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to Historical Data Page!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+    <!--Using Grid for layout-->
+    <Grid>
+        <Grid Style="{StaticResource MainGridStyle}">
+            <!-- Menu list on the left (taking full length) -->
+            <!--<Frame Style="{StaticResource LeftNetworkNamesFrameStyle}" >-->
+            <ListView x:Name="NetworkListView" Style="{StaticResource ListViewStyle}">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <TextCell Text="{Binding Name}" />
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+            <!--</Frame>-->
+            <Frame Style="{StaticResource LocationStyle}">
+                <!-- Dummy location content -->
+                <Grid>
+                    <esriUI:MapView x:Name="MyMapView" />
+                    <Grid Style="{StaticResource LocationButtonGrid}">
+                        <ImageButton Style="{StaticResource ImageButton}" 
+                                        Source="my_location3.png"
+                                        x:Name="CompassNavigationButton"
+                                        Clicked="MyLocationButton_Clicked"></ImageButton>
+                        <!--<Button Style="{StaticResource LocationButton}" 
+                                x:Name="CompassNavigationButton"
+                            Clicked="MyLocationButton_Clicked"
+                            Text="My Location" />-->
+                    </Grid>
+                </Grid>
+            </Frame>
+            <Frame Style="{StaticResource SNRStyle}">
+                <!--<lvc:CartesianChart x:Name="CartesianChart" Series="{Binding Series}" Title="{Binding Title}" />-->
+                <lvc:CartesianChart x:Name="CartesianChart" Series="{Binding Series}" Title="{Binding Title}" />
+            </Frame>
+            <Frame Style="{StaticResource RSSIChartStyle}">
+                <lvc:CartesianChart x:Name="CartesianChart2" Series="{Binding Series2}" Title="{Binding Title}" />
+            </Frame>
+            <Frame Style="{StaticResource TableStyle}">
+                <Grid Style="{StaticResource SecondaryGridStyle}">
+                    <ScrollView>
+                        <TableView x:Name="TableView" Intent="Settings" BackgroundColor="#fff" MinimumWidthRequest="20" >
+                            <TableRoot>
+                                <TableSection Title="Scanner Historical Data By Network Name">
+                                    <ViewCell x:Name="ViewCell">
+                                        <Grid x:Name="Table" BackgroundColor ="#fff" 
+                                                 
+                                                  ColumnDefinitions="14*,14*,14*,14*,14*,14*,14*">
+                                            <Label Text="Name"
+                                                   Margin="10,10,0,0" Grid.Column="0" FontAttributes="Bold" />
+                                            <Label Text="Type"
+                                                   Margin="10,10,0,0" Grid.Column="1" FontAttributes="Bold"/>
+                                            <Label Text="Latitude"
+                                                   Margin="10,10,0,0" Grid.Column="2" FontAttributes="Bold"/>
+                                            <Label Text="Longitude"
+                                                   Margin="10,10,0,0" Grid.Column="3" FontAttributes="Bold"/>
+                                            <Label Text="RSSI"
+                                                   Margin="10,10,0,0" Grid.Column="4" FontAttributes="Bold"/>
+                                            <Label Text="SNR"
+                                                   Margin="10,10,0,0" Grid.Column="5" FontAttributes="Bold"/>
+                                            <Label Text="Date and Time"
+                                                   Margin="10,10,0,0" Grid.Column="6" FontAttributes="Bold"/>
+                                        </Grid>
+                                    </ViewCell>
+                                </TableSection>
+                            </TableRoot>
+                        </TableView>
+                    </ScrollView>
+                </Grid>
+            </Frame>
+        </Grid>
+    </Grid>
 </ContentPage>

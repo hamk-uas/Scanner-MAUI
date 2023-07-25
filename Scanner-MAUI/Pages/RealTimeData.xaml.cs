@@ -91,6 +91,7 @@ public partial class RealTimeData : ContentPage
 
             double snr = scannerConn.SNR;
             _observableValues.Add(new (snr));
+            MyMapView.GraphicsOverlays.Clear();
 
         }
     }
@@ -126,7 +127,8 @@ public partial class RealTimeData : ContentPage
                     Name = "SNR Value"
                 }
             };
-           
+            MyMapView.GraphicsOverlays.Clear();
+
 
         }
     }
