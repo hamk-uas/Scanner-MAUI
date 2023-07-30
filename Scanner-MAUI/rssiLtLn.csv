@@ -1,0 +1,8 @@
+Name;Type;Latitude;Longitude;RSSI;SNR
+device_1_dummy;LoRaRAW;60,99601;24,46423;-42;6
+device_1_dummy;LoRaRAW;60,99601;24,46423;-41;6
+device_1_dummy;LoRaRAW;60,99601;24,46423;-47;6
+device_1_dummy;LoRaRAW;60,99601;24,46423;-34;6
+device_1_dummy;LoRaRAW;60,99601;24,46423;-64;6
+device_1_dummy;LoRaRAW;60,99601;24,46423;-48;7
+device_1_dummy;LoRaRAW;60,99601;24,46423;-42;7

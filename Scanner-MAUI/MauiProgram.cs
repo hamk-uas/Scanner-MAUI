@@ -1,7 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using Esri.ArcGISRuntime.Maui;
 using Esri.ArcGISRuntime.Toolkit.Maui;
-using Esri.ArcGISRuntime;
 using Scanner_MAUI.Helpers;
 using Esri.ArcGISRuntime.Security;
 using Syncfusion.Maui.Core.Hosting;

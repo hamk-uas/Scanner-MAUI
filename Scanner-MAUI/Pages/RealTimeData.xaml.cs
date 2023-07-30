@@ -30,6 +30,7 @@ public partial class RealTimeData : ContentPage
         Canvas.Drawable = graphicsDrawable;
         NetworkListView.ItemSelected += OnNetworkNameSelected;
         TimeStamp.TimeStampViewr(DateTimeLabel);
+
         _ = ViewMap.LoadWMTSLayer(MyMapView);
         _ = Location.StartDeviceLocationTask(MyMapView); // Gets current location
         //_ = Markers.MapMarkers(MyMapView);
@@ -93,6 +94,8 @@ public partial class RealTimeData : ContentPage
             _observableValues.Add(new (snr));
             MyMapView.GraphicsOverlays.Clear();
 
+            DateTimeLabel.Text = $"Date and Time: {scannerConn.Datetime}";
+
         }
     }
 
@@ -102,6 +105,7 @@ public partial class RealTimeData : ContentPage
         if (e.SelectedItem is Network selectedNetwork)
         {
             NetworkNameLabel.Text = $"Network Name:  {selectedNetwork.Name}";
+            
 
             //Show the marker location on the map based on the network name
             //mapMarkers = new Markers
@@ -112,7 +116,7 @@ public partial class RealTimeData : ContentPage
 
             //_ = mapMarkers.MapMarkers(MyMapView);
             //MyMapView.GraphicsOverlays.Clear();
-           
+
 
             scannerConn.PropertyChanged += ScannerConn_PropertyChanged;
 

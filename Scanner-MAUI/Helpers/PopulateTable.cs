@@ -1,10 +1,4 @@
-﻿using Microsoft.Maui.Controls;
-using Scanner_MAUI.Model;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Scanner_MAUI.Model;
 
 namespace Scanner_MAUI.Helpers
 {
@@ -17,24 +11,24 @@ namespace Scanner_MAUI.Helpers
             {
                 ColumnDefinitions =
             {
+                new ColumnDefinition { Width = new GridLength(18, GridUnitType.Star) },
                 new ColumnDefinition { Width = new GridLength(14, GridUnitType.Star) },
                 new ColumnDefinition { Width = new GridLength(14, GridUnitType.Star) },
                 new ColumnDefinition { Width = new GridLength(14, GridUnitType.Star) },
                 new ColumnDefinition { Width = new GridLength(14, GridUnitType.Star) },
-                new ColumnDefinition { Width = new GridLength(14, GridUnitType.Star) },
-                new ColumnDefinition { Width = new GridLength(14, GridUnitType.Star) },
+                new ColumnDefinition { Width = new GridLength(13, GridUnitType.Star) },
                 new ColumnDefinition { Width = new GridLength(14, GridUnitType.Star) }
             }
             };
 
-            var labelName = new Label { Text = "Name", Margin = new Thickness(9), FontAttributes = FontAttributes.Bold };
-            var labelType = new Label { Text = "Type", Margin = new Thickness(9), FontAttributes = FontAttributes.Bold };
-            var labelLat = new Label { Text = "Latitude", Margin = new Thickness(9), FontAttributes = FontAttributes.Bold };
-            var labelLon = new Label { Text = "Longitude", Margin = new Thickness(9), FontAttributes = FontAttributes.Bold };
-            var labelRSSI = new Label { Text = "RSSI", Margin = new Thickness(9), FontAttributes = FontAttributes.Bold };
-            var labelSNR = new Label { Text = "SNR", Margin = new Thickness(9), FontAttributes = FontAttributes.Bold };
-            var labelDateTime = new Label { Text = "Date and Time", Margin = new Thickness(9), FontAttributes = FontAttributes.Bold };
-
+            var labelName = new Label { Text = "Name", Margin = new Thickness(8), FontAttributes = FontAttributes.Bold };
+            var labelType = new Label { Text = "Type", Margin = new Thickness(8), FontAttributes = FontAttributes.Bold };
+            var labelLat = new Label { Text = "Latitude", Margin = new Thickness(8), FontAttributes = FontAttributes.Bold };
+            var labelLon = new Label { Text = "Longitude", Margin = new Thickness(8), FontAttributes = FontAttributes.Bold };
+            var labelRSSI = new Label { Text = "RSSI", Margin = new Thickness(8), FontAttributes = FontAttributes.Bold };
+            var labelSNR = new Label { Text = "SNR", Margin = new Thickness(8), FontAttributes = FontAttributes.Bold };
+            var labelDateTime = new Label { Text = "Date and Time", Margin = new Thickness(8), FontAttributes = FontAttributes.Bold };
+            
             grid.Children.Add(labelName);
             grid.Children.Add(labelType);
             grid.Children.Add(labelLat);
@@ -78,23 +72,25 @@ namespace Scanner_MAUI.Helpers
                 {
                     ColumnDefinitions =
                 {
+                    new ColumnDefinition { Width = new GridLength(18, GridUnitType.Star) },
                     new ColumnDefinition { Width = new GridLength(14, GridUnitType.Star) },
                     new ColumnDefinition { Width = new GridLength(14, GridUnitType.Star) },
                     new ColumnDefinition { Width = new GridLength(14, GridUnitType.Star) },
                     new ColumnDefinition { Width = new GridLength(14, GridUnitType.Star) },
-                    new ColumnDefinition { Width = new GridLength(14, GridUnitType.Star) },
-                    new ColumnDefinition { Width = new GridLength(14, GridUnitType.Star) },
+                    new ColumnDefinition { Width = new GridLength(13, GridUnitType.Star) },
                     new ColumnDefinition { Width = new GridLength(14, GridUnitType.Star) }
                 }
                 };
 
                 // Add the Labels for each network item
-                var nameLabel = new Label { Text = row.Name, Margin = new Thickness(9) };
-                var typeLabel = new Label { Text = row.Type, Margin = new Thickness(9) };
-                var latLabel = new Label { Text = row.Lat.ToString(), Margin = new Thickness(9) };
-                var lonLabel = new Label { Text = row.Lon.ToString(), Margin = new Thickness(9) };
-                var rssiLabel = new Label { Text = row.RSSI.ToString(), Margin = new Thickness(9) };
-                var snrLabel = new Label { Text = row.SNR.ToString(), Margin = new Thickness(9) };
+                var nameLabel = new Label { Text = row.Name, Margin = new Thickness(3) };
+                var typeLabel = new Label { Text = row.Type, Margin = new Thickness(5) };
+                var latLabel = new Label { Text = row.Lat.ToString(), Margin = new Thickness(5) };
+                var lonLabel = new Label { Text = row.Lon.ToString(), Margin = new Thickness(5) };
+                var rssiLabel = new Label { Text = row.RSSI.ToString(), Margin = new Thickness(5) };
+                var snrLabel = new Label { Text = row.SNR.ToString(), Margin = new Thickness(5) };
+
+                
 
                 Grid.SetColumn(nameLabel, 0);
                 Grid.SetColumn(typeLabel, 1);
@@ -115,6 +111,31 @@ namespace Scanner_MAUI.Helpers
                 tableSection.Add(viewCell);
 
                 rowIndex++;
+            }
+        }
+        public void WriteNetworkDataToCSV(System.Collections.ObjectModel.ObservableCollection<Network> sDContent)
+        {
+            //string path = @"C:\Users\MyDevice\Desktop\dataVisulization\rssiLtLn.csv";
+            string path = @"C:\Users\MyDevice\OneDrive\OmatAsiat\HAMK-Smart\Scanner-MAUI\Scanner-MAUI\rssiLtLn.csv";
+
+
+            // Delete the file if it exists.
+            if (File.Exists(path))
+            {
+                File.Delete(path);
+            }
+
+            using (StreamWriter writer = new StreamWriter(path))
+            {
+                // Write the CSV header
+                writer.WriteLine("Name;Type;Latitude;Longitude;RSSI;SNR");
+
+                // Write the network data
+                foreach (Network row in sDContent)
+                {
+                    string csvLine = $"{row.Name};{row.Type};{row.Lat};{row.Lon};{row.RSSI};{row.SNR}";
+                    writer.WriteLine(csvLine);
+                }
             }
         }
     }

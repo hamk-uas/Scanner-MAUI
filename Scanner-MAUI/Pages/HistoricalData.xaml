@@ -42,27 +42,28 @@
             </ListView>
             <!--</Frame>-->
             <Frame Style="{StaticResource LocationStyle}">
-                <!-- Dummy location content -->
                 <Grid>
                     <esriUI:MapView x:Name="MyMapView" />
+                    <ActivityIndicator x:Name="MyActivityIndicator"
+                           Grid.RowSpan="2"
+                           Grid.ColumnSpan="2"
+                           HeightRequest="40"
+                           IsVisible="False"
+                           WidthRequest="40" />
+                    
                     <Grid Style="{StaticResource LocationButtonGrid}">
                         <ImageButton Style="{StaticResource ImageButton}" 
                                         Source="my_location3.png"
                                         x:Name="CompassNavigationButton"
                                         Clicked="MyLocationButton_Clicked"></ImageButton>
-                        <!--<Button Style="{StaticResource LocationButton}" 
-                                x:Name="CompassNavigationButton"
-                            Clicked="MyLocationButton_Clicked"
-                            Text="My Location" />-->
                     </Grid>
                 </Grid>
             </Frame>
             <Frame Style="{StaticResource SNRStyle}">
-                <!--<lvc:CartesianChart x:Name="CartesianChart" Series="{Binding Series}" Title="{Binding Title}" />-->
                 <lvc:CartesianChart x:Name="CartesianChart" Series="{Binding Series}" Title="{Binding Title}" />
             </Frame>
             <Frame Style="{StaticResource RSSIChartStyle}">
-                <lvc:CartesianChart x:Name="CartesianChart2" Series="{Binding Series2}" Title="{Binding Title}" />
+                <lvc:CartesianChart x:Name="CartesianChart2" Series="{Binding Series2}" Title="{Binding Title2}" />
             </Frame>
             <Frame Style="{StaticResource TableStyle}">
                 <Grid Style="{StaticResource SecondaryGridStyle}">

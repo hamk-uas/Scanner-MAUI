@@ -77,6 +77,7 @@ namespace Scanner_MAUI.Helpers
                                                         Lon = data.Lon,
                                                         RSSI = data.RSSI,
                                                         SNR = data.SNR,
+                                                        Timestamp = data.Timestamp,
                                                             });
                                     Debug.WriteLine("ExistingNetwork: " + ExistingNetwork.Name + " " + ExistingNetwork.RSSI);
                                     Debug.WriteLine("Type: " + data.Type);
@@ -146,11 +147,25 @@ namespace Scanner_MAUI.Helpers
                 {
                     networkData.Lat = latValue;
                 }
+                else
+                {
+                    // Handle the error when parsing latitude fails
+                    //networkData.Lat = 0; // Assign a default value or handle the error as needed
+                    networkData.Lat = 60.996010;
+                }
+
 
                 if (double.TryParse(fields[3], NumberStyles.Float, CultureInfo.InvariantCulture, out double lonValue))
                 {
                     networkData.Lon = lonValue;
                 }
+                else
+                {
+                    // Handle the error when parsing longitude fails
+                    //networkData.Lon = 0; // Assign a default value or handle the error as needed
+                    networkData.Lon = 24.464230;
+                }
+
                 if (int.TryParse(fields[4], out int rssiValue))
                 {
                     networkData.RSSI = rssiValue;
@@ -160,6 +175,13 @@ namespace Scanner_MAUI.Helpers
                 {
                     networkData.SNR = snrValue;
                 }
+                int startIndex1 = data.IndexOf("(2023, 6, 15, 17, 42, 53") +1;
+                int endIndex1 = data.IndexOf(", None)");
+                string timestampStr = data.Substring(startIndex1, endIndex1 - startIndex1);
+                string[] timestampParts = timestampStr.Split(',');
+                DateTime rtc = DateTime.Parse(timestampParts[6].Trim());
+                int rtc2 = int.Parse(timestampParts[6].Trim());
+                networkData.Timestamp = rtc;
             }
             else
             {

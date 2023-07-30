@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Collections.ObjectModel;
 using Scanner_MAUI.Model;
 using System.ComponentModel;
+using System.Text;
 
 namespace Scanner_MAUI.Helpers
 {
@@ -92,6 +93,21 @@ namespace Scanner_MAUI.Helpers
             }
         }
 
+        private DateTime datetime;
+
+        public DateTime Datetime
+        {
+            get { return datetime; }
+            set
+            {
+                if (datetime != value)
+                {
+                    datetime = value;
+                    OnPropertyChanged(nameof(Datetime));
+                }
+            }
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected virtual void OnPropertyChanged(string propertyName)
@@ -156,6 +172,7 @@ namespace Scanner_MAUI.Helpers
                                     Lat = data.Lat;
                                     Lon = data.Lon;
                                     SNR = data.SNR;
+                                    Datetime = data.Timestamp; 
                                     ExistingNetwork.RSSI = data.RSSI;
                                     ExistingNetwork.Name = data.Name;
 
@@ -246,6 +263,11 @@ namespace Scanner_MAUI.Helpers
                     // Handle the error when parsing latitude fails
                     //networkData.Lat = 0; // Assign a default value or handle the error as needed
                     networkData.Lat = 60.996010;
+                    //double desiredLatitude= 60.996018;
+                    //latString = $" {desiredLatitude}";
+                    //fields[3] = "lat: " + latString;
+                    //string updatedDatastream = string.Join(", ", fields);
+                    //serialPort.WriteLine(updatedDatastream);
                 }
 
                 string lonString = fields[4].Split(':')[1].Trim();
@@ -258,11 +280,76 @@ namespace Scanner_MAUI.Helpers
                     // Handle the error when parsing longitude fails
                     //networkData.Lon = 0; // Assign a default value or handle the error as needed
                     networkData.Lon = 24.464230;
+                    double desiredLongitude = 24.464238;
+                    lonString = $" {desiredLongitude}";
+                    fields[4] = "lon: " + lonString;
+                    string updatedDatastream3 = string.Join(", ", fields);
+                    serialPort.WriteLine(updatedDatastream3);
                 }
 
                 networkData.RSSI = int.Parse(fields[5].Split(':')[1].Trim());
                 //networkData.SNR = double.Parse(fields[6].Split(':')[1].Trim(), CultureInfo.DefaultThreadCurrentCulture);
                 networkData.SNR = double.Parse(fields[6].Split(':')[1].Trim(), CultureInfo.InvariantCulture);
+
+                //double desiredLongitude = 24.464238;
+                //lonString = $" {desiredLongitude}";
+                //fields[4] = "lon: " + lonString;
+                //string updatedDatastream = string.Join(", ", fields);
+                //serialPort.WriteLine(updatedDatastream);
+
+                // Extract the timestamp tuple from the data stream
+                int startIndex1 = data.IndexOf("time: (") + 7;
+                int endIndex1 = data.IndexOf(", None)");
+                string timestampStr = data.Substring(startIndex1, endIndex1 - startIndex1);
+
+                int streamI1 = data.IndexOf("message");
+                int streamI2 = data.IndexOf(", time:");
+                string streamNoTime = data.Substring(streamI1, streamI2 - streamI1);
+                // Split the timestamp string by commas and convert to integers
+                string[] timestampParts = timestampStr.Split(',');
+                int year = int.Parse(timestampParts[0].Trim());
+                int month = int.Parse(timestampParts[1].Trim());
+                int day = int.Parse(timestampParts[2].Trim());
+                int hour = int.Parse(timestampParts[3].Trim());
+                int minute = int.Parse(timestampParts[4].Trim());
+                int second = int.Parse(timestampParts[5].Trim());
+                int rtc = int.Parse(timestampParts[6].Trim());
+
+                DateTime referenceDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, DateTime.Now.Hour, DateTime.Now.Minute, DateTime.Now.Second);
+                DateTime dateTime = referenceDate.AddMilliseconds(rtc);
+                timestampParts[6] = dateTime.ToString();
+                foreach(var value in timestampParts)
+                {
+                   
+                }
+                string date = fields[7].Split(':')[1].Trim();
+                string updatedDatastream = string.Join(", ", timestampParts);
+                string updatedDatastream2 = string.Join(", ", fields);
+                serialPort.WriteLine(updatedDatastream);
+                networkData.Timestamp = dateTime;
+                //Debug.WriteLine("rtc " + rtc);
+                //string timeField = timestampStr;
+                //DateTime currentTime = DateTime.Now;
+                //year = currentTime.Year;
+                //month = currentTime.Month;
+                //day = currentTime.Day;
+                //hour = currentTime.Hour;
+                //minute = currentTime.Minute;
+                //second = currentTime.Second;
+                //rtc = currentTime.Millisecond;
+
+                //// Create a new timestamp string with the current time values
+                //string updatedTimestamp = $"({year}, {month}, {day}, {hour}, {minute}, {second}, {rtc}, None)";
+
+                //fields[7] = streamNoTime + ", time: " + updatedTimestamp;
+                //// Replace the original timestamp in the datastream with the updated one
+                ////string updatedDatastream = data.Replace(data.Split(new[] { "time:" }, StringSplitOptions.None)[1].Split(',')[0].Trim(), updatedTimestamp);
+                //string updatedDatastream = fields[7];
+                //// Send the updated datastream back to the scanner through the serial port
+                //serialPort.Write(updatedDatastream);
+                ////networkData.Timestamp = dateTime;
+                //Debug.WriteLine("Timestamp " + networkData.Timestamp);
+
                 //scannerData.TimeStamp = ParseDateTime(fields[7].Split(':')[1].Trim());
             }
             else
@@ -271,6 +358,18 @@ namespace Scanner_MAUI.Helpers
             }
 
             return networkData;
+        }
+
+        private static long ConvertToUnixTimestamp(DateTime dateTime)
+        {
+            // Unix timestamp starts from January 1, 1970 (UTC)
+            DateTime unixEpoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+
+            // Calculate the number of seconds between the given DateTime and Unix Epoch
+            TimeSpan timeSpan = dateTime.ToUniversalTime() - unixEpoch;
+
+            // Return the total seconds (Unix timestamp)
+            return (long)timeSpan.TotalSeconds;
         }
 
         private double? ParseNullableDouble(string value)

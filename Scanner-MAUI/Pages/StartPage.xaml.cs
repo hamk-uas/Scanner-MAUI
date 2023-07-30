@@ -24,7 +24,13 @@ public partial class StartPage : ContentPage
     private async void Settings_Clicked(object sender, EventArgs e)
     {
         //await Navigation.PushAsync(new AppShell());
-        await Navigation.PushAsync(new HistoricalData());
+        await Navigation.PushAsync(new MainWindow());
+    }
+
+    private async void Settings_Clicked2(object sender, EventArgs e)
+    {
+        //await Navigation.PushAsync(new AppShell());
+        await Navigation.PushAsync(new AnalyzeHotspots());
     }
 
 }
