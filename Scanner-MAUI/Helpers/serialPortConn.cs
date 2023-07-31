@@ -291,66 +291,87 @@ namespace Scanner_MAUI.Helpers
                 //networkData.SNR = double.Parse(fields[6].Split(':')[1].Trim(), CultureInfo.DefaultThreadCurrentCulture);
                 networkData.SNR = double.Parse(fields[6].Split(':')[1].Trim(), CultureInfo.InvariantCulture);
 
-                //double desiredLongitude = 24.464238;
-                //lonString = $" {desiredLongitude}";
-                //fields[4] = "lon: " + lonString;
-                //string updatedDatastream = string.Join(", ", fields);
-                //serialPort.WriteLine(updatedDatastream);
-
-                // Extract the timestamp tuple from the data stream
-                int startIndex1 = data.IndexOf("time: (") + 7;
-                int endIndex1 = data.IndexOf(", None)");
-                string timestampStr = data.Substring(startIndex1, endIndex1 - startIndex1);
-
-                int streamI1 = data.IndexOf("message");
-                int streamI2 = data.IndexOf(", time:");
-                string streamNoTime = data.Substring(streamI1, streamI2 - streamI1);
-                // Split the timestamp string by commas and convert to integers
-                string[] timestampParts = timestampStr.Split(',');
-                int year = int.Parse(timestampParts[0].Trim());
-                int month = int.Parse(timestampParts[1].Trim());
-                int day = int.Parse(timestampParts[2].Trim());
-                int hour = int.Parse(timestampParts[3].Trim());
-                int minute = int.Parse(timestampParts[4].Trim());
-                int second = int.Parse(timestampParts[5].Trim());
-                int rtc = int.Parse(timestampParts[6].Trim());
-
                 DateTime referenceDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, DateTime.Now.Hour, DateTime.Now.Minute, DateTime.Now.Second);
-                DateTime dateTime = referenceDate.AddMilliseconds(rtc);
-                timestampParts[6] = dateTime.ToString();
-                foreach(var value in timestampParts)
-                {
-                   
-                }
-                string date = fields[7].Split(':')[1].Trim();
-                string updatedDatastream = string.Join(", ", timestampParts);
-                string updatedDatastream2 = string.Join(", ", fields);
+
+                int year3 = referenceDate.Year;
+                int month3 = referenceDate.Month;
+                int day3 = referenceDate.Day;
+                int hour3 = referenceDate.Hour;
+                int minute3 = referenceDate.Minute;
+                int second3 = referenceDate.Second;
+                int milliseconds = referenceDate.Millisecond;
+
+                string formattedString3 = $"time: ({year3}";
+                fields[7] = formattedString3;
+
+                string formattedstring4 = $"{month3}";
+                fields[8] = formattedstring4;
+
+                string formattedstring5 = $"{day3}";
+                fields[9] = formattedstring5;
+
+                string formattedstring6 = $"{hour3}";
+                fields[10] = formattedstring6;
+
+                string formattedstring7 = $"{minute3}";
+                fields[11] = formattedstring7;
+
+                string formattedstring8 = $"{second3}";
+                fields[12] = formattedstring8;
+
+                string formattedstring9 = $"{milliseconds}";
+                fields[13] = formattedstring9;
+
+                string updatedDatastream = string.Join(", ", fields);
+;
+                //string updatedDatastream2 = string.Join(", ", fields);
                 serialPort.WriteLine(updatedDatastream);
-                networkData.Timestamp = dateTime;
-                //Debug.WriteLine("rtc " + rtc);
-                //string timeField = timestampStr;
-                //DateTime currentTime = DateTime.Now;
-                //year = currentTime.Year;
-                //month = currentTime.Month;
-                //day = currentTime.Day;
-                //hour = currentTime.Hour;
-                //minute = currentTime.Minute;
-                //second = currentTime.Second;
-                //rtc = currentTime.Millisecond;
+                networkData.Timestamp = referenceDate;
 
-                //// Create a new timestamp string with the current time values
-                //string updatedTimestamp = $"({year}, {month}, {day}, {hour}, {minute}, {second}, {rtc}, None)";
+                //// Extract the timestamp tuple from the data stream
+                //int startIndex1 = data.IndexOf("time: (") + 7;
+                //int endIndex1 = data.IndexOf(", None)");
+                //string timestampStr = data.Substring(startIndex1, endIndex1 - startIndex1);
 
-                //fields[7] = streamNoTime + ", time: " + updatedTimestamp;
-                //// Replace the original timestamp in the datastream with the updated one
-                ////string updatedDatastream = data.Replace(data.Split(new[] { "time:" }, StringSplitOptions.None)[1].Split(',')[0].Trim(), updatedTimestamp);
-                //string updatedDatastream = fields[7];
-                //// Send the updated datastream back to the scanner through the serial port
-                //serialPort.Write(updatedDatastream);
-                ////networkData.Timestamp = dateTime;
-                //Debug.WriteLine("Timestamp " + networkData.Timestamp);
 
-                //scannerData.TimeStamp = ParseDateTime(fields[7].Split(':')[1].Trim());
+                //// Split the timestamp string by commas and convert to integers
+                //string[] timestampParts = timestampStr.Split(',');
+                //int year = int.Parse(timestampParts[0].Trim());
+                //int month = int.Parse(timestampParts[1].Trim());
+                //int day = int.Parse(timestampParts[2].Trim());
+                //int hour = int.Parse(timestampParts[3].Trim());
+                //int minute = int.Parse(timestampParts[4].Trim());
+                //int second = int.Parse(timestampParts[5].Trim());
+                //int rtc = int.Parse(timestampParts[6].Trim());
+
+                //DateTime referenceDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, DateTime.Now.Hour, DateTime.Now.Minute, DateTime.Now.Second);
+                //DateTime dateTime = referenceDate.AddMilliseconds(rtc);
+
+                //timestampParts[6] = dateTime.ToString();
+
+                //timestampStr = timestampParts[6];
+
+
+                //// Parse the string into a DateTime object
+                //DateTime dateTime2 = DateTime.ParseExact(timestampStr, "d.M.yyyy H.m.s", null);
+                //// Extract individual components
+                //int year2 = dateTime2.Year;
+                //int month2 = dateTime2.Month;
+                //int day2 = dateTime2.Day;
+                //int hour2 = dateTime2.Hour;
+                //int minute2 = dateTime2.Minute;
+                //int second2 = dateTime2.Second;
+                //int millisecond2 = dateTime2.Millisecond;
+                //string formattedString = $"{year2}, {month2}, {day2}, {hour2}, {minute2}, {second2}, {millisecond2}";
+
+                ////fields[7].Replace(" time: (2023, 6, 15, 17, 30, 17, 845006, None)", "");
+                //fields[7] = "time: (" + formattedString + endIndex1;
+                //fields[8].Remove(0);
+                //fields[9].Remove(0);
+                //fields[10].Remove(0);
+                //fields[11].Remove(0);
+                //fields[12].Remove(0);
+                //fields[13].Remove(0);
             }
             else
             {

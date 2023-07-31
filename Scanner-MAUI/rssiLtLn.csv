@@ -1,8 +1,8 @@
 Name;Type;Latitude;Longitude;RSSI;SNR
-device_1_dummy;LoRaRAW;60,99601;24,46423;-42;6
-device_1_dummy;LoRaRAW;60,99601;24,46423;-41;6
-device_1_dummy;LoRaRAW;60,99601;24,46423;-47;6
-device_1_dummy;LoRaRAW;60,99601;24,46423;-34;6
-device_1_dummy;LoRaRAW;60,99601;24,46423;-64;6
-device_1_dummy;LoRaRAW;60,99601;24,46423;-48;7
-device_1_dummy;LoRaRAW;60,99601;24,46423;-42;7
+device_1_dummy;LoRaRAW;60,99601;24,46423;-36;6;31.7.2023 12.34.01
+device_1_dummy;LoRaRAW;60,99601;24,46423;-36;7;31.7.2023 12.47.48
+device_1_dummy;LoRaRAW;60,99601;24,46423;-36;6;31.7.2023 12.44.54
+device_1_dummy;LoRaRAW;60,99601;24,46423;-36;7;31.7.2023 12.41.56
+device_1_dummy;LoRaRAW;60,99601;24,46423;-36;7;31.7.2023 12.38.59
+device_1_dummy;LoRaRAW;60,99601;24,46423;-36;7;31.7.2023 12.36.12
+device_1_dummy;LoRaRAW;60,99601;24,46423;-36;7;31.7.2023 12.33.27

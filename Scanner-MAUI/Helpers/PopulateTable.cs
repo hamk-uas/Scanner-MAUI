@@ -89,7 +89,7 @@ namespace Scanner_MAUI.Helpers
                 var lonLabel = new Label { Text = row.Lon.ToString(), Margin = new Thickness(5) };
                 var rssiLabel = new Label { Text = row.RSSI.ToString(), Margin = new Thickness(5) };
                 var snrLabel = new Label { Text = row.SNR.ToString(), Margin = new Thickness(5) };
-
+                var dateTimeLabel = new Label { Text = row.Timestamp.ToString(), Margin= new Thickness(5) };
                 
 
                 Grid.SetColumn(nameLabel, 0);
@@ -98,6 +98,7 @@ namespace Scanner_MAUI.Helpers
                 Grid.SetColumn(lonLabel, 3);
                 Grid.SetColumn(rssiLabel, 4);
                 Grid.SetColumn(snrLabel, 5);
+                Grid.SetColumn(dateTimeLabel, 6);
 
                 rowGrid.Children.Add(nameLabel);
                 rowGrid.Children.Add(typeLabel);
@@ -105,6 +106,7 @@ namespace Scanner_MAUI.Helpers
                 rowGrid.Children.Add(lonLabel);
                 rowGrid.Children.Add(rssiLabel);
                 rowGrid.Children.Add(snrLabel);
+                rowGrid.Children.Add(dateTimeLabel);
 
                 Grid.SetRow(rowGrid, rowIndex);
                 var viewCell = new ViewCell { View = rowGrid };
@@ -133,7 +135,7 @@ namespace Scanner_MAUI.Helpers
                 // Write the network data
                 foreach (Network row in sDContent)
                 {
-                    string csvLine = $"{row.Name};{row.Type};{row.Lat};{row.Lon};{row.RSSI};{row.SNR}";
+                    string csvLine = $"{row.Name};{row.Type};{row.Lat};{row.Lon};{row.RSSI};{row.SNR};{row.Timestamp}";
                     writer.WriteLine(csvLine);
                 }
             }

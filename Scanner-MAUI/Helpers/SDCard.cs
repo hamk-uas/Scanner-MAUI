@@ -102,6 +102,7 @@ namespace Scanner_MAUI.Helpers
                                      + network.Lon + " "
                                      + network.RSSI + " "
                                      + network.SNR + " "
+                                     + network.Timestamp
                                     );
                             }
                         }
@@ -175,13 +176,42 @@ namespace Scanner_MAUI.Helpers
                 {
                     networkData.SNR = snrValue;
                 }
-                int startIndex1 = data.IndexOf("(2023, 6, 15, 17, 42, 53") +1;
-                int endIndex1 = data.IndexOf(", None)");
-                string timestampStr = data.Substring(startIndex1, endIndex1 - startIndex1);
-                string[] timestampParts = timestampStr.Split(',');
-                DateTime rtc = DateTime.Parse(timestampParts[6].Trim());
-                int rtc2 = int.Parse(timestampParts[6].Trim());
-                networkData.Timestamp = rtc;
+
+                string year = fields[6].Trim().Replace("(", "");
+                string month = fields[7].Trim();
+                string day = fields[8].Trim();
+                string hour = fields[9].Trim();
+                string minute = fields[10].Trim();
+                string second = fields[11].Trim();
+                string rtc = fields[12].Trim();
+
+                int yearValue = int.Parse(year);
+                int monthValue = int.Parse(month);
+                int dayValue = int.Parse(day);
+                int hourValue = int.Parse(hour);
+                int minuteValue = int.Parse(minute);
+                int secondValue = int.Parse(second);
+                int rtc2 = int.Parse(rtc);
+
+                DateTime referenceDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, DateTime.Now.Hour, DateTime.Now.Minute, DateTime.Now.Second);
+                DateTime dateTime = referenceDate.AddMilliseconds(rtc2);
+                
+                rtc = dateTime.ToString();
+                //DateTime dateTime2 = DateTime.ParseExact(rtc, "d.M.yyyy H.m.s", null);
+
+                // Create a DateTime object with the date and time components
+                //DateTime dateTime = new DateTime(yearValue, monthValue, dayValue, hourValue, minuteValue, secondValue);
+
+                networkData.Timestamp = dateTime;
+
+                //int startIndex1 = data.IndexOf("(") + 1;
+                //int endIndex1 = data.IndexOf(", None)");
+                //string timestampStr = data.Substring(startIndex1, endIndex1 - startIndex1);
+                //string[] timestampParts = timestampStr.Split(',');
+                //int rtc2 = int.Parse(timestampParts[6].Trim());
+                //DateTime referenceDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, DateTime.Now.Hour, DateTime.Now.Minute, DateTime.Now.Second);
+                //DateTime dateTime = referenceDate.AddMilliseconds(rtc2);
+                //networkData.Timestamp = dateTime;
             }
             else
             {
