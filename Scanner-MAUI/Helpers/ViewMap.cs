@@ -123,5 +123,23 @@ namespace Scanner_MAUI.Helpers
             }
         }
 
+        public static async Task OpenstreetMaps(MapView MyMapView)
+        {
+            Esri.ArcGISRuntime.ArcGISRuntimeEnvironment.ApiKey = Keys.Instance["Settings:EsriAPI"];
+
+            // Create the OpenStreetMap basemap.
+            Basemap osmBasemap = new Basemap(BasemapStyle.OSMStandard);
+
+            // Create the map with the OpenStreetMap basemap.
+            Map map = new Map(osmBasemap);
+           
+            MyMapView.Map = map;
+            MyMapView.SetViewpoint(new Viewpoint(
+                latitude: 60.9763,
+                longitude: 24.4783,
+                scale: 22223.819286
+                ));
+        }
+
     }
 }

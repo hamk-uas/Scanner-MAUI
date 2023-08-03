@@ -26,7 +26,7 @@ public partial class MainWindow : ContentPage
 	{
         InitializeComponent();
         Init();
-        Esri.ArcGISRuntime.ArcGISRuntimeEnvironment.ApiKey = "AAPK251cd3ef2a7e41c6afbf1de480e30b68JgLIdErsDZRkzGXWeygr-WA_-d8iMLflw3m3fsI26ikJuPq8JkxpOtM9BYuSQW8X";
+        Esri.ArcGISRuntime.ArcGISRuntimeEnvironment.ApiKey = Keys.Instance["Settings:EsriAPI"];
     }
     private async void Init()
     {

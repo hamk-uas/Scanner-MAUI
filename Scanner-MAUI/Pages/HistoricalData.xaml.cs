@@ -20,7 +20,6 @@ public partial class HistoricalData : ContentPage
     private ObservableCollection<ObservableValue> _observableValues;
     private ObservableCollection<ObservableValue> _observableValues2;
     //private ObservableCollection<ISeries> Series { get; set; }
-    private HeatMap heatMap;
     private Markers mapMarkers;
 
     public HistoricalData()
@@ -29,7 +28,8 @@ public partial class HistoricalData : ContentPage
         NetworkListView.ItemSelected += OnNetworkNameSelected;
         scannerConn = new SDCard();
         NetworkListView.ItemsSource = scannerConn.NetworkNames;
-        _ = ViewMap.LoadWMTSLayer(MyMapView);
+        //_ = ViewMap.LoadWMTSLayer(MyMapView); //Maanmittauslaitos WMTS layer
+        _ = ViewMap.OpenstreetMaps(MyMapView);
         _ = Location.StartDeviceLocationTask(MyMapView); // Gets current location
         tableSection = TableView.Root[0];
         pg = new PopulateTable();
@@ -49,7 +49,7 @@ public partial class HistoricalData : ContentPage
             Padding = new LiveChartsCore.Drawing.Padding(15),
             Paint = new SolidColorPaint(SKColors.DarkSlateGray)
         };
-        heatMap = new HeatMap();
+
         mapMarkers = new Markers();
     }
 
@@ -75,17 +75,14 @@ public partial class HistoricalData : ContentPage
                 int rssi = network.RSSI;
                 _observableValues.Add(new(snr));
                 _observableValues2.Add(new(rssi));
-                //mapMarkers.Longitude = network.Lon;
-                //mapMarkers.Latitude = network.Lat;
-                
-                //mapMarkers.Longitude = network.Lon;
-                //mapMarkers.Latitude = network.Lat;
-                //_ = mapMarkers.MapMarkers(MyMapView);
 
-                heatMap.Longitude = network.Lon;
-                heatMap.Latitude = network.Lat;
-                heatMap.RSSI = rssi;
-                _ = heatMap.HeatMarkers(MyMapView);
+                mapMarkers.Longitude = network.Lon;
+                mapMarkers.Latitude = network.Lat;
+
+                mapMarkers.Longitude = network.Lon;
+                mapMarkers.Latitude = network.Lat;
+                _ = mapMarkers.MapMarkers(MyMapView);
+
             }
             CartesianChart.Series = new ObservableCollection<ISeries>
             {

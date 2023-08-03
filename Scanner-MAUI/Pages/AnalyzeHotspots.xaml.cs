@@ -2,6 +2,7 @@ using Esri.ArcGISRuntime.Data;
 using Esri.ArcGISRuntime.Geometry;
 using Esri.ArcGISRuntime.Mapping;
 using Esri.ArcGISRuntime.Symbology;
+using Scanner_MAUI.Helpers;
 using Map = Esri.ArcGISRuntime.Mapping.Map;
 
 namespace Scanner_MAUI.Pages;
@@ -14,7 +15,7 @@ public partial class AnalyzeHotspots : ContentPage
     {
         InitializeComponent();
 
-        Esri.ArcGISRuntime.ArcGISRuntimeEnvironment.ApiKey = "AAPK251cd3ef2a7e41c6afbf1de480e30b68JgLIdErsDZRkzGXWeygr-WA_-d8iMLflw3m3fsI26ikJuPq8JkxpOtM9BYuSQW8X";
+        Esri.ArcGISRuntime.ArcGISRuntimeEnvironment.ApiKey = Keys.Instance["Settings:EsriAPI"];
         
     }
    

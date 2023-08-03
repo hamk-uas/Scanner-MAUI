@@ -32,8 +32,8 @@ public partial class RealTimeData : ContentPage
         Canvas.Drawable = graphicsDrawable;
         NetworkListView.ItemSelected += OnNetworkNameSelected;
         TimeStamp.TimeStampViewr(DateTimeLabel);
-
-        _ = ViewMap.LoadWMTSLayer(MyMapView);
+        //_ = ViewMap.LoadWMTSLayer(MyMapView); //Maanmittauslaitos WMTS layer
+        _ = ViewMap.OpenstreetMaps(MyMapView);
         _ = Location.StartDeviceLocationTask(MyMapView); // Gets current location
         //_ = Markers.MapMarkers(MyMapView);
 
