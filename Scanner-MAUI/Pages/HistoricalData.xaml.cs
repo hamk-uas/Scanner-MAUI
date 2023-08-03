@@ -121,4 +121,11 @@ public partial class HistoricalData : ContentPage
         //tableSection.Clear();
         //pg.showHeader(tableSection);
     }
+
+    private void ClearSd_Clicked(object sender, EventArgs e)
+    {
+        scannerConn.ClearSD();
+        //tableSection.Clear();
+        //pg.showHeader(tableSection);
+    }
 }

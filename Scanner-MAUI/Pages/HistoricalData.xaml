@@ -26,6 +26,7 @@
         <MenuBarItem Text="File">
             <MenuFlyoutItem Text="Read SD" Clicked="StartMenuItem_Clicked"/>
             <MenuFlyoutItem Text="Stop" Clicked="StopMenuItem_Clicked"/>
+            <MenuFlyoutItem Text="Clear SD" Clicked="ClearSd_Clicked"/>
         </MenuBarItem>
     </ContentPage.MenuBarItems>
     <!--Using Grid for layout-->

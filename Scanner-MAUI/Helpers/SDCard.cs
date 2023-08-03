@@ -177,36 +177,17 @@ namespace Scanner_MAUI.Helpers
                     networkData.SNR = snrValue;
                 }
 
-                string year = fields[6].Trim().Replace("(", "");
-                string month = fields[7].Trim();
-                string day = fields[8].Trim();
-                string hour = fields[9].Trim();
-                string minute = fields[10].Trim();
-                string second = fields[11].Trim();
+                DateTime referenceDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, DateTime.Now.Hour, DateTime.Now.Minute, DateTime.Now.Second);
+
                 string rtc = fields[12].Trim();
 
-                int yearValue = int.Parse(year);
-                int monthValue = int.Parse(month);
-                int dayValue = int.Parse(day);
-                int hourValue = int.Parse(hour);
-                int minuteValue = int.Parse(minute);
-                int secondValue = int.Parse(second);
-                int rtc2 = int.Parse(rtc);
 
-                string date = $"{day}.{month}.{year} {hour}.{minute}.{second}";
+                long rtc2 = long.Parse(rtc);
+                long ticks = rtc2 * 10;
+                //DateTime dateTime = new DateTime(ticks);
+                DateTime dateTime = referenceDate.AddMicroseconds(ticks);
 
-                DateTime date2 = DateTime.Parse(date);
-
-                //System.DateTime moment = new System.DateTime(
-                //                rtc2);
-
-                //DateTime referenceDate = new DateTime(moment.Year, moment.Month, moment.Day, moment.Hour, moment.Minute, moment.Second);
-                //DateTime dateTime = referenceDate.AddMilliseconds(rtc2);
-                
-                //rtc = dateTime.ToString();
-
-
-                networkData.Timestamp = date2;
+                networkData.Timestamp = dateTime;
 
             }
             else
@@ -229,6 +210,21 @@ namespace Scanner_MAUI.Helpers
                 NetworkNames.Clear();
                 SDContent.Clear();
                 Debug.WriteLine("Serial Port conn closed");
+            }
+        }
+
+        public async void ClearSD()
+        {
+            // Stop scanning and close the serial port
+            if (serialPort != null && serialPort.IsOpen)
+            {
+                var data = new byte[] { (byte)'4', 13 };
+                serialPort.Write(data, 0, data.Length);
+                //serialPort.WriteLine("0"); // Send the command to stop scanning
+                NetworkNames.Clear();
+                SDContent.Clear();
+                Debug.WriteLine("SD card Cleared");
+                await Application.Current.MainPage.DisplayAlert("Alert", "The SD card has been cleard", "Close");
             }
         }
 
