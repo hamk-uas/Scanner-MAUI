@@ -5,6 +5,8 @@ using System.Collections.ObjectModel;
 using Scanner_MAUI.Model;
 using System.ComponentModel;
 using System.Text;
+using Esri.ArcGISRuntime.Data;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Scanner_MAUI.Helpers
 {
@@ -115,14 +117,14 @@ namespace Scanner_MAUI.Helpers
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        public void ConnectToScanner()
+        public void ConnectToScanner(int baudRate, string comValue)
         {
             NetworkNames.Clear();
             //NetworkSnrValues.Clear();
             Strength = -110;
             try
             {
-                serialPort = new SerialPort("COM6", 115200);
+                serialPort = new SerialPort("COM"+comValue, baudRate);
 
                 serialPort.Open();
                 Debug.WriteLine("Serial Port conn created");
@@ -131,14 +133,17 @@ namespace Scanner_MAUI.Helpers
                 var data = new byte[] { (byte)'1', 13 };
                 serialPort.Write(data, 0, data.Length);
 
+
                 // Handle the scanner's output and display the information
                 serialPort.DataReceived += SerialPort_DataReceived;
+
 
             }
             catch (Exception ex)
             {
                 // Handle the exception
                 Debug.WriteLine($"Failed to connect to the scanner: {ex.Message}");
+
             }
         }
 
@@ -280,16 +285,17 @@ namespace Scanner_MAUI.Helpers
                     // Handle the error when parsing longitude fails
                     //networkData.Lon = 0; // Assign a default value or handle the error as needed
                     networkData.Lon = 24.464230;
-                    double desiredLongitude = 24.464238;
-                    lonString = $" {desiredLongitude}";
-                    fields[4] = "lon: " + lonString;
-                    string updatedDatastream3 = string.Join(", ", fields);
-                    serialPort.WriteLine(updatedDatastream3);
+                    //double desiredLongitude = 24.464238;
+                    //lonString = $" {desiredLongitude}";
+                    //fields[4] = "lon: " + lonString;
+                    //string updatedDatastream3 = string.Join(", ", fields);
+                    //serialPort.WriteLine(updatedDatastream3);
                 }
 
                 networkData.RSSI = int.Parse(fields[5].Split(':')[1].Trim());
                 //networkData.SNR = double.Parse(fields[6].Split(':')[1].Trim(), CultureInfo.DefaultThreadCurrentCulture);
                 networkData.SNR = double.Parse(fields[6].Split(':')[1].Trim(), CultureInfo.InvariantCulture);
+
 
                 DateTime referenceDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, DateTime.Now.Hour, DateTime.Now.Minute, DateTime.Now.Second);
 
@@ -323,10 +329,11 @@ namespace Scanner_MAUI.Helpers
                 fields[13] = formattedstring9;
 
                 string updatedDatastream = string.Join(", ", fields);
-;
+                ;
                 //string updatedDatastream2 = string.Join(", ", fields);
                 serialPort.WriteLine(updatedDatastream);
                 networkData.Timestamp = referenceDate;
+
 
                 //// Extract the timestamp tuple from the data stream
                 //int startIndex1 = data.IndexOf("time: (") + 7;
@@ -344,34 +351,13 @@ namespace Scanner_MAUI.Helpers
                 //int second = int.Parse(timestampParts[5].Trim());
                 //int rtc = int.Parse(timestampParts[6].Trim());
 
-                //DateTime referenceDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, DateTime.Now.Hour, DateTime.Now.Minute, DateTime.Now.Second);
-                //DateTime dateTime = referenceDate.AddMilliseconds(rtc);
+                //DateTime referenceDate2 = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, DateTime.Now.Hour, DateTime.Now.Minute, DateTime.Now.Second);
+                //DateTime dateTime = referenceDate2.AddMilliseconds(rtc);
 
                 //timestampParts[6] = dateTime.ToString();
 
                 //timestampStr = timestampParts[6];
 
-
-                //// Parse the string into a DateTime object
-                //DateTime dateTime2 = DateTime.ParseExact(timestampStr, "d.M.yyyy H.m.s", null);
-                //// Extract individual components
-                //int year2 = dateTime2.Year;
-                //int month2 = dateTime2.Month;
-                //int day2 = dateTime2.Day;
-                //int hour2 = dateTime2.Hour;
-                //int minute2 = dateTime2.Minute;
-                //int second2 = dateTime2.Second;
-                //int millisecond2 = dateTime2.Millisecond;
-                //string formattedString = $"{year2}, {month2}, {day2}, {hour2}, {minute2}, {second2}, {millisecond2}";
-
-                ////fields[7].Replace(" time: (2023, 6, 15, 17, 30, 17, 845006, None)", "");
-                //fields[7] = "time: (" + formattedString + endIndex1;
-                //fields[8].Remove(0);
-                //fields[9].Remove(0);
-                //fields[10].Remove(0);
-                //fields[11].Remove(0);
-                //fields[12].Remove(0);
-                //fields[13].Remove(0);
             }
             else
             {

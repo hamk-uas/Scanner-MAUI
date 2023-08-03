@@ -122,10 +122,10 @@ namespace Scanner_MAUI.Helpers
 
 
             // Delete the file if it exists.
-            if (File.Exists(path))
-            {
-                File.Delete(path);
-            }
+            //if (File.Exists(path))
+            //{
+            //    File.Delete(path);
+            //}
 
             using (StreamWriter writer = new StreamWriter(path))
             {
