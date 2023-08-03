@@ -178,6 +178,8 @@ public partial class RealTimeData : ContentPage
         {
             BaudRates.Clear();
             COM.Clear();
+            BaudRate.Text = "Selected Baud Rate: ";
+            COMNumber.Text = "Selected COM Port Number: ";
             await DisplayAlert("Alert", "Please select a baud rate and a com port number", "OK");
         }        
     }
@@ -212,6 +214,7 @@ public partial class RealTimeData : ContentPage
         // TODO: Connect to the LoRa scanner and start scanning
         int baudRate = 110;
         BaudRates["baudrate"] = baudRate;
+        BaudRate.Text = "Selected Baud Rate: " + baudRate;
     }
     private void BaudRate300_Clicked(object sender, EventArgs e)
     {
@@ -219,6 +222,7 @@ public partial class RealTimeData : ContentPage
         // TODO: Connect to the LoRa scanner and start scanning
         int baudRate = 300;
         BaudRates["baudrate"] = baudRate;
+        BaudRate.Text = "Selected Baud Rate: " + baudRate;
     }
     private void BaudRate600_Clicked(object sender, EventArgs e)
     {
@@ -226,6 +230,7 @@ public partial class RealTimeData : ContentPage
         // TODO: Connect to the LoRa scanner and start scanning
         int baudRate = 600;
         BaudRates["baudrate"] = baudRate;
+        BaudRate.Text = "Selected Baud Rate: " + baudRate;
     }
     private void BaudRate1200_Clicked(object sender, EventArgs e)
     {
@@ -233,6 +238,7 @@ public partial class RealTimeData : ContentPage
         // TODO: Connect to the LoRa scanner and start scanning
         int baudRate = 1200;
         BaudRates["baudrate"] = baudRate;
+        BaudRate.Text = "Selected Baud Rate: " + baudRate;
     }
     private void BaudRate2400_Clicked(object sender, EventArgs e)
     {
@@ -240,6 +246,7 @@ public partial class RealTimeData : ContentPage
         // TODO: Connect to the LoRa scanner and start scanning
         int baudRate = 2400;
         BaudRates["baudrate"] = baudRate;
+        BaudRate.Text = "Selected Baud Rate: " + baudRate;
     }
     private void BaudRate4800_Clicked(object sender, EventArgs e)
     {
@@ -247,6 +254,7 @@ public partial class RealTimeData : ContentPage
         // TODO: Connect to the LoRa scanner and start scanning
         int baudRate = 4800;
         BaudRates["baudrate"] = baudRate;
+        BaudRate.Text = "Selected Baud Rate: " + baudRate;
     }
     private void BaudRate9600_Clicked(object sender, EventArgs e)
     {
@@ -254,6 +262,7 @@ public partial class RealTimeData : ContentPage
         // TODO: Connect to the LoRa scanner and start scanning
         int baudRate = 9600;
         BaudRates["baudrate"] = baudRate;
+        BaudRate.Text = "Selected Baud Rate: " + baudRate;
     }
     private void BaudRate19200_Clicked(object sender, EventArgs e)
     {
@@ -261,6 +270,7 @@ public partial class RealTimeData : ContentPage
         // TODO: Connect to the LoRa scanner and start scanning
         int baudRate = 19200;
         BaudRates["baudrate"] = baudRate;
+        BaudRate.Text = "Selected Baud Rate: " + baudRate;
     }
     private void BaudRate28800_Clicked(object sender, EventArgs e)
     {
@@ -268,6 +278,7 @@ public partial class RealTimeData : ContentPage
         // TODO: Connect to the LoRa scanner and start scanning
         int baudRate = 28800;
         BaudRates["baudrate"] = baudRate;
+        BaudRate.Text = "Selected Baud Rate: " + baudRate;
     }
     private void BaudRate38400_Clicked(object sender, EventArgs e)
     {
@@ -275,6 +286,7 @@ public partial class RealTimeData : ContentPage
         // TODO: Connect to the LoRa scanner and start scanning
         int baudRate = 38400;
         BaudRates["baudrate"] = baudRate;
+        BaudRate.Text = "Selected Baud Rate: " + baudRate;
     }
     private void BaudRate57600_Clicked(object sender, EventArgs e)
     {
@@ -282,6 +294,7 @@ public partial class RealTimeData : ContentPage
         // TODO: Connect to the LoRa scanner and start scanning
         int baudRate = 57600;
         BaudRates["baudrate"] = baudRate;
+        BaudRate.Text = "Selected Baud Rate: " + baudRate;
     }
     private void BaudRate76800_Clicked(object sender, EventArgs e)
     {
@@ -289,6 +302,7 @@ public partial class RealTimeData : ContentPage
         // TODO: Connect to the LoRa scanner and start scanning
         int baudRate = 76800;
         BaudRates["baudrate"] = baudRate;
+        BaudRate.Text = "Selected Baud Rate: " + baudRate;
     }
     private void BaudRate115200_Clicked(object sender, EventArgs e)
     {
@@ -296,6 +310,7 @@ public partial class RealTimeData : ContentPage
         // TODO: Connect to the LoRa scanner and start scanning
         int baudRate = 115200;
         BaudRates["baudrate13"] = baudRate;
+        BaudRate.Text = "Selected Baud Rate: " + baudRate;
     }
     private void BaudRate230400_Clicked(object sender, EventArgs e)
     {
@@ -303,6 +318,7 @@ public partial class RealTimeData : ContentPage
         // TODO: Connect to the LoRa scanner and start scanning
         int baudRate = 230400;
         BaudRates["baudrate"] = baudRate;
+        BaudRate.Text = "Selected Baud Rate: " + baudRate;
     }
     private void BaudRate460800_Clicked(object sender, EventArgs e)
     {
@@ -310,6 +326,7 @@ public partial class RealTimeData : ContentPage
         // TODO: Connect to the LoRa scanner and start scanning
         int baudRate = 460800;
         BaudRates["baudrate"] = baudRate;
+        BaudRate.Text = "Selected Baud Rate: " + baudRate;
     }
 
 
@@ -319,6 +336,7 @@ public partial class RealTimeData : ContentPage
         // TODO: Connect to the LoRa scanner and start scanning
         string com = "1";
         COM["com"] = com;
+        COMNumber.Text = "Selected COM Port Number: " + com;
     }
     private void Com2_Clicked(object sender, EventArgs e)
     {
@@ -326,6 +344,7 @@ public partial class RealTimeData : ContentPage
         // TODO: Connect to the LoRa scanner and start scanning
         string com = "2";
         COM["com"] = com;
+        COMNumber.Text = "Selected COM Port Number: " + com;
     }
     private void Com3_Clicked(object sender, EventArgs e)
     {
@@ -333,6 +352,7 @@ public partial class RealTimeData : ContentPage
         // TODO: Connect to the LoRa scanner and start scanning
         string com = "3";
         COM["com"] = com;
+        COMNumber.Text = "Selected COM Port Number: " + com;
     }
     private void Com4_Clicked(object sender, EventArgs e)
     {
@@ -340,6 +360,7 @@ public partial class RealTimeData : ContentPage
         // TODO: Connect to the LoRa scanner and start scanning
         string com = "4";
         COM["com"] = com;
+        COMNumber.Text = "Selected COM Port Number: " + com;
     }
     private void Com5_Clicked(object sender, EventArgs e)
     {
@@ -347,6 +368,7 @@ public partial class RealTimeData : ContentPage
         // TODO: Connect to the LoRa scanner and start scanning
         string com = "5";
         COM["com"] = com;
+        COMNumber.Text = "Selected COM Port Number: " + com;
     }
     private void Com6_Clicked(object sender, EventArgs e)
     {
@@ -354,6 +376,7 @@ public partial class RealTimeData : ContentPage
         // TODO: Connect to the LoRa scanner and start scanning
         string com = "6";
         COM["com"] = com;
+        COMNumber.Text = "Selected COM Port Number: " + com;
     }
     private void Com7_Clicked(object sender, EventArgs e)
     {
@@ -361,6 +384,7 @@ public partial class RealTimeData : ContentPage
         // TODO: Connect to the LoRa scanner and start scanning
         string com = "7";
         COM["com"] = com;
+        COMNumber.Text = "Selected COM Port Number: " + com;
     }
     private void Com8_Clicked(object sender, EventArgs e)
     {
@@ -368,6 +392,7 @@ public partial class RealTimeData : ContentPage
         // TODO: Connect to the LoRa scanner and start scanning
         string com = "8";
         COM["com"] = com;
+        COMNumber.Text = "Selected COM Port Number: " + com;
     }
     private void Com9_Clicked(object sender, EventArgs e)
     {
@@ -375,6 +400,7 @@ public partial class RealTimeData : ContentPage
         // TODO: Connect to the LoRa scanner and start scanning
         string com = "9";
         COM["com"] = com;
+        COMNumber.Text = "Selected COM Port Number: " + com;
     }
     private void Com10_Clicked(object sender, EventArgs e)
     {
@@ -382,6 +408,7 @@ public partial class RealTimeData : ContentPage
         // TODO: Connect to the LoRa scanner and start scanning
         string com = "10";
         COM["com"] = com;
+        COMNumber.Text = "Selected COM Port Number: " + com;
     }
 }
 

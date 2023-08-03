@@ -23,9 +23,14 @@
         <vms:lineChart/>
     </ContentPage.BindingContext>-->
     <ContentPage.MenuBarItems>
-        <MenuBarItem Text="File">
-            <MenuFlyoutSubItem Text="Start">
-                <MenuFlyoutSubItem Text="Baud Rates">
+        <MenuBarItem Text="Start">
+            <MenuFlyoutItem Text="Start" Clicked="StartMenuItem_Clicked"/>
+        </MenuBarItem>
+        <MenuBarItem Text="Stop">
+            <MenuFlyoutItem Text="Stop" Clicked="StopMenuItem_Clicked"/>
+        </MenuBarItem>
+        <MenuBarItem Text="Settings">
+            <MenuFlyoutSubItem Text="Baud Rates">
                     <MenuFlyoutItem Text="110" Clicked="BaudRate110_Clicked"/>
                     <MenuFlyoutItem Text="300" Clicked="BaudRate300_Clicked"/>
                     <MenuFlyoutItem Text="600" Clicked="BaudRate600_Clicked"/>
@@ -42,22 +47,31 @@
                     <MenuFlyoutItem Text="230400 " Clicked="BaudRate230400_Clicked"/>
                     <MenuFlyoutItem Text="460800 " Clicked="BaudRate460800_Clicked"/>
                 </MenuFlyoutSubItem>
-                <MenuFlyoutSubItem Text="COM">
-                    <MenuFlyoutItem Text="1" Clicked="Com1_Clicked"/>
-                    <MenuFlyoutItem Text="2" Clicked="Com2_Clicked"/>
-                    <MenuFlyoutItem Text="3" Clicked="Com3_Clicked"/>
-                    <MenuFlyoutItem Text="4" Clicked="Com4_Clicked"/>
-                    <MenuFlyoutItem Text="5" Clicked="Com5_Clicked"/>
-                    <MenuFlyoutItem Text="6" Clicked="Com6_Clicked"/>
-                    <MenuFlyoutItem Text="7" Clicked="Com7_Clicked"/>
-                    <MenuFlyoutItem Text="8" Clicked="Com8_Clicked"/>
-                    <MenuFlyoutItem Text="9" Clicked="Com9_Clicked"/>
-                    <MenuFlyoutItem Text="10" Clicked="Com10_Clicked"/>
-                </MenuFlyoutSubItem>
-                <MenuFlyoutItem Text="Start" Clicked="StartMenuItem_Clicked"/>
+            <MenuFlyoutSubItem Text="COM">
+                <MenuFlyoutItem Text="1" Clicked="Com1_Clicked"/>
+                <MenuFlyoutItem Text="2" Clicked="Com2_Clicked"/>
+                <MenuFlyoutItem Text="3" Clicked="Com3_Clicked"/>
+                <MenuFlyoutItem Text="4" Clicked="Com4_Clicked"/>
+                <MenuFlyoutItem Text="5" Clicked="Com5_Clicked"/>
+                <MenuFlyoutItem Text="6" Clicked="Com6_Clicked"/>
+                <MenuFlyoutItem Text="7" Clicked="Com7_Clicked"/>
+                <MenuFlyoutItem Text="8" Clicked="Com8_Clicked"/>
+                <MenuFlyoutItem Text="9" Clicked="Com9_Clicked"/>
+                <MenuFlyoutItem Text="10" Clicked="Com10_Clicked"/>
             </MenuFlyoutSubItem>
-            <MenuFlyoutItem Text="Stop" Clicked="StopMenuItem_Clicked"/>
         </MenuBarItem>
+        <MenuBarItem Text=""></MenuBarItem>
+        <MenuBarItem Text=""></MenuBarItem>
+        <MenuBarItem Text=""></MenuBarItem>
+        <MenuBarItem Text=""></MenuBarItem>
+        <MenuBarItem Text=""></MenuBarItem>
+        <MenuBarItem Text=""></MenuBarItem>
+        <MenuBarItem Text=""></MenuBarItem>
+        <MenuBarItem Text=""></MenuBarItem>
+        <MenuBarItem x:Name="BaudRate" Text="Selected Baud Rate: "></MenuBarItem>
+        <MenuBarItem Text=""></MenuBarItem>
+        <MenuBarItem Text=""></MenuBarItem>
+        <MenuBarItem x:Name="COMNumber" Text="Selected COM Port Number: "></MenuBarItem>
     </ContentPage.MenuBarItems>
     <!--Using Grid for layout-->
     <Grid>

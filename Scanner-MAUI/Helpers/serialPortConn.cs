@@ -117,7 +117,7 @@ namespace Scanner_MAUI.Helpers
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        public void ConnectToScanner(int baudRate, string comValue)
+        public async void ConnectToScanner(int baudRate, string comValue)
         {
             NetworkNames.Clear();
             //NetworkSnrValues.Clear();
@@ -143,6 +143,7 @@ namespace Scanner_MAUI.Helpers
             {
                 // Handle the exception
                 Debug.WriteLine($"Failed to connect to the scanner: {ex.Message}");
+                await Application.Current.MainPage.DisplayAlert("Error", "Failed to connect to the scanner: " + ex.Message, "Close");
 
             }
         }
