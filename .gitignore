@@ -12,6 +12,7 @@
 
 Directory.Build.targets
 secrets.json
+rssiLtLn.csv
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
