@@ -134,14 +134,14 @@ namespace Scanner_MAUI.Helpers
             using (StreamWriter writer = new StreamWriter(path))
             {
                 // Write the CSV header
-                writer.WriteLine("Name;Type;Latitude;Longitude;RSSI;SNR");
+                writer.WriteLine("Name;Latitude;Longitude;RSSI");
                 //writer.WriteLine("name,type,latitude,longitude,rssi,snr");
                 NumberFormatInfo nfi = new NumberFormatInfo();
                 nfi.NumberDecimalSeparator = ".";
                 // Write the network data
                 foreach (Network row in sDContent)
                 {
-                    string csvLine = $"{row.Name};{row.Type};{row.Lat.ToString(nfi)};{row.Lon.ToString(nfi)};{row.RSSI};{row.SNR};{row.Timestamp}";
+                    string csvLine = $"{row.Name};{row.Lat.ToString(nfi)};{row.Lon.ToString(nfi)};{row.RSSI}";
                     writer.WriteLine(csvLine);
                 }
             }
@@ -157,7 +157,7 @@ namespace Scanner_MAUI.Helpers
             using (StreamWriter writer = new StreamWriter(path))
             {
                 // Write the CSV header
-                writer.WriteLine("Name;Type;Latitude;Longitude;RSSI;SNR");
+                writer.WriteLine("Name;Latitude;Longitude;RSSI");
                 //writer.WriteLine("name,type,latitude,longitude,rssi,snr");
 
                 // Write the network data
