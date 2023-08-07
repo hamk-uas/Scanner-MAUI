@@ -1,4 +1,8 @@
-﻿using Scanner_MAUI.Model;
+﻿using Newtonsoft.Json.Linq;
+using Scanner_MAUI.Model;
+using System.Diagnostics;
+using System.Globalization;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Scanner_MAUI.Helpers
 {
@@ -131,11 +135,35 @@ namespace Scanner_MAUI.Helpers
             {
                 // Write the CSV header
                 writer.WriteLine("Name;Type;Latitude;Longitude;RSSI;SNR");
+                //writer.WriteLine("name,type,latitude,longitude,rssi,snr");
+                NumberFormatInfo nfi = new NumberFormatInfo();
+                nfi.NumberDecimalSeparator = ".";
+                // Write the network data
+                foreach (Network row in sDContent)
+                {
+                    string csvLine = $"{row.Name};{row.Type};{row.Lat.ToString(nfi)};{row.Lon.ToString(nfi)};{row.RSSI};{row.SNR};{row.Timestamp}";
+                    writer.WriteLine(csvLine);
+                }
+            }
+        }
+        public void ClearCSV(System.Collections.ObjectModel.ObservableCollection<Network> sDContent)
+        {
+
+            //string path = @"C:\Users\MyDevice\Desktop\dataVisulization\rssiLtLn.csv";
+            string path = @"C:\Users\MyDevice\OneDrive\OmatAsiat\HAMK-Smart\Scanner-MAUI\Scanner-MAUI\rssiLtLn.csv";
+            //string path = @".\\rssiLtLn.csv\";
+
+
+            using (StreamWriter writer = new StreamWriter(path))
+            {
+                // Write the CSV header
+                writer.WriteLine("Name;Type;Latitude;Longitude;RSSI;SNR");
+                //writer.WriteLine("name,type,latitude,longitude,rssi,snr");
 
                 // Write the network data
                 foreach (Network row in sDContent)
                 {
-                    string csvLine = $"{row.Name};{row.Type};{row.Lat};{row.Lon};{row.RSSI};{row.SNR};{row.Timestamp}";
+                    string csvLine = string.Empty;
                     writer.WriteLine(csvLine);
                 }
             }

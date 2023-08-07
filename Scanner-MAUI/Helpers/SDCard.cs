@@ -152,7 +152,9 @@ namespace Scanner_MAUI.Helpers
                 {
                     // Handle the error when parsing latitude fails
                     //networkData.Lat = 0; // Assign a default value or handle the error as needed
-                    networkData.Lat = 60.996010;
+                    //networkData.Lat = 60.996010;
+                    networkData.Lat = 60.974010;
+                    //networkData.Lat = 60.987010;
                 }
 
 
@@ -164,7 +166,9 @@ namespace Scanner_MAUI.Helpers
                 {
                     // Handle the error when parsing longitude fails
                     //networkData.Lon = 0; // Assign a default value or handle the error as needed
-                    networkData.Lon = 24.464230;
+                    //networkData.Lon = 24.464230;
+                    networkData.Lon = 24.474430;
+                    //networkData.Lon = 24.478230;
                 }
 
                 if (int.TryParse(fields[4], out int rssiValue))

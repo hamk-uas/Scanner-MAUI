@@ -268,7 +268,7 @@ namespace Scanner_MAUI.Helpers
                 {
                     // Handle the error when parsing latitude fails
                     //networkData.Lat = 0; // Assign a default value or handle the error as needed
-                    networkData.Lat = 60.996010;
+                    networkData.Lat = 61.996410;
                 }
 
                 string lonString = fields[4].Split(':')[1].Trim();
@@ -280,7 +280,7 @@ namespace Scanner_MAUI.Helpers
                 {
                     // Handle the error when parsing longitude fails
                     //networkData.Lon = 0; // Assign a default value or handle the error as needed
-                    networkData.Lon = 24.464230;
+                    networkData.Lon = 25.464240;
                     //double desiredLongitude = 24.464238;
                     //lonString = $" {desiredLongitude}";
                     //fields[4] = "lon: " + lonString;

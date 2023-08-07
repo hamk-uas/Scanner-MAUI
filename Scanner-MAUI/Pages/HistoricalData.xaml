@@ -43,7 +43,7 @@
             </ListView>
             <!--</Frame>-->
             <Frame Style="{StaticResource LocationStyle}">
-                <Grid>
+                <Grid x:Name="MapView">
                     <esriUI:MapView x:Name="MyMapView" />
                     <ActivityIndicator x:Name="MyActivityIndicator"
                            Grid.RowSpan="2"
