@@ -14,9 +14,11 @@ namespace Scanner_MAUI.Pages;
 
 public partial class HistoricalData : ContentPage
 {
+    private ReadCSV readCSV;
     private SDCard scannerConn;
     private PopulateTable pg;
     private TableSection tableSection;
+    private MapWebView mapWebView;
     private ObservableCollection<ObservableValue> _observableValues;
     private ObservableCollection<ObservableValue> _observableValues2;
     //private ObservableCollection<ISeries> Series { get; set; }
@@ -27,7 +29,11 @@ public partial class HistoricalData : ContentPage
 		InitializeComponent();
         NetworkListView.ItemSelected += OnNetworkNameSelected;
         scannerConn = new SDCard();
+        mapMarkers = new Markers();
+        readCSV = new ReadCSV();
+        mapWebView = new MapWebView();
         NetworkListView.ItemsSource = scannerConn.NetworkNames;
+       
         //_ = ViewMap.LoadWMTSLayer(MyMapView); //Maanmittauslaitos WMTS layer
         _ = ViewMap.OpenstreetMaps(MyMapView);
         _ = Location.StartDeviceLocationTask(MyMapView); // Gets current location
@@ -49,8 +55,6 @@ public partial class HistoricalData : ContentPage
             Padding = new LiveChartsCore.Drawing.Padding(15),
             Paint = new SolidColorPaint(SKColors.DarkSlateGray)
         };
-
-        mapMarkers = new Markers();
     }
 
     private void MyLocationButton_Clicked(object sender, EventArgs e)
@@ -69,6 +73,7 @@ public partial class HistoricalData : ContentPage
 
             pg.populateTable(scannerConn.SDContent, tableSection);
             pg.WriteNetworkDataToCSV(scannerConn.SDContent);
+           
             foreach (Network network in scannerConn.SDContent)
             {
                 double snr = network.SNR;
@@ -84,6 +89,7 @@ public partial class HistoricalData : ContentPage
                 _ = mapMarkers.MapMarkers(MyMapView);
 
             }
+            
             CartesianChart.Series = new ObservableCollection<ISeries>
             {
                 new LineSeries<ObservableValue>
@@ -103,151 +109,14 @@ public partial class HistoricalData : ContentPage
                     Name = "RSSI Value"
                 }
             };
-            WebView webView;
-            webView = new WebView
-            {
-                Source = new HtmlWebViewSource
-                {
-                    Html = @" 
-                        <!DOCTYPE html>
-                        <html>
-                          <head>
-                            <meta charset=""utf-8"" />
-                            <meta
-                              name=""viewport""
-                              content=""initial-scale=1,maximum-scale=1,user-scalable=no""
-                            />
-                            <title>Intro to CSVLayer - 4.15</title>
-
-                            <style>
-                              html,
-                              body,
-                              #viewDiv {
-                                padding: 0;
-                                margin: 0;
-                                height: 100%;
-                                width: 100%;
-                                background-color: aliceblue;
-                              }
-                            </style>
-
-                            <link
-                              rel=""stylesheet""
-                              href=""https://js.arcgis.com/4.15/esri/themes/light/main.css""
-                            />
-                            <script src=""https://js.arcgis.com/4.15/""></script>
-
-                            <script>
-                              require([
-                                ""esri/Map"",
-                                ""esri/views/MapView"",
-                                ""esri/layers/CSVLayer"",
-                                ""esri/widgets/Legend""
-                              ], (Map, MapView, CSVLayer, Legend) => {
-        
-                                let fileInputField;
-                                let fileInput = document.getElementById(""file-input"");
-                                fileInput.addEventListener('change', () => {          
-                                  const url = URL.createObjectURL(fileInput.files[0]);
-                                 
-                                const template = {
-                                  title: ""{name}"",
-                                  content: ""neg_rssi: {neg_rssi}""
-                                };
-                                    
-                                const renderer = {
-                                  type: ""heatmap"",
-                                  colorStops: [
-                                    { color: ""rgba(63, 40, 102, 0)"", ratio: 0 },
-                                    { color: ""#472b77"", ratio: 0.083 },
-                                    { color: ""#4e2d87"", ratio: 0.166 },
-                                    { color: ""#563098"", ratio: 0.249 },
-                                    { color: ""#5d32a8"", ratio: 0.332 },
-                                    { color: ""#6735be"", ratio: 0.415 },
-                                    { color: ""#7139d4"", ratio: 0.498 },
-                                    { color: ""#7b3ce9"", ratio: 0.581 },
-                                    { color: ""#853fff"", ratio: 0.664 },
-                                    { color: ""#a46fbf"", ratio: 0.747 },
-                                    { color: ""#c29f80"", ratio: 0.83 },
-                                    { color: ""#e0cf40"", ratio: 0.913 },
-                                    { color: ""#ffff00"", ratio: 1 }
-                                  ],
-                                  maxDensity: 0.01,
-                                  minDensity: 0
-                                };
-                                
-
-                                  const csvLayer = new CSVLayer({
-                                    url: url, 
-                                    field: ""neg_rssi"",    
-                                    title: ""Network Locations"",
-                                    popupTemplate: template,
-                                    renderer: renderer,
-                                    labelsVisible: true,
-                                    labelingInfo: [
-                                    {
-                                      symbol: {
-                                        type: ""text"", // autocasts as new TextSymbol()
-                                        color: ""white"",
-                                        font: {
-                                          family: ""Noto Sans"",
-                                          size: 8
-                                        },
-                                        haloColor: ""#472b77"",
-                                        haloSize: 0.75
-                                      },
-                                      labelPlacement: ""center-center"",
-                                      labelExpressionInfo: {
-                                        expression: ""Text($feature.neg_rssi, '#.0')""
-                                      },
-                                      where: ""neg_rssi < 5""
-                                    }
-                                  ]
-                                  });
-          
-                                  map.add(csvLayer);          
-                                },false);        
-
-                                const map = new Map({
-                                  basemap: ""osm"",
-                                  // layers: [csvLayer]
-                                });
-        
-                                const view = new MapView({
-                                  container: ""viewDiv"",
-                                  map: map,
-                                  center: [24.4590, 60.9929],
-                                  zoom: 3,
-                                  scale: 62223.819286
-                                });
-
-                                 view.ui.add(
-                                  new Legend({
-                                    view: view
-                                  }),
-                                  ""bottom-left""
-                                );
-
-                              });
-                            </script>
-                          </head>
-
-                          <body>
-                            <span>
-                              Browse... <input type=""file"" id=""file-input"" name=""files[]"" accept=""text/csv"">
-                            </span>    
-                            <div id=""viewDiv""></div>
-                          </body>
-                        </html> "
-                }
-            };
-            MapView.Add(webView);
+            WebView webView = new WebView();
+            mapWebView.GetWebMap(MapView, webView);
+            
         }
     }
 
     private void StartMenuItem_Clicked(object sender, EventArgs e)
     {
-        // TODO: Connect to the LoRa scanner and start scanning
         scannerConn.ConnectToSD();
     }
 
@@ -264,5 +133,49 @@ public partial class HistoricalData : ContentPage
         pg.ClearCSV(scannerConn.SDContent);
         //tableSection.Clear();
         //pg.showHeader(tableSection);
+    }
+
+    private void ReadCSV_Clicked(object sender, EventArgs e)
+    {
+        // TODO: Read csv
+        readCSV.ReadCSVFile();
+        NetworkListView.ItemsSource = readCSV.NetworkNames;
+        pg.PopulateTableCSV(readCSV.CSVContent, tableSection);
+        foreach (Network network in readCSV.CSVContent)
+        {
+            double snr = network.SNR;
+            int rssi = network.RSSI;
+            _observableValues.Add(new(snr));
+            _observableValues2.Add(new(rssi));
+
+            mapMarkers.Longitude = network.Lon;
+            mapMarkers.Latitude = network.Lat;
+
+            mapMarkers.Longitude = network.Lon;
+            mapMarkers.Latitude = network.Lat;
+            _ = mapMarkers.MapMarkers(MyMapView);
+
+            CartesianChart.Series = new ObservableCollection<ISeries>
+            {
+                new LineSeries<ObservableValue>
+                {
+                    Values =  _observableValues,
+                    Fill = null,
+                    Name = "SNR Value"
+                }
+            };
+
+            CartesianChart2.Series = new ObservableCollection<ISeries>
+            {
+                new LineSeries<ObservableValue>
+                {
+                    Values =  _observableValues2,
+                    Fill = null,
+                    Name = "RSSI Value"
+                }
+            };
+            WebView webView = new WebView();
+            mapWebView.GetWebMap(MapView, webView);
+        }
     }
 }

@@ -222,8 +222,8 @@ namespace Scanner_MAUI.Helpers
             // Stop scanning and close the serial port
             if (serialPort != null && serialPort.IsOpen)
             {
-                var data = new byte[] { (byte)'0', 13 };
-                serialPort.Write(data, 0, data.Length);
+                //var data = new byte[] { (byte)'0', 13 };
+                //serialPort.Write(data, 0, data.Length);
                 //serialPort.WriteLine("0"); // Send the command to stop scanning
                 serialPort.Close();
                 NetworkNames.Clear();

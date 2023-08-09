@@ -3,14 +3,14 @@ namespace Scanner_MAUI.Model
 {
     public class Network
     {
-        private string _message;
-        private string _name;
-        private string _type;
-        private double _lat;
-        private double _lon;
-        private int _rssi;
-        private double _snr;
-        private DateTime _timestamp;
+        //private string _message;
+        //private string _name;
+        //private string _type;
+        //private double _lat;
+        //private double _lon;
+        //private int _rssi;
+        //private double _snr;
+        //private DateTime _timestamp;
 
         public Network() { }
 
