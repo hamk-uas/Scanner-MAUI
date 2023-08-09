@@ -145,6 +145,16 @@ public partial class HistoricalData : ContentPage
                                 ""esri/widgets/Legend""
                               ], (Map, MapView, CSVLayer, Legend) => {
         
+                                let fileInputField;
+                                let fileInput = document.getElementById(""file-input"");
+                                fileInput.addEventListener('change', () => {          
+                                  const url = URL.createObjectURL(fileInput.files[0]);
+                                 
+                                const template = {
+                                  title: ""{name}"",
+                                  content: ""neg_rssi: {neg_rssi}""
+                                };
+                                    
                                 const renderer = {
                                   type: ""heatmap"",
                                   colorStops: [
@@ -165,19 +175,34 @@ public partial class HistoricalData : ContentPage
                                   maxDensity: 0.01,
                                   minDensity: 0
                                 };
-                                 const template = {
-                                  title: ""{name}"",
-                                  content: ""Rssi: {rssi}, Type: {type}.""
-                                };
-                                let fileInputField;
-                                let fileInput = document.getElementById(""file-input"");
-                                fileInput.addEventListener('change', () => {          
-                                  const url = URL.createObjectURL(fileInput.files[0]);
+                                
+
                                   const csvLayer = new CSVLayer({
                                     url: url, 
-                                    title: ""RSSI Strength Values"",
+                                    field: ""neg_rssi"",    
+                                    title: ""Network Locations"",
                                     popupTemplate: template,
-                                    renderer: renderer
+                                    renderer: renderer,
+                                    labelsVisible: true,
+                                    labelingInfo: [
+                                    {
+                                      symbol: {
+                                        type: ""text"", // autocasts as new TextSymbol()
+                                        color: ""white"",
+                                        font: {
+                                          family: ""Noto Sans"",
+                                          size: 8
+                                        },
+                                        haloColor: ""#472b77"",
+                                        haloSize: 0.75
+                                      },
+                                      labelPlacement: ""center-center"",
+                                      labelExpressionInfo: {
+                                        expression: ""Text($feature.neg_rssi, '#.0')""
+                                      },
+                                      where: ""neg_rssi < 5""
+                                    }
+                                  ]
                                   });
           
                                   map.add(csvLayer);          
@@ -195,12 +220,14 @@ public partial class HistoricalData : ContentPage
                                   zoom: 3,
                                   scale: 62223.819286
                                 });
+
                                  view.ui.add(
                                   new Legend({
                                     view: view
                                   }),
                                   ""bottom-left""
                                 );
+
                               });
                             </script>
                           </head>

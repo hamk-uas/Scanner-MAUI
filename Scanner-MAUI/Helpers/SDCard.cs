@@ -181,17 +181,32 @@ namespace Scanner_MAUI.Helpers
                     networkData.SNR = snrValue;
                 }
 
-                DateTime referenceDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, DateTime.Now.Hour, DateTime.Now.Minute, DateTime.Now.Second);
+                string year = fields[6].Trim().Replace("(", "");
+                string month = fields[7].Trim();
+                string day = fields[8].Trim();
 
-                string rtc = fields[12].Trim();
+                string hour = fields[9].Trim();
+                string minute = fields[10].Trim();  
+                string second = fields[11].Trim();
+
+                string timeStamp = $"{day}.{month}.{year} {hour}.{minute}.{second}";
+
+                DateTime dt = DateTime.Parse(timeStamp);
+
+                networkData.Timestamp = dt;
+
+                //time stamp from microsecond
+                //DateTime referenceDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, DateTime.Now.Hour, DateTime.Now.Minute, DateTime.Now.Second);
+
+                //string rtc = fields[12].Trim();
 
 
-                long rtc2 = long.Parse(rtc);
-                long ticks = rtc2 * 10;
-                //DateTime dateTime = new DateTime(ticks);
-                DateTime dateTime = referenceDate.AddMicroseconds(ticks);
+                //long rtc2 = long.Parse(rtc);
+                //long ticks = rtc2 * 10;
+                ////DateTime dateTime = new DateTime(ticks);
+                //DateTime dateTime = referenceDate.AddMicroseconds(ticks);
 
-                networkData.Timestamp = dateTime;
+                //networkData.Timestamp = dateTime;
 
             }
             else

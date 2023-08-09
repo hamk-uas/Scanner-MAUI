@@ -12,7 +12,7 @@ namespace Scanner_MAUI.Helpers
 {
 
     public class SerialPortConn : INotifyPropertyChanged
-    { 
+    {
         //public ObservableCollection<Network> NetworkNames { get; set; }
         private SerialPort serialPort;
         Network networkNames = new Network();
@@ -124,8 +124,7 @@ namespace Scanner_MAUI.Helpers
             Strength = -110;
             try
             {
-                serialPort = new SerialPort("COM"+comValue, baudRate);
-
+                serialPort = new SerialPort("COM" + comValue, baudRate);
                 serialPort.Open();
                 Debug.WriteLine("Serial Port conn created");
                 Debug.WriteLine("Serial Port Is Open: " + serialPort.IsOpen);
@@ -133,18 +132,14 @@ namespace Scanner_MAUI.Helpers
                 var data = new byte[] { (byte)'1', 13 };
                 serialPort.Write(data, 0, data.Length);
 
-
                 // Handle the scanner's output and display the information
                 serialPort.DataReceived += SerialPort_DataReceived;
-
-
             }
             catch (Exception ex)
             {
                 // Handle the exception
                 Debug.WriteLine($"Failed to connect to the scanner: {ex.Message}");
                 await Application.Current.MainPage.DisplayAlert("Error", "Failed to connect to the scanner: " + ex.Message, "Close");
-
             }
         }
 
@@ -171,19 +166,19 @@ namespace Scanner_MAUI.Helpers
 
                             if (ExistingNetwork != null)
                             {
-                                if(data.Name == ExistingNetwork.Name)
+                                if (data.Name == ExistingNetwork.Name)
                                 {
                                     Strength = data.RSSI;
                                     Type = data.Type;
                                     Lat = data.Lat;
                                     Lon = data.Lon;
                                     SNR = data.SNR;
-                                    Datetime = data.Timestamp; 
+                                    Datetime = data.Timestamp;
                                     ExistingNetwork.RSSI = data.RSSI;
                                     ExistingNetwork.Name = data.Name;
 
                                     //NetworkNames.Add(new Network { Name = data.Name });
-                            
+
                                     Debug.WriteLine("Strength: " + Strength);
                                     Debug.WriteLine("ExistingNetwork: " + ExistingNetwork.Name + " " + ExistingNetwork.RSSI);
                                     Debug.WriteLine("coords: " + Lat + " " + Lon);
@@ -254,7 +249,7 @@ namespace Scanner_MAUI.Helpers
 
                 }
                 networkData.Type = fields[2].Split(':')[1].Trim();
-               
+
                 //Thread.CurrentThread.CurrentCulture = CultureInfo.CreateSpecificCulture("en-US");
                 string latString = fields[3].Split(':')[1].Trim();
                 Debug.WriteLine("latstring :" + latString);
@@ -262,7 +257,7 @@ namespace Scanner_MAUI.Helpers
                 {
                     Debug.WriteLine("latvalue: " + latValue);
                     networkData.Lat = latValue;
-                    Debug.WriteLine("netLat: " +  networkData.Lat);
+                    Debug.WriteLine("netLat: " + networkData.Lat);
                 }
                 else
                 {
@@ -297,7 +292,7 @@ namespace Scanner_MAUI.Helpers
 
                 long microseconds = long.Parse(fields[13].Trim());
                 long ticks = microseconds * 10;
-     
+
                 DateTime dateTime = referenceDate.AddMicroseconds(ticks);
 
                 networkData.Timestamp = dateTime;
@@ -326,6 +321,6 @@ namespace Scanner_MAUI.Helpers
             }
         }
 
-       
+
     }
 }

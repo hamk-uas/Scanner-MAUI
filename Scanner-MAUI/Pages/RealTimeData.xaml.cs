@@ -52,6 +52,10 @@ public partial class RealTimeData : ContentPage
         };
         BaudRates = new Dictionary<string, int>();
         COM = new Dictionary<string, string>();
+
+        int baudRate = 115200;
+        BaudRates["baudrate"] = baudRate;
+        BaudRate.Text = "Selected Baud Rate: " + baudRate;
     }
 
     private void ScannerConn_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
