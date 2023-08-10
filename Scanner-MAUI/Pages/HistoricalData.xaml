@@ -34,15 +34,15 @@
     <Grid>
         <Grid Style="{StaticResource MainGridStyle}">
             <!-- Menu list on the left (taking full length) -->
-            <!--<Frame Style="{StaticResource LeftNetworkNamesFrameStyle}" >-->
-            <ListView x:Name="NetworkListView" Style="{StaticResource ListViewStyle}">
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <TextCell Text="{Binding Name}" />
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
-            <!--</Frame>-->
+            <Frame x:Name="listFrame" Style="{StaticResource LeftNetworkNamesFrameStyle}">
+                <ListView x:Name="NetworkListView" >
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <TextCell Text="{Binding Name}" />
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </Frame>
             <Frame Style="{StaticResource LocationStyle}">
                 <Grid x:Name="MapView">
                     <esriUI:MapView x:Name="MyMapView" />
@@ -52,7 +52,6 @@
                            HeightRequest="40"
                            IsVisible="False"
                            WidthRequest="40" />
-                    
                     <Grid Style="{StaticResource LocationButtonGrid}">
                         <ImageButton Style="{StaticResource ImageButton}" 
                                         Source="my_location3.png"

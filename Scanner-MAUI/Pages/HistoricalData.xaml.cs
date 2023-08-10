@@ -8,6 +8,7 @@ using Scanner_MAUI.Helpers;
 using Scanner_MAUI.Model;
 using SkiaSharp;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using Location = Scanner_MAUI.Helpers.Location;
 
 namespace Scanner_MAUI.Pages;
@@ -115,9 +116,38 @@ public partial class HistoricalData : ContentPage
         }
     }
 
-    private void StartMenuItem_Clicked(object sender, EventArgs e)
+    private async void StartMenuItem_Clicked(object sender, EventArgs e)
     {
+        var watch = Stopwatch.StartNew();
         scannerConn.ConnectToSD();
+        watch.Stop();
+        double ms = watch.Elapsed.TotalMilliseconds;
+        int lapsedTime = Convert.ToInt32(ms);
+        Debug.WriteLine("lapsedTime " + lapsedTime);
+        Debug.WriteLine($"Execution Time: {watch.ElapsedMilliseconds} ms");
+        ActivityIndicator activityIndicator = new ActivityIndicator()
+        {
+            IsRunning = true,
+            Color = Colors.Blue,
+            HeightRequest = 50,
+            WidthRequest = 50
+        };
+        //NetworkListView2.IsVisible = false;
+        listFrame.IsVisible = true;
+        listFrame.IsEnabled = false;
+        NetworkListView.IsEnabled = false;
+        listFrame.Opacity = 0.5;
+        listFrame.BorderColor = null;
+        listFrame.Content = activityIndicator;
+
+        await Task.Delay(TimeSpan.FromMilliseconds(lapsedTime*1000));
+
+        listFrame.Opacity = 1;
+        NetworkListView.IsEnabled = true;
+        listFrame.IsEnabled = true;
+        listFrame.BorderColor = null;
+        listFrame.Content = NetworkListView;
+
     }
 
     private void StopMenuItem_Clicked(object sender, EventArgs e)
