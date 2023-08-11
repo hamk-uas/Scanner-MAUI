@@ -4,12 +4,15 @@ using System.Diagnostics;
 using System.Collections.ObjectModel;
 using Scanner_MAUI.Model;
 using System.ComponentModel;
+using System.Text;
+using Esri.ArcGISRuntime.Data;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Scanner_MAUI.Helpers
 {
 
     public class SerialPortConn : INotifyPropertyChanged
-    { 
+    {
         //public ObservableCollection<Network> NetworkNames { get; set; }
         private SerialPort serialPort;
         Network networkNames = new Network();
@@ -92,6 +95,21 @@ namespace Scanner_MAUI.Helpers
             }
         }
 
+        private DateTime datetime;
+
+        public DateTime Datetime
+        {
+            get { return datetime; }
+            set
+            {
+                if (datetime != value)
+                {
+                    datetime = value;
+                    OnPropertyChanged(nameof(Datetime));
+                }
+            }
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected virtual void OnPropertyChanged(string propertyName)
@@ -99,15 +117,14 @@ namespace Scanner_MAUI.Helpers
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        public void ConnectToScanner()
+        public async void ConnectToScanner(int baudRate, string comValue)
         {
             NetworkNames.Clear();
             //NetworkSnrValues.Clear();
             Strength = -110;
             try
             {
-                serialPort = new SerialPort("COM6", 115200);
-
+                serialPort = new SerialPort("COM" + comValue, baudRate);
                 serialPort.Open();
                 Debug.WriteLine("Serial Port conn created");
                 Debug.WriteLine("Serial Port Is Open: " + serialPort.IsOpen);
@@ -117,12 +134,12 @@ namespace Scanner_MAUI.Helpers
 
                 // Handle the scanner's output and display the information
                 serialPort.DataReceived += SerialPort_DataReceived;
-
             }
             catch (Exception ex)
             {
                 // Handle the exception
                 Debug.WriteLine($"Failed to connect to the scanner: {ex.Message}");
+                await Application.Current.MainPage.DisplayAlert("Error", "Failed to connect to the scanner: " + ex.Message, "Close");
             }
         }
 
@@ -149,23 +166,24 @@ namespace Scanner_MAUI.Helpers
 
                             if (ExistingNetwork != null)
                             {
-                                if(data.Name == ExistingNetwork.Name)
+                                if (data.Name == ExistingNetwork.Name)
                                 {
                                     Strength = data.RSSI;
                                     Type = data.Type;
                                     Lat = data.Lat;
                                     Lon = data.Lon;
                                     SNR = data.SNR;
+                                    Datetime = data.Timestamp;
                                     ExistingNetwork.RSSI = data.RSSI;
                                     ExistingNetwork.Name = data.Name;
 
                                     //NetworkNames.Add(new Network { Name = data.Name });
-                            
+
                                     Debug.WriteLine("Strength: " + Strength);
                                     Debug.WriteLine("ExistingNetwork: " + ExistingNetwork.Name + " " + ExistingNetwork.RSSI);
                                     Debug.WriteLine("coords: " + Lat + " " + Lon);
                                     Debug.WriteLine("snr: " + data.SNR);
-
+                                    Debug.WriteLine("Datetime: " + Datetime);
                                 }
 
                             }
@@ -231,7 +249,7 @@ namespace Scanner_MAUI.Helpers
 
                 }
                 networkData.Type = fields[2].Split(':')[1].Trim();
-               
+
                 //Thread.CurrentThread.CurrentCulture = CultureInfo.CreateSpecificCulture("en-US");
                 string latString = fields[3].Split(':')[1].Trim();
                 Debug.WriteLine("latstring :" + latString);
@@ -239,13 +257,13 @@ namespace Scanner_MAUI.Helpers
                 {
                     Debug.WriteLine("latvalue: " + latValue);
                     networkData.Lat = latValue;
-                    Debug.WriteLine("netLat: " +  networkData.Lat);
+                    Debug.WriteLine("netLat: " + networkData.Lat);
                 }
                 else
                 {
                     // Handle the error when parsing latitude fails
                     //networkData.Lat = 0; // Assign a default value or handle the error as needed
-                    networkData.Lat = 60.996010;
+                    networkData.Lat = 61.996410;
                 }
 
                 string lonString = fields[4].Split(':')[1].Trim();
@@ -257,13 +275,28 @@ namespace Scanner_MAUI.Helpers
                 {
                     // Handle the error when parsing longitude fails
                     //networkData.Lon = 0; // Assign a default value or handle the error as needed
-                    networkData.Lon = 24.464230;
+                    networkData.Lon = 25.464240;
+                    //double desiredLongitude = 24.464238;
+                    //lonString = $" {desiredLongitude}";
+                    //fields[4] = "lon: " + lonString;
+                    //string updatedDatastream3 = string.Join(", ", fields);
+                    //serialPort.WriteLine(updatedDatastream3);
                 }
 
                 networkData.RSSI = int.Parse(fields[5].Split(':')[1].Trim());
                 //networkData.SNR = double.Parse(fields[6].Split(':')[1].Trim(), CultureInfo.DefaultThreadCurrentCulture);
                 networkData.SNR = double.Parse(fields[6].Split(':')[1].Trim(), CultureInfo.InvariantCulture);
-                //scannerData.TimeStamp = ParseDateTime(fields[7].Split(':')[1].Trim());
+
+
+                DateTime referenceDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, DateTime.Now.Hour, DateTime.Now.Minute, DateTime.Now.Second);
+
+                long microseconds = long.Parse(fields[13].Trim());
+                long ticks = microseconds * 10;
+
+                DateTime dateTime = referenceDate.AddMicroseconds(ticks);
+
+                networkData.Timestamp = dateTime;
+
             }
             else
             {
@@ -271,14 +304,6 @@ namespace Scanner_MAUI.Helpers
             }
 
             return networkData;
-        }
-
-        private double? ParseNullableDouble(string value)
-        {
-            if (double.TryParse(value, out double result))
-                return result;
-
-            return 0;
         }
 
         public void Disconnect()
@@ -296,6 +321,6 @@ namespace Scanner_MAUI.Helpers
             }
         }
 
-       
+
     }
 }

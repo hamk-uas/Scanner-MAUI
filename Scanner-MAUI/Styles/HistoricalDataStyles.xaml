@@ -1,0 +1,104 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ResourceDictionary xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:Helpers="clr-namespace:Scanner_MAUI.Helpers"
+             x:Class="Scanner_MAUI.Styles.HistoricalDataStyles">
+    <Style TargetType="ContentPage"  x:Key="HistoricalPageStyle">
+        <Setter Property="BackgroundColor" Value="#f3f3f3" />
+    </Style>
+    <Style TargetType="Grid" x:Key="MainGridStyle">
+        <Setter Property="ColumnDefinitions">
+            <Setter.Value>
+                <ColumnDefinitionCollection>
+                    <ColumnDefinition Width="10*" />
+                    <ColumnDefinition Width="60*" />
+                    <ColumnDefinition Width="30*" />
+                </ColumnDefinitionCollection>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="RowDefinitions">
+            <Setter.Value>
+                <RowDefinitionCollection>
+                    <RowDefinition Height="50*" />
+                    <RowDefinition Height="50*" />
+                </RowDefinitionCollection>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style TargetType="Frame" x:Key="LeftNetworkNamesFrameStyle">
+        <Setter Property="BackgroundColor" Value="#fff" />
+        <Setter Property="Margin" Value="4" />
+        <Setter Property="BorderColor" Value="#fff" />
+        <Setter Property="Grid.Column" Value="0" />
+        <Setter Property="Grid.RowSpan" Value="2" />
+    </Style>
+    <Style TargetType="ListView" x:Key="ListViewStyle">
+        <Setter Property="BackgroundColor" Value="#fff" />
+        <Setter Property="Margin" Value="4" />
+        <Setter Property="Grid.Column" Value="0" />
+        <Setter Property="Grid.RowSpan" Value="2" />
+    </Style>
+    <Style TargetType="Frame" x:Key="LocationStyle">
+        <Setter Property="Grid.Column" Value="1" />
+        <Setter Property="Grid.Row" Value="0" />
+        <Setter Property="BackgroundColor" Value="#fff" />
+        <Setter Property="Margin" Value="4" />
+        <Setter Property="BorderColor" Value="#fff" />
+    </Style>
+    <Style TargetType="Frame" x:Key="SNRStyle">
+        <Setter Property="Grid.Column" Value="2" />
+        <Setter Property="Grid.Row" Value="0" />
+        <Setter Property="BackgroundColor" Value="#fff" />
+        <Setter Property="Margin" Value="4" />
+        <Setter Property="BorderColor" Value="#fff" />
+    </Style>
+    <Style TargetType="Frame" x:Key="RSSIChartStyle">
+        <Setter Property="Grid.Column" Value="2" />
+        <Setter Property="Grid.Row" Value="1" />
+        <Setter Property="BackgroundColor" Value="#fff" />
+        <Setter Property="Margin" Value="4" />
+        <Setter Property="BorderColor" Value="#fff" />
+    </Style>
+    <Style TargetType="StackLayout" x:Key="StackLayoutStyles">
+        <Setter Property="Grid.Column" Value="1" />
+        <Setter Property="Grid.Row" Value="1" />
+    </Style>
+    <Style TargetType="Frame" x:Key="TableStyle">
+        <Setter Property="Grid.Column" Value="1" />
+        <Setter Property="Grid.Row" Value="1" />
+        <Setter Property="BackgroundColor" Value="#fff" />
+        <Setter Property="Margin" Value="4" />
+        <Setter Property="BorderColor" Value="#fff" />
+    </Style>
+    <Style TargetType="Grid" x:Key="SecondaryGridStyle">
+        <Setter Property="ColumnDefinitions">
+            <Setter.Value>
+                <ColumnDefinitionCollection>
+                    <ColumnDefinition Width="*" />
+                </ColumnDefinitionCollection>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="RowDefinitions">
+            <Setter.Value>
+                <RowDefinitionCollection>
+                    <RowDefinition Height="*" />
+                </RowDefinitionCollection>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style TargetType="Grid" x:Key="LocationButtonGrid">
+        <Setter Property="Padding" Value="5" />
+        <Setter Property="MaximumWidthRequest" Value="200" />
+        <Setter Property="RowDefinitions" Value="auto,auto" />
+        <Setter Property="RowSpacing" Value="5" />
+        <Setter Property="HorizontalOptions" Value="End" />
+    </Style>
+    <Style TargetType="Button" x:Key="LocationButton">
+        <Setter Property="WidthRequest" Value="100" />
+    </Style>
+    <Style TargetType="ImageButton" x:Key="ImageButton">
+        <Setter Property="WidthRequest" Value="10" />
+        <Setter Property="HorizontalOptions" Value="End" />
+        <Setter Property="VerticalOptions" Value="End" />
+    </Style>
+</ResourceDictionary>

@@ -9,8 +9,8 @@
 *.user
 *.userosscache
 *.sln.docstates
+*.csv
 
-Directory.Build.targets
 secrets.json
 
 # User-specific files (MonoDevelop/Xamarin Studio)

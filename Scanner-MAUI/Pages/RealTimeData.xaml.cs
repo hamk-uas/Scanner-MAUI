@@ -22,6 +22,8 @@ public partial class RealTimeData : ContentPage
     private Dictionary<string, string> RssiValues;
     private ObservableCollection<ObservableValue> _observableValues;
     public ObservableCollection<ISeries> Series { get; set; }
+    private Dictionary<string, int> BaudRates;
+    private Dictionary<string, string> COM;
 
     public RealTimeData()
     {
@@ -30,7 +32,8 @@ public partial class RealTimeData : ContentPage
         Canvas.Drawable = graphicsDrawable;
         NetworkListView.ItemSelected += OnNetworkNameSelected;
         TimeStamp.TimeStampViewr(DateTimeLabel);
-        _ = ViewMap.LoadWMTSLayer(MyMapView);
+        //_ = ViewMap.LoadWMTSLayer(MyMapView); //Maanmittauslaitos WMTS layer
+        _ = ViewMap.OpenstreetMaps(MyMapView);
         _ = Location.StartDeviceLocationTask(MyMapView); // Gets current location
         //_ = Markers.MapMarkers(MyMapView);
 
@@ -47,6 +50,12 @@ public partial class RealTimeData : ContentPage
             Padding = new LiveChartsCore.Drawing.Padding(15),
             Paint = new SolidColorPaint(SKColors.DarkSlateGray)
         };
+        BaudRates = new Dictionary<string, int>();
+        COM = new Dictionary<string, string>();
+
+        int baudRate = 115200;
+        BaudRates["baudrate"] = baudRate;
+        BaudRate.Text = "Selected Baud Rate: " + baudRate;
     }
 
     private void ScannerConn_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -91,6 +100,9 @@ public partial class RealTimeData : ContentPage
 
             double snr = scannerConn.SNR;
             _observableValues.Add(new (snr));
+            MyMapView.GraphicsOverlays.Clear();
+
+            DateTimeLabel.Text = $"Date and Time: {scannerConn.Datetime}";
 
         }
     }
@@ -101,6 +113,7 @@ public partial class RealTimeData : ContentPage
         if (e.SelectedItem is Network selectedNetwork)
         {
             NetworkNameLabel.Text = $"Network Name:  {selectedNetwork.Name}";
+            
 
             //Show the marker location on the map based on the network name
             //mapMarkers = new Markers
@@ -111,7 +124,7 @@ public partial class RealTimeData : ContentPage
 
             //_ = mapMarkers.MapMarkers(MyMapView);
             //MyMapView.GraphicsOverlays.Clear();
-           
+
 
             scannerConn.PropertyChanged += ScannerConn_PropertyChanged;
 
@@ -126,7 +139,8 @@ public partial class RealTimeData : ContentPage
                     Name = "SNR Value"
                 }
             };
-           
+            MyMapView.GraphicsOverlays.Clear();
+
 
         }
     }
@@ -149,10 +163,29 @@ public partial class RealTimeData : ContentPage
         _ = Location.StartDeviceLocationTask(MyMapView);
     }
 
-    private void StartMenuItem_Clicked(object sender, EventArgs e)
+    private async void StartMenuItem_Clicked(object sender, EventArgs e)
     {
-        // TODO: Connect to the LoRa scanner and start scanning
-        scannerConn.ConnectToScanner();
+        if (BaudRates.Count > 0 && COM.Count > 0)
+        {
+            int firstBaudRate = BaudRates.Values.First();
+            string firstComValue = COM.Values.First();
+            try
+            {
+                scannerConn.ConnectToScanner(firstBaudRate, firstComValue);
+            }
+            catch (Exception ex)
+            {
+                 await DisplayAlert("Alert", ex.ToString(), "OK");
+            }
+        }
+        else
+        {
+            BaudRates.Clear();
+            COM.Clear();
+            BaudRate.Text = "Selected Baud Rate: ";
+            COMNumber.Text = "Selected COM Port Number: ";
+            await DisplayAlert("Alert", "Please select a baud rate and a com port number", "OK");
+        }        
     }
 
     private void StopMenuItem_Clicked(object sender, EventArgs e)
@@ -174,7 +207,212 @@ public partial class RealTimeData : ContentPage
         MyMapView.GraphicsOverlays.Clear();
         
         _observableValues.Clear();
+        BaudRates.Clear();
+        COM.Clear();
 
+    }
+
+    private void BaudRate110_Clicked(object sender, EventArgs e)
+    {
+        BaudRates.Clear();
+        // TODO: Connect to the LoRa scanner and start scanning
+        int baudRate = 110;
+        BaudRates["baudrate"] = baudRate;
+        BaudRate.Text = "Selected Baud Rate: " + baudRate;
+    }
+    private void BaudRate300_Clicked(object sender, EventArgs e)
+    {
+        BaudRates.Clear();
+        // TODO: Connect to the LoRa scanner and start scanning
+        int baudRate = 300;
+        BaudRates["baudrate"] = baudRate;
+        BaudRate.Text = "Selected Baud Rate: " + baudRate;
+    }
+    private void BaudRate600_Clicked(object sender, EventArgs e)
+    {
+        BaudRates.Clear();
+        // TODO: Connect to the LoRa scanner and start scanning
+        int baudRate = 600;
+        BaudRates["baudrate"] = baudRate;
+        BaudRate.Text = "Selected Baud Rate: " + baudRate;
+    }
+    private void BaudRate1200_Clicked(object sender, EventArgs e)
+    {
+        BaudRates.Clear();
+        // TODO: Connect to the LoRa scanner and start scanning
+        int baudRate = 1200;
+        BaudRates["baudrate"] = baudRate;
+        BaudRate.Text = "Selected Baud Rate: " + baudRate;
+    }
+    private void BaudRate2400_Clicked(object sender, EventArgs e)
+    {
+        BaudRates.Clear();
+        // TODO: Connect to the LoRa scanner and start scanning
+        int baudRate = 2400;
+        BaudRates["baudrate"] = baudRate;
+        BaudRate.Text = "Selected Baud Rate: " + baudRate;
+    }
+    private void BaudRate4800_Clicked(object sender, EventArgs e)
+    {
+        BaudRates.Clear();
+        // TODO: Connect to the LoRa scanner and start scanning
+        int baudRate = 4800;
+        BaudRates["baudrate"] = baudRate;
+        BaudRate.Text = "Selected Baud Rate: " + baudRate;
+    }
+    private void BaudRate9600_Clicked(object sender, EventArgs e)
+    {
+        BaudRates.Clear();
+        // TODO: Connect to the LoRa scanner and start scanning
+        int baudRate = 9600;
+        BaudRates["baudrate"] = baudRate;
+        BaudRate.Text = "Selected Baud Rate: " + baudRate;
+    }
+    private void BaudRate19200_Clicked(object sender, EventArgs e)
+    {
+        BaudRates.Clear();
+        // TODO: Connect to the LoRa scanner and start scanning
+        int baudRate = 19200;
+        BaudRates["baudrate"] = baudRate;
+        BaudRate.Text = "Selected Baud Rate: " + baudRate;
+    }
+    private void BaudRate28800_Clicked(object sender, EventArgs e)
+    {
+        BaudRates.Clear();
+        // TODO: Connect to the LoRa scanner and start scanning
+        int baudRate = 28800;
+        BaudRates["baudrate"] = baudRate;
+        BaudRate.Text = "Selected Baud Rate: " + baudRate;
+    }
+    private void BaudRate38400_Clicked(object sender, EventArgs e)
+    {
+        BaudRates.Clear();
+        // TODO: Connect to the LoRa scanner and start scanning
+        int baudRate = 38400;
+        BaudRates["baudrate"] = baudRate;
+        BaudRate.Text = "Selected Baud Rate: " + baudRate;
+    }
+    private void BaudRate57600_Clicked(object sender, EventArgs e)
+    {
+        BaudRates.Clear();
+        // TODO: Connect to the LoRa scanner and start scanning
+        int baudRate = 57600;
+        BaudRates["baudrate"] = baudRate;
+        BaudRate.Text = "Selected Baud Rate: " + baudRate;
+    }
+    private void BaudRate76800_Clicked(object sender, EventArgs e)
+    {
+        BaudRates.Clear();
+        // TODO: Connect to the LoRa scanner and start scanning
+        int baudRate = 76800;
+        BaudRates["baudrate"] = baudRate;
+        BaudRate.Text = "Selected Baud Rate: " + baudRate;
+    }
+    private void BaudRate115200_Clicked(object sender, EventArgs e)
+    {
+        BaudRates.Clear();
+        // TODO: Connect to the LoRa scanner and start scanning
+        int baudRate = 115200;
+        BaudRates["baudrate13"] = baudRate;
+        BaudRate.Text = "Selected Baud Rate: " + baudRate;
+    }
+    private void BaudRate230400_Clicked(object sender, EventArgs e)
+    {
+        BaudRates.Clear();
+        // TODO: Connect to the LoRa scanner and start scanning
+        int baudRate = 230400;
+        BaudRates["baudrate"] = baudRate;
+        BaudRate.Text = "Selected Baud Rate: " + baudRate;
+    }
+    private void BaudRate460800_Clicked(object sender, EventArgs e)
+    {
+        BaudRates.Clear();
+        // TODO: Connect to the LoRa scanner and start scanning
+        int baudRate = 460800;
+        BaudRates["baudrate"] = baudRate;
+        BaudRate.Text = "Selected Baud Rate: " + baudRate;
+    }
+
+
+    private void Com1_Clicked(object sender, EventArgs e)
+    {
+        COM.Clear();
+        // TODO: Connect to the LoRa scanner and start scanning
+        string com = "1";
+        COM["com"] = com;
+        COMNumber.Text = "Selected COM Port Number: " + com;
+    }
+    private void Com2_Clicked(object sender, EventArgs e)
+    {
+        COM.Clear();
+        // TODO: Connect to the LoRa scanner and start scanning
+        string com = "2";
+        COM["com"] = com;
+        COMNumber.Text = "Selected COM Port Number: " + com;
+    }
+    private void Com3_Clicked(object sender, EventArgs e)
+    {
+        COM.Clear();
+        // TODO: Connect to the LoRa scanner and start scanning
+        string com = "3";
+        COM["com"] = com;
+        COMNumber.Text = "Selected COM Port Number: " + com;
+    }
+    private void Com4_Clicked(object sender, EventArgs e)
+    {
+        COM.Clear();
+        // TODO: Connect to the LoRa scanner and start scanning
+        string com = "4";
+        COM["com"] = com;
+        COMNumber.Text = "Selected COM Port Number: " + com;
+    }
+    private void Com5_Clicked(object sender, EventArgs e)
+    {
+        COM.Clear();
+        // TODO: Connect to the LoRa scanner and start scanning
+        string com = "5";
+        COM["com"] = com;
+        COMNumber.Text = "Selected COM Port Number: " + com;
+    }
+    private void Com6_Clicked(object sender, EventArgs e)
+    {
+        COM.Clear();
+        // TODO: Connect to the LoRa scanner and start scanning
+        string com = "6";
+        COM["com"] = com;
+        COMNumber.Text = "Selected COM Port Number: " + com;
+    }
+    private void Com7_Clicked(object sender, EventArgs e)
+    {
+        COM.Clear();
+        // TODO: Connect to the LoRa scanner and start scanning
+        string com = "7";
+        COM["com"] = com;
+        COMNumber.Text = "Selected COM Port Number: " + com;
+    }
+    private void Com8_Clicked(object sender, EventArgs e)
+    {
+        COM.Clear();
+        // TODO: Connect to the LoRa scanner and start scanning
+        string com = "8";
+        COM["com"] = com;
+        COMNumber.Text = "Selected COM Port Number: " + com;
+    }
+    private void Com9_Clicked(object sender, EventArgs e)
+    {
+        COM.Clear();
+        // TODO: Connect to the LoRa scanner and start scanning
+        string com = "9";
+        COM["com"] = com;
+        COMNumber.Text = "Selected COM Port Number: " + com;
+    }
+    private void Com10_Clicked(object sender, EventArgs e)
+    {
+        COM.Clear();
+        // TODO: Connect to the LoRa scanner and start scanning
+        string com = "10";
+        COM["com"] = com;
+        COMNumber.Text = "Selected COM Port Number: " + com;
     }
 }
 

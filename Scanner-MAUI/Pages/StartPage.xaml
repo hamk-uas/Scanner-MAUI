@@ -19,13 +19,6 @@
                 HorizontalOptions="Center"
                 MinimumWidthRequest="200"
                 Margin="20"/>
-            <Button
-                x:Name="Settings"
-                Clicked="Settings_Clicked"
-                Text="Settings"
-                HorizontalOptions="Center"
-                MinimumWidthRequest="200"
-                Margin="20"/>
         </VerticalStackLayout>
     </VerticalStackLayout>
 </ContentPage>
