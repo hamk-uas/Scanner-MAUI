@@ -1,9 +1,11 @@
 ﻿using Microsoft.Maui.Controls;
+using Microsoft.Maui.Storage;
 using Newtonsoft.Json.Linq;
 using Scanner_MAUI.Model;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Globalization;
+using System.IO;
 using static System.Net.Mime.MediaTypeNames;
 
 namespace Scanner_MAUI.Helpers
@@ -148,6 +150,18 @@ namespace Scanner_MAUI.Helpers
                     writer.WriteLine(csvLine);
                 }
             }
+            outputStream.Close();
+
+            // copy the csv to a more easier to find dir
+            string targetPath = @"C:\Users\Public\CSVs";
+            //string sourceFile = System.IO.Path.Combine(FileSystem.Current.AppDataDirectory, targetFileName);
+            string destFile = System.IO.Path.Combine(targetPath, targetFileName);
+            if (!System.IO.Directory.Exists(targetPath))
+            {
+                System.IO.Directory.CreateDirectory(targetPath);
+            }
+
+            File.Copy(targetFile, destFile, true);
         }
         public void ClearCSV(System.Collections.ObjectModel.ObservableCollection<Network> sDContent)
         {
@@ -171,6 +185,7 @@ namespace Scanner_MAUI.Helpers
                     writer.WriteLine(csvLine);
                 }
             }
+            outputStream.Close();
         }
 
         internal void PopulateTableCSV(ObservableCollection<Network> cSVContent, TableSection tableSection)
