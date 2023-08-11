@@ -46,12 +46,6 @@
             <Frame Style="{StaticResource LocationStyle}">
                 <Grid x:Name="MapView">
                     <esriUI:MapView x:Name="MyMapView" />
-                    <ActivityIndicator x:Name="MyActivityIndicator"
-                           Grid.RowSpan="2"
-                           Grid.ColumnSpan="2"
-                           HeightRequest="40"
-                           IsVisible="False"
-                           WidthRequest="40" />
                     <Grid Style="{StaticResource LocationButtonGrid}">
                         <ImageButton Style="{StaticResource ImageButton}" 
                                         Source="my_location3.png"
