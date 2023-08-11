@@ -19,7 +19,7 @@ This project aimed to build a Windows app the reads data form a portable network
 
 ---
 
-## configuration:
+## Configuration:
 When cloning the repository to your device make sure to create a "Secrets" file that includes the necessary API keys. Follow the next instructions:
    
    1. Right click on the project name.
