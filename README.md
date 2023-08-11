@@ -41,5 +41,19 @@ When cloning the repository to your device make sure to create a "Secrets" file 
    5. For the second API key a developer account with Esri is necessary. [Esri](https://www.arcgis.com/sharing/rest/oauth2/authorize?client_id=arcgisdevelopers&response_type=code&expiration=20160&redirect_uri=https%3A%2F%2Fdevelopers.arcgis.com%2Fpost-sign-in%2F&state=%7B%22id%22%3A%22sxkGmqfxywELCWGLIQGDOf2bIAiZW72cU6ndw_A2qa4%22%2C%22originalUrl%22%3A%22https%3A%2F%2Fdevelopers.arcgis.com%2F%22%7D&locale=&style=&code_challenge_method=S256&code_challenge=gTGFZJHd3dveNINznCZTOeqGLBIYb_nZvucd-Hk89VM&showSignupOption=true&signuptype=developers).
 
    6. Make sure the json file name mathches the file name in the ``Directory.Build.targets`` file.
+
+For debugging comment these lines in the ``Scanner-MAUI.csproj`` file:
+
+    ```
+    <TargetFrameworks>net7.0-android;net7.0-ios;net7.0-maccatalyst</TargetFrameworks>
+    <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">11.0</SupportedOSPlatformVersion>
+    <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'maccatalyst'">13.1</SupportedOSPlatformVersion>
+    <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">21.0</SupportedOSPlatformVersion>
+    ```
+
+        
+            
+        
+And for publishing uncomment them.
    
 ---
