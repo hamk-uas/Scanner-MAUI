@@ -57,3 +57,16 @@ For debugging comment these lines in the ``Scanner-MAUI.csproj`` file:
 And for publishing uncomment them.
    
 ---
+## Issues:
+
+1. Every time a connection to the serial port is established, and after the process is done, to reconnect, the connection with serial port should be ended manually by pressing the stop button in the UI. True for both Real-time data and Historical data pages.
+
+2. Syncfusion guage meter causes the app to crash when resizing the Real-Time data page.
+
+3. Every time a scan is done and the serial port is disconnected the user must exit the page and then go back to it before initilizing another serial port connection, otherwise the UI will log double values.
+
+4. The copied CSV file (User\public) doesn't get emptied when clearing the SD card. However, the original CSV (in the app data dir) does get cleared.
+
+5. The lodaing animation (activity indicator) in the historical data page doesn't lock up the UI to prevent the user from clicking (selecting the network name).
+
+6. More testing needed for the app in general. 
