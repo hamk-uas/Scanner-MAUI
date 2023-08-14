@@ -2,7 +2,7 @@
 
 ## Description 📝
 
-This project aimed to build a Windows app the reads data form a portable network scanner, which records among other things LoRa network signal strength and location.  
+This project aimed to build a Windows app that reads data form a portable network scanner, which records among other things LoRa network signal strength and location.  
 
 ---
 
